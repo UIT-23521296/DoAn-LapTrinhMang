@@ -1,0 +1,155 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\UIT\\lap trinh mang\\doan\\DoAn-LapTrinhMang\\MonopolyWinForms\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|d:\\uit\\lap trinh mang\\doan\\doan-laptrinhmang\\monopolywinforms\\monopolywinforms\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|solutionrelative:monopolywinforms\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|d:\\uit\\lap trinh mang\\doan\\doan-laptrinhmang\\monopolywinforms\\monopolywinforms\\assets\\sounds\\.gitkeep||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|solutionrelative:monopolywinforms\\assets\\sounds\\.gitkeep||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|d:\\uit\\lap trinh mang\\doan\\doan-laptrinhmang\\monopolywinforms\\monopolywinforms\\gamelogic\\gamecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|solutionrelative:monopolywinforms\\gamelogic\\gamecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|d:\\uit\\lap trinh mang\\doan\\doan-laptrinhmang\\monopolywinforms\\monopolywinforms\\gamelogic\\gameboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|solutionrelative:monopolywinforms\\gamelogic\\gameboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|d:\\uit\\lap trinh mang\\doan\\doan-laptrinhmang\\monopolywinforms\\monopolywinforms\\gamelogic\\property.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|solutionrelative:monopolywinforms\\gamelogic\\property.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|d:\\uit\\lap trinh mang\\doan\\doan-laptrinhmang\\monopolywinforms\\monopolywinforms\\gamelogic\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|solutionrelative:monopolywinforms\\gamelogic\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|d:\\uit\\lap trinh mang\\doan\\doan-laptrinhmang\\monopolywinforms\\monopolywinforms\\monopolywinforms.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|solutionrelative:monopolywinforms\\monopolywinforms.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|d:\\uit\\lap trinh mang\\doan\\doan-laptrinhmang\\monopolywinforms\\monopolywinforms\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|solutionrelative:monopolywinforms\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 286,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": ".gitkeep",
+              "DocumentMoniker": "D:\\UIT\\lap trinh mang\\doan\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\Assets\\Sounds\\.gitkeep",
+              "RelativeDocumentMoniker": "MonopolyWinForms\\Assets\\Sounds\\.gitkeep",
+              "ToolTip": "D:\\UIT\\lap trinh mang\\doan\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\Assets\\Sounds\\.gitkeep",
+              "RelativeToolTip": "MonopolyWinForms\\Assets\\Sounds\\.gitkeep",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-05-07T09:34:20.386Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "GameController.cs",
+              "DocumentMoniker": "D:\\UIT\\lap trinh mang\\doan\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\GameLogic\\GameController.cs",
+              "RelativeDocumentMoniker": "MonopolyWinForms\\GameLogic\\GameController.cs",
+              "ToolTip": "D:\\UIT\\lap trinh mang\\doan\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\GameLogic\\GameController.cs",
+              "RelativeToolTip": "MonopolyWinForms\\GameLogic\\GameController.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-07T09:27:27.741Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "GameBoard.cs",
+              "DocumentMoniker": "D:\\UIT\\lap trinh mang\\doan\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\GameLogic\\GameBoard.cs",
+              "RelativeDocumentMoniker": "MonopolyWinForms\\GameLogic\\GameBoard.cs",
+              "ToolTip": "D:\\UIT\\lap trinh mang\\doan\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\GameLogic\\GameBoard.cs",
+              "RelativeToolTip": "MonopolyWinForms\\GameLogic\\GameBoard.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-07T09:27:04.852Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Property.cs",
+              "DocumentMoniker": "D:\\UIT\\lap trinh mang\\doan\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\GameLogic\\Property.cs",
+              "RelativeDocumentMoniker": "MonopolyWinForms\\GameLogic\\Property.cs",
+              "ToolTip": "D:\\UIT\\lap trinh mang\\doan\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\GameLogic\\Property.cs",
+              "RelativeToolTip": "MonopolyWinForms\\GameLogic\\Property.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-07T09:26:48.394Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Player.cs",
+              "DocumentMoniker": "D:\\UIT\\lap trinh mang\\doan\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\GameLogic\\Player.cs",
+              "RelativeDocumentMoniker": "MonopolyWinForms\\GameLogic\\Player.cs",
+              "ToolTip": "D:\\UIT\\lap trinh mang\\doan\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\GameLogic\\Player.cs",
+              "RelativeToolTip": "MonopolyWinForms\\GameLogic\\Player.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-07T09:26:28.822Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "MonopolyWinForms",
+              "DocumentMoniker": "D:\\UIT\\lap trinh mang\\doan\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\MonopolyWinForms.csproj",
+              "RelativeDocumentMoniker": "MonopolyWinForms\\MonopolyWinForms.csproj",
+              "ToolTip": "D:\\UIT\\lap trinh mang\\doan\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\MonopolyWinForms.csproj",
+              "RelativeToolTip": "MonopolyWinForms\\MonopolyWinForms.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-05-07T09:25:50.178Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\UIT\\lap trinh mang\\doan\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\Program.cs",
+              "RelativeDocumentMoniker": "MonopolyWinForms\\Program.cs",
+              "ToolTip": "D:\\UIT\\lap trinh mang\\doan\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\Program.cs",
+              "RelativeToolTip": "MonopolyWinForms\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-07T09:25:08.469Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "MainForm.cs [Design]",
+              "DocumentMoniker": "D:\\UIT\\lap trinh mang\\doan\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\MainForm.cs",
+              "RelativeDocumentMoniker": "MonopolyWinForms\\MainForm.cs",
+              "ToolTip": "D:\\UIT\\lap trinh mang\\doan\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\MainForm.cs [Design]",
+              "RelativeToolTip": "MonopolyWinForms\\MainForm.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-07T09:24:18.275Z",
+              "EditorCaption": " [Design]"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

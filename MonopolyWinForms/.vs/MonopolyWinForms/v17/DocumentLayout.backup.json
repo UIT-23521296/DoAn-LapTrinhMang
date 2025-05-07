@@ -1,0 +1,36 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\UIT\\lap trinh mang\\doan\\DoAn-LapTrinhMang\\MonopolyWinForms\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|d:\\uit\\lap trinh mang\\doan\\doan-laptrinhmang\\monopolywinforms\\monopolywinforms\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|solutionrelative:monopolywinforms\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Form1.cs [Design]",
+              "DocumentMoniker": "D:\\UIT\\lap trinh mang\\doan\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\Form1.cs",
+              "RelativeDocumentMoniker": "MonopolyWinForms\\Form1.cs",
+              "ToolTip": "D:\\UIT\\lap trinh mang\\doan\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\Form1.cs [Design]",
+              "RelativeToolTip": "MonopolyWinForms\\Form1.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-07T09:24:18.275Z",
+              "EditorCaption": " [Design]"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

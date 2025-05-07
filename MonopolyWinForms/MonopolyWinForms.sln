@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35825.156 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonopolyWinForms", "MonopolyWinForms\MonopolyWinForms.csproj", "{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4D3B7500-FD28-43CB-B079-4ED7202399C5}
+	EndGlobalSection
+EndGlobal
