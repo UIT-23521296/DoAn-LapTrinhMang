@@ -42,16 +42,12 @@
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
-      "VerticalTabListWidth": 221,
+      "VerticalTabListWidth": 126,
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -60,7 +56,7 @@
               "RelativeDocumentMoniker": "MonopolyWinForms\\MainForm.cs",
               "ToolTip": "D:\\UIT\\lap trinh mang\\doan\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\MainForm.cs",
               "RelativeToolTip": "MonopolyWinForms\\MainForm.cs",
-              "ViewState": "AgIAADAAAAAAAAAAAAAYwGIAAABvAAAAAAAAAA==",
+              "ViewState": "AgIAAEEAAAAAAAAAAAAgwGIAAABvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-08T19:29:23.743Z",
               "EditorCaption": ""
@@ -99,8 +95,7 @@
               "RelativeToolTip": "MonopolyWinForms\\GameLogic\\GameBoard.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-07T09:27:04.852Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-07T09:27:04.852Z"
             },
             {
               "$type": "Document",
@@ -136,8 +131,7 @@
               "RelativeToolTip": "MonopolyWinForms\\MonopolyWinForms.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-05-07T09:25:50.178Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-07T09:25:50.178Z"
             },
             {
               "$type": "Document",
