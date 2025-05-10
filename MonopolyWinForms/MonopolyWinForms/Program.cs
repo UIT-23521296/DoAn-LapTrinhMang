@@ -1,3 +1,5 @@
+using buyLand_Home;
+
 namespace MonopolyWinForms
 {
     internal static class Program
@@ -12,6 +14,7 @@ namespace MonopolyWinForms
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             Application.Run(new MainForm());
+            Application.Run(new BuyHome_Land());
         }
     }
 }
