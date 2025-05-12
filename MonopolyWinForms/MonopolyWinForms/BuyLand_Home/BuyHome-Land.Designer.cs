@@ -60,6 +60,7 @@
             panel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             SuspendLayout();
+            this.Load += new EventHandler(this.BuyLand_Home_Load);
             // 
             // label1
             // 
@@ -99,6 +100,7 @@
             checkBox1.TabIndex = 0;
             checkBox1.Text = "Land";
             checkBox1.UseVisualStyleBackColor = true;
+            checkBox1.CheckedChanged += checkBox1_CheckedChanged;
             // 
             // label2
             // 
@@ -169,6 +171,7 @@
             checkBox2.TabIndex = 0;
             checkBox2.Text = "House 1";
             checkBox2.UseVisualStyleBackColor = true;
+            checkBox2.CheckedChanged += checkBox2_CheckedChanged;
             // 
             // panel3
             // 
@@ -198,6 +201,7 @@
             checkBox3.TabIndex = 0;
             checkBox3.Text = "House 2";
             checkBox3.UseVisualStyleBackColor = true;
+            checkBox3.CheckedChanged += checkBox3_CheckedChanged;
             // 
             // panel4
             // 
@@ -227,6 +231,7 @@
             checkBox4.TabIndex = 0;
             checkBox4.Text = "House 3";
             checkBox4.UseVisualStyleBackColor = true;
+            checkBox4.CheckedChanged += checkBox4_CheckedChanged;
             // 
             // panel5
             // 
@@ -256,6 +261,7 @@
             checkBox5.TabIndex = 0;
             checkBox5.Text = "Hotel";
             checkBox5.UseVisualStyleBackColor = true;
+            checkBox5.CheckedChanged += checkBox5_CheckedChanged;
             // 
             // BuyHome_Land
             // 

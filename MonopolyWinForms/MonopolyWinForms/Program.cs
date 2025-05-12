@@ -13,8 +13,7 @@ namespace MonopolyWinForms
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new MainForm());
-            Application.Run(new BuyHome_Land());
+            Application.Run(new BuyHome_Land(false, false, false, false, false, 0, null));
         }
     }
 }

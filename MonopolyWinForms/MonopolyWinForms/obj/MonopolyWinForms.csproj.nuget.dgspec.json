@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Admin\\OneDrive - Trường ĐH CNTT - University of Information Technology\\Lap trinh mang\\Do an mang\\github\\MonopolyWinForms\\MonopolyWinForms\\MonopolyWinForms.csproj": {}
+    "C:\\Users\\Admin\\OneDrive - Trường ĐH CNTT - University of Information Technology\\Lap trinh mang\\Do an mang\\Github\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\MonopolyWinForms.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Admin\\OneDrive - Trường ĐH CNTT - University of Information Technology\\Lap trinh mang\\Do an mang\\github\\MonopolyWinForms\\MonopolyWinForms\\MonopolyWinForms.csproj": {
+    "C:\\Users\\Admin\\OneDrive - Trường ĐH CNTT - University of Information Technology\\Lap trinh mang\\Do an mang\\Github\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\MonopolyWinForms.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Admin\\OneDrive - Trường ĐH CNTT - University of Information Technology\\Lap trinh mang\\Do an mang\\github\\MonopolyWinForms\\MonopolyWinForms\\MonopolyWinForms.csproj",
+        "projectUniqueName": "C:\\Users\\Admin\\OneDrive - Trường ĐH CNTT - University of Information Technology\\Lap trinh mang\\Do an mang\\Github\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\MonopolyWinForms.csproj",
         "projectName": "MonopolyWinForms",
-        "projectPath": "C:\\Users\\Admin\\OneDrive - Trường ĐH CNTT - University of Information Technology\\Lap trinh mang\\Do an mang\\github\\MonopolyWinForms\\MonopolyWinForms\\MonopolyWinForms.csproj",
+        "projectPath": "C:\\Users\\Admin\\OneDrive - Trường ĐH CNTT - University of Information Technology\\Lap trinh mang\\Do an mang\\Github\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\MonopolyWinForms.csproj",
         "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Admin\\OneDrive - Trường ĐH CNTT - University of Information Technology\\Lap trinh mang\\Do an mang\\github\\MonopolyWinForms\\MonopolyWinForms\\obj\\",
+        "outputPath": "C:\\Users\\Admin\\OneDrive - Trường ĐH CNTT - University of Information Technology\\Lap trinh mang\\Do an mang\\Github\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
