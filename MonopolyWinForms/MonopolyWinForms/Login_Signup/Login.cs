@@ -9,13 +9,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MonopolyWinForms.Home;
 using MonopolyWinForms.Login_Signup;
+using System.Configuration; // Thêm namespace này
 using Newtonsoft.Json;
 
 namespace MonopolyWinForms.Login_Signup
 {
     public partial class Login : Form
     {
-        private readonly string apiKey = "AIzaSyBO2WjLtJkVghtlWW_yMQFKc0jQt8aOb8E";
+        private readonly string apiKey = ConfigurationManager.AppSettings["FirebaseApiKey"];
         private Form signupForm;
         public Login(Form signupForm)
         {
