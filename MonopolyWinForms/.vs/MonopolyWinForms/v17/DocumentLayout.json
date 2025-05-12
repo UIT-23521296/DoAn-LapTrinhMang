@@ -3,14 +3,6 @@
   "WorkspaceRootPath": "E:\\Dai Hoc\\Lap trinh mang\\DoAn-LapTrinhMang\\MonopolyWinForms\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|e:\\dai hoc\\lap trinh mang\\doan-laptrinhmang\\monopolywinforms\\monopolywinforms\\login_signup\\main_login_signup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|solutionrelative:monopolywinforms\\login_signup\\main_login_signup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|e:\\dai hoc\\lap trinh mang\\doan-laptrinhmang\\monopolywinforms\\monopolywinforms\\login_signup\\main_login_signup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|solutionrelative:monopolywinforms\\login_signup\\main_login_signup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|e:\\dai hoc\\lap trinh mang\\doan-laptrinhmang\\monopolywinforms\\monopolywinforms\\login_signup\\forgot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|solutionrelative:monopolywinforms\\login_signup\\forgot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -23,12 +15,12 @@
       "RelativeMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|solutionrelative:monopolywinforms\\login_signup\\signup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|E:\\Dai Hoc\\Lap trinh mang\\DoAn-LapTrinhMang\\MonopolyWinForms\\monopolywinforms\\login_signup\\forgot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|solutionrelative:monopolywinforms\\login_signup\\forgot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|E:\\Dai Hoc\\Lap trinh mang\\DoAn-LapTrinhMang\\MonopolyWinForms\\monopolywinforms\\login_signup\\main_login_signup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|solutionrelative:monopolywinforms\\login_signup\\main_login_signup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|e:\\dai hoc\\lap trinh mang\\doan-laptrinhmang\\monopolywinforms\\monopolywinforms\\login_signup\\login.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|solutionrelative:monopolywinforms\\login_signup\\login.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|e:\\dai hoc\\lap trinh mang\\doan-laptrinhmang\\monopolywinforms\\monopolywinforms\\login_signup\\main_login_signup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DD823A3-7AC9-4354-BD58-23C5BD777FE8}|MonopolyWinForms\\MonopolyWinForms.csproj|solutionrelative:monopolywinforms\\login_signup\\main_login_signup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,7 +30,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -54,7 +46,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "Main_login_signup.cs",
               "DocumentMoniker": "E:\\Dai Hoc\\Lap trinh mang\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\Login_Signup\\Main_login_signup.cs",
               "RelativeDocumentMoniker": "MonopolyWinForms\\Login_Signup\\Main_login_signup.cs",
@@ -67,7 +59,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "Main_login_signup.cs [Design]",
               "DocumentMoniker": "E:\\Dai Hoc\\Lap trinh mang\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\Login_Signup\\Main_login_signup.cs",
               "RelativeDocumentMoniker": "MonopolyWinForms\\Login_Signup\\Main_login_signup.cs",
@@ -79,66 +71,41 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 2,
               "Title": "Signup.cs",
               "DocumentMoniker": "E:\\Dai Hoc\\Lap trinh mang\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\Login_Signup\\Signup.cs",
               "RelativeDocumentMoniker": "MonopolyWinForms\\Login_Signup\\Signup.cs",
               "ToolTip": "E:\\Dai Hoc\\Lap trinh mang\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\Login_Signup\\Signup.cs",
               "RelativeToolTip": "MonopolyWinForms\\Login_Signup\\Signup.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAABcAAAAAAAAAA==",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABYAAABcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-12T06:44:14.546Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "Login.cs",
               "DocumentMoniker": "E:\\Dai Hoc\\Lap trinh mang\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\Login_Signup\\Login.cs",
               "RelativeDocumentMoniker": "MonopolyWinForms\\Login_Signup\\Login.cs",
               "ToolTip": "E:\\Dai Hoc\\Lap trinh mang\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\Login_Signup\\Login.cs",
               "RelativeToolTip": "MonopolyWinForms\\Login_Signup\\Login.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAABcAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-12T05:35:23.789Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "Forgot.cs",
               "DocumentMoniker": "E:\\Dai Hoc\\Lap trinh mang\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\Login_Signup\\Forgot.cs",
               "RelativeDocumentMoniker": "MonopolyWinForms\\Login_Signup\\Forgot.cs",
               "ToolTip": "E:\\Dai Hoc\\Lap trinh mang\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\Login_Signup\\Forgot.cs",
               "RelativeToolTip": "MonopolyWinForms\\Login_Signup\\Forgot.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAABcAAAAAAAAAA==",
+              "ViewState": "AgIAABwAAAAAAAAAAAAQwCQAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-12T06:25:11.793Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Forgot.cs [Design]",
-              "DocumentMoniker": "E:\\Dai Hoc\\Lap trinh mang\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\Login_Signup\\Forgot.cs",
-              "RelativeDocumentMoniker": "MonopolyWinForms\\Login_Signup\\Forgot.cs",
-              "ToolTip": "E:\\Dai Hoc\\Lap trinh mang\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\Login_Signup\\Forgot.cs [Design]",
-              "RelativeToolTip": "MonopolyWinForms\\Login_Signup\\Forgot.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-12T06:24:08.511Z",
-              "EditorCaption": " [Design]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Login.Designer.cs",
-              "DocumentMoniker": "E:\\Dai Hoc\\Lap trinh mang\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\Login_Signup\\Login.Designer.cs",
-              "RelativeDocumentMoniker": "MonopolyWinForms\\Login_Signup\\Login.Designer.cs",
-              "ToolTip": "E:\\Dai Hoc\\Lap trinh mang\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\Login_Signup\\Login.Designer.cs",
-              "RelativeToolTip": "MonopolyWinForms\\Login_Signup\\Login.Designer.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAWAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-12T05:38:17.485Z",
               "EditorCaption": ""
             }
           ]

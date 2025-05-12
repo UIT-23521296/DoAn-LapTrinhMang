@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MonopolyWinForms.Home;
 using MonopolyWinForms.Login_Signup;
-using System.Configuration; // Thêm namespace này
+using System.Configuration;
 using Newtonsoft.Json;
 
 namespace MonopolyWinForms.Login_Signup
