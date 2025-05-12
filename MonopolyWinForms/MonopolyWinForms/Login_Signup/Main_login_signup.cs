@@ -24,20 +24,20 @@ namespace MonopolyWinForms.Login_Signup
         private void btn_login_Click(object sender, EventArgs e)
         {
             Login formLogin = new Login(this);
-
             formLogin.Show();
         }
 
         private void btn_signup_Click(object sender, EventArgs e)
         {
             Signup formSingup = new Signup(this);
-
             formSingup.Show();
         }
 
         private void btn_quit_Click(object sender, EventArgs e)
         {
-           
+            this.Close();
         }
+
+       
     }
 }
