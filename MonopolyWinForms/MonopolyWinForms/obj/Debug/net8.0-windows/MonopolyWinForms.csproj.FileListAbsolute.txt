@@ -24,3 +24,4 @@ E:\Dai Hoc\Lap trinh mang\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\ob
 E:\Dai Hoc\Lap trinh mang\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\obj\Debug\net8.0-windows\ref\MonopolyWinForms.dll
 E:\Dai Hoc\Lap trinh mang\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\obj\Debug\net8.0-windows\MonopolyWinForms.Home.Main_home.resources
 E:\Dai Hoc\Lap trinh mang\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\obj\Debug\net8.0-windows\MonopolyWinForms.Login_Signup.forgot.resources
+E:\Dai Hoc\Lap trinh mang\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\bin\Debug\net8.0-windows\MonopolyWinForms.dll.config

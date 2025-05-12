@@ -10,12 +10,13 @@ using System.Windows.Forms;
 using MonopolyWinForms.Home;
 using MonopolyWinForms.Login_Signup;
 using Newtonsoft.Json;
+using System.Configuration;
 
 namespace MonopolyWinForms.Login_Signup
 {
     public partial class Login : Form
     {
-        private readonly string apiKey = "AIzaSyBO2WjLtJkVghtlWW_yMQFKc0jQt8aOb8E";
+        string apiKey = ConfigurationManager.AppSettings["FirebaseApiKey"];
         private Form signupForm;
         public Login(Form signupForm)
         {

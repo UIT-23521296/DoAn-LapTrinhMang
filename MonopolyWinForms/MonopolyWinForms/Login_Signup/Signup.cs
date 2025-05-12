@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using MonopolyWinForms.Login_Signup;
 using Newtonsoft.Json;
 using System.Net.Http;
-
+using System.Configuration; 
 using System.Data.SqlClient;
 
 namespace MonopolyWinForms.Login_Signup
@@ -18,7 +18,7 @@ namespace MonopolyWinForms.Login_Signup
     public partial class Signup : Form
     {
         private Form loginForm;
-        private readonly string apiKey = "AIzaSyBO2WjLtJkVghtlWW_yMQFKc0jQt8aOb8E";  // Lấy từ Firebase console
+        string apiKey = ConfigurationManager.AppSettings["FirebaseApiKey"];
 
 
         public Signup(Form loginForm)
