@@ -95,6 +95,7 @@
             Font = new Font("Segoe UI", 15F);
             Margin = new Padding(5);
             Name = "Main_login_signup";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Main_login_signup";
             ((System.ComponentModel.ISupportInitialize)login_img).EndInit();
             ResumeLayout(false);

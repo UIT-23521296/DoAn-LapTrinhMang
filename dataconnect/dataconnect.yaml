@@ -1,0 +1,12 @@
+specVersion: "v1"
+serviceId: "doan-laptrinhmang"
+location: "us-central1"
+schema:
+  source: "./schema"
+  datasource:
+    postgresql:
+      database: "fdcdb"
+      cloudSql:
+        instanceId: "doan-laptrinhmang-fdc"
+      # schemaValidation: "COMPATIBLE"
+connectorDirs: ["./connector"]

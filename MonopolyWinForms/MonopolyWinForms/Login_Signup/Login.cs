@@ -7,23 +7,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MonopolyWinForms.Home;
 using MonopolyWinForms.Login_Signup;
+using Newtonsoft.Json;
 
 namespace MonopolyWinForms.Login_Signup
 {
     public partial class Login : Form
     {
+        private readonly string apiKey = "AIzaSyBO2WjLtJkVghtlWW_yMQFKc0jQt8aOb8E";
         private Form signupForm;
         public Login(Form signupForm)
         {
             InitializeComponent();
+            tb_password.UseSystemPasswordChar = true;
             this.BackColor = ColorTranslator.FromHtml("#D9D9D9");
             btn_login.BackColor = ColorTranslator.FromHtml("#FED626");  // Đổi màu nền của nút login
             btn_signup.BackColor = ColorTranslator.FromHtml("#33B68F");  // Đổi màu nền của nút login
             tb_login.BackColor = ColorTranslator.FromHtml("#ACACAC");
             tb_password.BackColor = ColorTranslator.FromHtml("#ACACAC");
-            label3.BackColor = ColorTranslator.FromHtml("#ACACAC");
-            label4.BackColor = ColorTranslator.FromHtml("#ACACAC");
         }
 
         private void tb_password_TextChanged(object sender, EventArgs e)
@@ -31,9 +33,70 @@ namespace MonopolyWinForms.Login_Signup
 
         }
 
-        private void btn_login_Click(object sender, EventArgs e)
+        private void Login_success()
         {
+            Main_home mainPage = new Main_home();
 
+            // Đóng tất cả form trừ form chính
+            foreach (Form form in Application.OpenForms.Cast<Form>().ToList())
+            {
+                if (form != mainPage)
+                {
+                    form.Hide();
+                }
+            }
+
+            // Mở form chính
+            mainPage.Show();
+
+            // Khi form chính đóng, thoát app
+            mainPage.FormClosed += (s, args) => Application.Exit();
+        }
+
+        private async void btn_login_Click(object sender, EventArgs e)
+        {
+            string email = tb_login.Text.Trim();
+            string password = tb_password.Text.Trim();
+
+            var loginData = new
+            {
+                email = email,
+                password = password,
+                returnSecureToken = true
+            };
+
+            var json = JsonConvert.SerializeObject(loginData);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            using (var client = new HttpClient())
+            {
+                var response = await client.PostAsync(
+                    $"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={apiKey}",
+                    content);
+                var result = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    dynamic data = JsonConvert.DeserializeObject(result);
+                    string idToken = data.idToken;
+                    string localId = data.localId;
+
+                    MessageBox.Show("Đăng nhập thành công!");
+                    Login_success();
+                }
+                else
+                {
+                    dynamic errorData = JsonConvert.DeserializeObject(result);
+                    string errorMessage = errorData.error.message;
+
+                    if (errorMessage == "EMAIL_NOT_FOUND")
+                        MessageBox.Show("Email không tồn tại.");
+                    else if (errorMessage == "INVALID_PASSWORD")
+                        MessageBox.Show("Mật khẩu sai.");
+                    else
+                        MessageBox.Show("Lỗi: " + errorMessage);
+                }
+            }
         }
 
         private void btn_signup_Click(object sender, EventArgs e)
@@ -41,6 +104,12 @@ namespace MonopolyWinForms.Login_Signup
             this.Hide();                 // Ẩn form Login hiện tại
             Signup signupForm = new Signup(this);
             signupForm.Show();          // Mở form Signup      
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            new Forgot().Show();
         }
     }
 }

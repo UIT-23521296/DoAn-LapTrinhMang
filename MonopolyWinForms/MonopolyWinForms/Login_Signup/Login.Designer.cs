@@ -51,12 +51,14 @@
             // label2
             // 
             label2.AutoSize = true;
+            label2.Cursor = Cursors.Hand;
             label2.Font = new Font("Segoe UI", 9F);
             label2.Location = new Point(215, 246);
             label2.Name = "label2";
             label2.Size = new Size(109, 20);
             label2.TabIndex = 1;
             label2.Text = "Quên mật khẩu";
+            label2.Click += label2_Click;
             // 
             // tb_password
             // 
@@ -103,17 +105,17 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 13F);
-            label3.Location = new Point(221, 128);
+            label3.Location = new Point(128, 126);
             label3.Name = "label3";
-            label3.Size = new Size(156, 30);
+            label3.Size = new Size(64, 30);
             label3.TabIndex = 6;
-            label3.Text = "Tên đăng nhập";
+            label3.Text = "Email";
             // 
             // label4
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI", 13F);
-            label4.Location = new Point(221, 196);
+            label4.Location = new Point(96, 194);
             label4.Name = "label4";
             label4.Size = new Size(103, 30);
             label4.TabIndex = 7;
@@ -133,6 +135,7 @@
             Controls.Add(label2);
             Controls.Add(label1);
             Name = "Login";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Login";
             ResumeLayout(false);
             PerformLayout();
