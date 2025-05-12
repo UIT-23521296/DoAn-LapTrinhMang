@@ -9,13 +9,15 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
+using System.Configuration; 
+
 
 namespace MonopolyWinForms.Login_Signup
 {
     public partial class Forgot : Form
     {
 
-        private readonly string apiKey = "AIzaSyBO2WjLtJkVghtlWW_yMQFKc0jQt8aOb8E";
+        private readonly string apiKey = ConfigurationManager.AppSettings["FirebaseApiKey"];
         public Forgot()
         {
             InitializeComponent();
