@@ -10,7 +10,7 @@
     <Compile Update="Login_Signup\Signup.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="MainForm.cs">
+    <Compile Update="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>

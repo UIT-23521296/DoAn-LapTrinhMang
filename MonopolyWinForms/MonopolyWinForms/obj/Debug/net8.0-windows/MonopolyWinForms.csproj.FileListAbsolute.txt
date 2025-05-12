@@ -19,3 +19,24 @@ E:\Dai Hoc\Lap trinh mang\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\ob
 E:\Dai Hoc\Lap trinh mang\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\obj\Debug\net8.0-windows\MonopolyWinForms.Login_Signup.Main_login_signup.resources
 E:\Dai Hoc\Lap trinh mang\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\obj\Debug\net8.0-windows\MonopolyWinForms.Login_Signup.Login.resources
 E:\Dai Hoc\Lap trinh mang\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\obj\Debug\net8.0-windows\MonopolyWinForms.Login_Signup.Signup.resources
+D:\UIT\lap trinh mang\doan\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\bin\Debug\net8.0-windows\MonopolyWinForms.exe
+D:\UIT\lap trinh mang\doan\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\bin\Debug\net8.0-windows\MonopolyWinForms.deps.json
+D:\UIT\lap trinh mang\doan\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\bin\Debug\net8.0-windows\MonopolyWinForms.runtimeconfig.json
+D:\UIT\lap trinh mang\doan\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\bin\Debug\net8.0-windows\MonopolyWinForms.dll
+D:\UIT\lap trinh mang\doan\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\bin\Debug\net8.0-windows\MonopolyWinForms.pdb
+D:\UIT\lap trinh mang\doan\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\obj\Debug\net8.0-windows\MonopolyWinForms.MainForm.resources
+D:\UIT\lap trinh mang\doan\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\obj\Debug\net8.0-windows\MonopolyWinForms.Login_Signup.Login.resources
+D:\UIT\lap trinh mang\doan\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\obj\Debug\net8.0-windows\MonopolyWinForms.Login_Signup.Main_login_signup.resources
+D:\UIT\lap trinh mang\doan\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\obj\Debug\net8.0-windows\MonopolyWinForms.Login_Signup.Signup.resources
+D:\UIT\lap trinh mang\doan\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\obj\Debug\net8.0-windows\MonopolyWinForms.Properties.Resources.resources
+D:\UIT\lap trinh mang\doan\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\obj\Debug\net8.0-windows\MonopolyWinForms.csproj.GenerateResource.cache
+D:\UIT\lap trinh mang\doan\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\obj\Debug\net8.0-windows\MonopolyWinForms.GeneratedMSBuildEditorConfig.editorconfig
+D:\UIT\lap trinh mang\doan\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\obj\Debug\net8.0-windows\MonopolyWinForms.AssemblyInfoInputs.cache
+D:\UIT\lap trinh mang\doan\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\obj\Debug\net8.0-windows\MonopolyWinForms.AssemblyInfo.cs
+D:\UIT\lap trinh mang\doan\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\obj\Debug\net8.0-windows\MonopolyWinForms.csproj.CoreCompileInputs.cache
+D:\UIT\lap trinh mang\doan\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\obj\Debug\net8.0-windows\MonopolyWinForms.sourcelink.json
+D:\UIT\lap trinh mang\doan\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\obj\Debug\net8.0-windows\MonopolyWinForms.dll
+D:\UIT\lap trinh mang\doan\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\obj\Debug\net8.0-windows\refint\MonopolyWinForms.dll
+D:\UIT\lap trinh mang\doan\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\obj\Debug\net8.0-windows\MonopolyWinForms.pdb
+D:\UIT\lap trinh mang\doan\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\obj\Debug\net8.0-windows\MonopolyWinForms.genruntimeconfig.cache
+D:\UIT\lap trinh mang\doan\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\obj\Debug\net8.0-windows\ref\MonopolyWinForms.dll

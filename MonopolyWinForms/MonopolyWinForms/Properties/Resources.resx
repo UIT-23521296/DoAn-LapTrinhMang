@@ -121,4 +121,10 @@
   <data name="login_img" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Assets\Images\login_img.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="khi_van" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Images\khi_van.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bãi đậu xe" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Images\bãi đậu xe.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

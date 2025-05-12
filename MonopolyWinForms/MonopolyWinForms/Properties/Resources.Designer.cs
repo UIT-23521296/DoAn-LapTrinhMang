@@ -63,6 +63,26 @@ namespace MonopolyWinForms.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap bãi_đậu_xe {
+            get {
+                object obj = ResourceManager.GetObject("bãi đậu xe", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap khi_van {
+            get {
+                object obj = ResourceManager.GetObject("khi_van", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap login_img {
             get {
                 object obj = ResourceManager.GetObject("login_img", resourceCulture);
