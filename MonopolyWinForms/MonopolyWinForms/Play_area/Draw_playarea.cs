@@ -17,7 +17,8 @@ namespace MonopolyWinForms.Play_area
         public Draw_playarea()
         {
             InitializeComponent();
-            Board = new Board("D:\\UIT\\lap trinh mang\\doan\\DoAn-LapTrinhMang\\MonopolyWinForms\\MonopolyWinForms\\Play_area\\Tiles.txt");  // Đảm bảo file Tiles.txt nằm trong thư mục đúng
+            string path = Path.Combine(Application.StartupPath, "Assets", "Tiles.txt");
+            Board = new Board(path);
             Board.GenerateBoard(this, Board.TileList);  // Hiển thị bàn cờ lên form
         }
     }
