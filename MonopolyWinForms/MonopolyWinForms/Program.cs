@@ -1,4 +1,5 @@
 using buyLand_Home;
+using MonopolyWinForms.GameLogic;
 
 namespace MonopolyWinForms
 {
@@ -13,7 +14,7 @@ namespace MonopolyWinForms
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new BuyHome_Land(false, false, false, false, false, 0, null));
+            Application.Run(new MainForm());
         }
     }
 }

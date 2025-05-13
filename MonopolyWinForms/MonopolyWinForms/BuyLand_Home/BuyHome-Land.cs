@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic.Devices;
+using MonopolyWinForms.GameLogic;
 using System;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
@@ -7,25 +8,17 @@ namespace buyLand_Home
 {
     public partial class BuyHome_Land : Form
     {
-        private bool Land;
-        private bool House1;
-        private bool House2;
-        private bool House3;
-        private bool Hotel;
-        private int playerID;
-        private int? ownerID;
 
-        public BuyHome_Land(bool Land, bool House1, bool House2, bool House3, bool Hotel, int playerID, int? ownerID)
+        //Thêm cơ chế kiểm tra có đủ tiền không
+
+        private int playerID;
+        private Tile tile;
+
+        public BuyHome_Land(int playerID, Tile tile)
         {
             InitializeComponent();
             this.playerID = playerID;
-            this.ownerID = ownerID;
-
-            this.Land = Land;
-            this.House1 = House1;
-            this.House2 = House2;
-            this.House3 = House3;
-            this.Hotel = Hotel;
+            this.tile = tile;
         }
         private void button2_Click(object sender, EventArgs e)
         {
@@ -33,6 +26,9 @@ namespace buyLand_Home
         }
         private void BuyLand_Home_Load(object sender, EventArgs e)
         {
+            label1.Text = tile.Name;
+
+            // Reset trạng thái ban đầu
             checkBox1.Checked = false;
             checkBox2.Checked = false;
             checkBox3.Checked = false;
@@ -45,39 +41,53 @@ namespace buyLand_Home
             checkBox4.Enabled = false;
             checkBox5.Enabled = false;
 
-            // Nếu chưa có chủ, cho mua Land
-            if (ownerID == null)
+            // Hiển thị theo cấp độ đã có sẵn
+            if (tile.Level >= 1) checkBox1.Checked = true;
+            if (tile.Level >= 2) checkBox2.Checked = true;
+            if (tile.Level >= 3) checkBox3.Checked = true;
+            if (tile.Level >= 4) checkBox4.Checked = true;
+
+            // Nếu chưa có chủ và level = 0 → có thể mua đất
+            if (tile.PlayerId == null && tile.Level == 0)
             {
                 checkBox1.Enabled = true;
                 checkBox1.Checked = true;
-                return;
             }
 
-            // Nếu người chơi là chủ
-            if (ownerID == playerID)
+            // Nếu người chơi là chủ sở hữu
+            if (tile.PlayerId == playerID)
             {
-                if (Land)
+                if (tile.Level == 1)
                 {
-                    checkBox1.Checked = true;
-
-                    // Cho phép mua House1,2,3 nếu chưa có
                     checkBox2.Enabled = true;
                     checkBox3.Enabled = true;
                     checkBox4.Enabled = true;
-
-                    if (House1) checkBox2.Checked = true;
-                    if (House2) checkBox3.Checked = true;
-                    if (House3) checkBox4.Checked = true;
-
-                    // Nếu đã có House3 thì cho phép mua Hotel
-                    if (House3)
-                    {
-                        checkBox5.Enabled = true;
-                        if (Hotel) checkBox5.Checked = true;
-                    }
+                    checkBox2.Checked = true;
+                    checkBox3.Checked = true;
+                    checkBox4.Checked = true;
+                }
+                else if (tile.Level == 2)
+                {
+                    checkBox3.Enabled = true;
+                    checkBox4.Enabled = true;
+                    checkBox3.Checked = true;
+                    checkBox4.Checked = true;
+                }
+                else if (tile.Level == 3)
+                {
+                    checkBox4.Enabled = true;
+                }
+                else if (tile.Level == 4)
+                {
+                    checkBox5.Enabled = true;
+                    checkBox5.Checked = true;
                 }
             }
+
+            UpdatePrice();
         }
+
+
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             UpdatePrice();
@@ -122,17 +132,44 @@ namespace buyLand_Home
         }
         private void UpdatePrice()
         {
+            label1.Text = tile.Name;
+
             int totalPrice = 0;
 
-            if (checkBox1.Checked) totalPrice += 200;  // Giá đất
-            if (checkBox2.Checked) totalPrice += 100;  // Nhà cấp 1
-            if (checkBox3.Checked) totalPrice += 150;  // Nhà cấp 2
-            if (checkBox4.Checked) totalPrice += 200;  // Nhà cấp 3
-            if (checkBox5.Checked) totalPrice += 300;  // Khách sạn
+            if (tile == null) return;
 
-            // Cập nhật giá thuê và giá mua
-            label2.Text = $"Rent rate: ${totalPrice / 2}";   // Giá thuê là một nửa giá trị của tổng giá trị
-            label3.Text = $"The price: ${totalPrice}";      // Giá tiền là tổng giá trị
+            if (checkBox1.Checked) totalPrice += tile.LandPrice;
+            if (checkBox2.Checked) totalPrice += tile.HousePrice;
+            if (checkBox3.Checked) totalPrice += tile.HousePrice;
+            if (checkBox4.Checked) totalPrice += tile.HousePrice;
+            if (checkBox5.Checked) totalPrice += tile.HotelPrice;
+
+            label2.Text = $"Rent rate: ${totalPrice / 2}";
+            label3.Text = $"The price: ${totalPrice}";
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            int newLevel = 0;
+
+            if (checkBox1.Checked) newLevel = 1;
+            if (checkBox2.Checked) newLevel = 2;
+            if (checkBox3.Checked) newLevel = 3;
+            if (checkBox4.Checked) newLevel = 4;
+            if (checkBox5.Checked) newLevel = 5;
+
+            if (newLevel > tile.Level)
+            {
+                tile.Level = newLevel;
+
+                // Nếu đang mua đất (tức từ level 0 lên level 1) thì gán luôn chủ sở hữu
+                if (tile.PlayerId == null && newLevel >= 1)
+                {
+                    tile.PlayerId = playerID;
+                }
+            }
+
+            this.Close();
         }
     }
 }

@@ -60,7 +60,6 @@
             panel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             SuspendLayout();
-            this.Load += new EventHandler(this.BuyLand_Home_Load);
             // 
             // label1
             // 
@@ -106,7 +105,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 13F);
-            label2.Location = new Point(411, 336);
+            label2.Location = new Point(411, 362);
             label2.Name = "label2";
             label2.Size = new Size(161, 36);
             label2.TabIndex = 5;
@@ -121,6 +120,7 @@
             button1.TabIndex = 6;
             button1.Text = "Mua";
             button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // button2
             // 
@@ -280,6 +280,7 @@
             Controls.Add(label1);
             Name = "BuyHome_Land";
             Text = "BuyHome_Land";
+            Load += BuyLand_Home_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();

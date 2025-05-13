@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MonopolyWinForms")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c061363f138fa0a40c652d303ad86a5987ab8b76")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f621b356133fd3aab13b223ce64036c30b6e1cb5")]
 [assembly: System.Reflection.AssemblyProductAttribute("MonopolyWinForms")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MonopolyWinForms")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
