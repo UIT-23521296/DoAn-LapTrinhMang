@@ -57,7 +57,7 @@ namespace MonopolyWinForms.BuyLand_Home
             int Price = tile.LandPrice;
             int rent = 50 * playerBuses;
 
-            label2.Text = $"Giá thuê: {rent}";
+            label2.Text = $"Giá thuê: ${rent}";
             label3.Text = $"The price: ${Price}";
         }
     }

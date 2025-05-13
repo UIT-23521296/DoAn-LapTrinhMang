@@ -1,4 +1,5 @@
 ﻿using buyLand_Home;
+using MonopolyWinForms.BuyLand_Home;
 using MonopolyWinForms.GameLogic;
 
 namespace MonopolyWinForms
@@ -28,6 +29,7 @@ namespace MonopolyWinForms
 
             // Tải dữ liệu các ô đất từ file
             tiles = Tile.LoadTilesFromFile(); // Gọi phương thức không cần truyền đường dẫn
+
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -36,8 +38,44 @@ namespace MonopolyWinForms
             for (int i = 0; i < panels.Length && i < tiles.Count; i++)
             {
                 panels[i].Tag = tiles[i];          // Gán dữ liệu Tile
+
+                switch (tiles[i].Monopoly)
+                {
+                    case "0":
+                    case "9":
+                    case "10":
+                        panels[i].BackColor = Color.White;
+                        break;
+                    case "1":
+                        panels[i].BackColor = Color.Violet;
+                        break;
+                    case "2":
+                        panels[i].BackColor = Color.Yellow;
+                        break;
+                    case "3":
+                        panels[i].BackColor = Color.DodgerBlue; // hoặc Color.Blue
+                        break;
+                    case "4":
+                        panels[i].BackColor = Color.LightGreen;
+                        break;
+                    case "5":
+                        panels[i].BackColor = Color.Red;
+                        break;
+                    case "6":
+                        panels[i].BackColor = Color.Pink;
+                        break;
+                    case "7":
+                        panels[i].BackColor = Color.Purple;
+                        break;
+                    case "8":
+                        panels[i].BackColor = Color.Gray;
+                        break;
+                    default:
+                        panels[i].BackColor = Color.LightYellow;
+                        break;
+                }
                 panels[i].Click += Panel_Click;    // Gắn sự kiện click
-                panels[i].BackColor = Color.LightYellow;
+
                 UpdateTileDisplay(i);              // Hiển thị thông tin ban đầu
             }
         }
@@ -48,6 +86,26 @@ namespace MonopolyWinForms
             {
                 int index = Array.IndexOf(panels, panel); // Xác định chỉ số ô
 
+                // Xử lý theo loại ô
+                switch (tile.Monopoly)
+                {
+                    case "0":
+                        return;
+
+                    case "9":
+                        BuyBus buyBusForm = new BuyBus(playerID, tile, tiles); // tiles là List<Tile>
+                        buyBusForm.ShowDialog();
+                        UpdateTileDisplay(index);
+                        return;
+
+                    case "10":
+                        BuyCompany buyCompanyForm = new BuyCompany(playerID, tile);
+                        buyCompanyForm.ShowDialog();
+                        UpdateTileDisplay(index);
+                        return;
+                }
+
+                // Các ô đất thông thường (monopoly từ 1–8)
                 int rentPrice = 0;
                 if (tile.Level == 1)
                     rentPrice = tile.LandPrice;
@@ -56,7 +114,7 @@ namespace MonopolyWinForms
                 else if (tile.Level == 5)
                     rentPrice = tile.LandPrice + tile.HousePrice * 3 + tile.HotelPrice;
 
-                // Nếu ô đất chưa có chủ hoặc thuộc về người chơi, và chưa đạt cấp tối đa
+                // Nếu ô chưa có chủ hoặc thuộc người chơi, và chưa đạt cấp tối đa
                 if ((tile.PlayerId == null || tile.PlayerId == playerID) && tile.Level < 5)
                 {
                     BuyHome_Land buyHomeLandForm = new BuyHome_Land(playerID, tile);
@@ -71,6 +129,7 @@ namespace MonopolyWinForms
                 }
             }
         }
+
 
         // Hàm cập nhật hiển thị label trên từng panel
         private void UpdateTileDisplay(int index)
@@ -93,7 +152,7 @@ namespace MonopolyWinForms
 
             panels[index].Controls.Add(new Label
             {
-                Text = $"{tile.Name}\n${rentPrice/2}",
+                Text = $"{tile.Name}\n${tile.LandPrice}",
                 AutoSize = true,
                 ForeColor = Color.Black,
                 BackColor = Color.Transparent,

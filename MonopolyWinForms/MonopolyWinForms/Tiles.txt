@@ -1,0 +1,40 @@
+1; “Ô bắt đầu”; null; 0; 0; 0; 0; 0
+2; “Tân Kỳ Tân Quý”; null; 40; 50; 50; 0; 1
+3; “Khí vận”; null; 0; 0; 0; 0; 0
+4; “Lũy Bán Bích”; null; 60; 50; 50; 0; 1
+5; “Thuế thu nhập”; null; 0; 0; 0; 0; 0
+6; “Bến xe Cần Giuộc”; null; 200; 0; 0; 0; 9
+7; “Lương Định Của”; null; 100; 50; 50; 0; 2
+8; “Cơ hội”; null; 0; 0; 0; 0; 0
+9; “Nguyễn Kiệm”; null; 110; 50; 50; 0; 2
+10; “Cộng Hòa”; null; 120; 50; 50; 0; 2
+11; “Nhà tù”; null; 0; 0; 0; 0; 0
+12; “Nguyễn Tất Thành”; null; 140; 50; 50; 0; 3
+13; “Công ty Điện lực”; null; 200; 0; 0; 0; 10
+14; “Nguyễn Trãi”; null; 140; 50; 50; 0; 3
+15; “An Dương Vương”; null; 150; 50; 50; 0; 3
+16; “Bến xe Miền Tây”; null; 200; 0; 0; 0; 9
+17; “Hậu Giang”; null; 160; 50; 50; 0; 4
+18; “Khí vận”; null; 0; 0; 0; 0; 0
+19; “Hùng Vương”; null; 180; 50; 50; 0; 4
+20; “Huỳnh Tấn Phát”; null; 200; 50; 50; 0; 4
+21; “Bãi đậu xe”; null; 0; 0; 0; 0; 0
+22; “Phạm Thế Hiển”; null; 220; 100; 100; 0; 5
+23; “Cơ hội”; null; 0; 0; 0; 0; 0
+24; “Kha Vạn Cân”; null; 220; 100; 100; 0; 5
+25; “Nguyễn Tri Phương”; null; 240; 100; 100; 0; 5
+26; “Bến xe Chợ Lớn”; null; 200; 0; 0; 0; 9
+27; “Lê Đại Hành”; null; 260; 100; 100; 0; 6
+28; “Trường Chinh”; null; 260; 100; 100; 0; 6
+29; “Công ty Cấp nước”; null; 200; 100; 100; 0; 10
+30; “Hoàng Văn Thụ”; null; 280; 100; 100; 0; 6
+31; “Đi thẳng vào tù”; null; 0; 0; 0; 0; 0
+32; “Hai Bà Trưng”; null; 300; 150; 150; 0; 7
+33; “Võ Thị Sáu”; null; 300; 150; 150; 0; 7
+34; “Khí vận”; null; 0; 0; 0; 0; 0
+35; “Quang Trung”; null; 330; 150; 150; 0; 7
+36; “Bến xe Miền Đông”; null; 200; 0; 0; 0; 9
+37; “Cơ hội”; null; 0; 0; 0; 0; 0
+38; “Lê Lợi”; null; 350; 150; 150; 0; 8
+39; “Thuế đặc biệt”; null; 0; 0; 0; 0; 0
+40; “Nguyễn Huệ”; null; 400; 150; 150; 0; 8

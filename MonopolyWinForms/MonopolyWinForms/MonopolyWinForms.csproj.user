@@ -4,6 +4,9 @@
     <Compile Update="BuyLand_Home\BuyBus.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="BuyLand_Home\BuyCompany.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="BuyLand_Home\BuyHome-Land.cs">
       <SubType>Form</SubType>
     </Compile>

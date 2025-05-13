@@ -14,13 +14,13 @@ namespace MonopolyWinForms.GameLogic
         public int HousePrice { get; set; }
         public int HotelPrice { get; set; }
         public int Level { get; set; }
-        public string MonoGroup { get; set; } = string.Empty;
+        public string Monopoly { get; set; } = string.Empty;
 
         // Constructor mặc định
         public Tile() { }
 
         // Constructor đầy đủ tham số
-        public Tile(int id, string name, int playerId, int landPrice, int housePrice, int hotelPrice, int level, string monoGroup)
+        public Tile(int id, string name, int playerId, int landPrice, int housePrice, int hotelPrice, int level, string monopoly)
         {
             Id = id;
             Name = name;
@@ -29,7 +29,7 @@ namespace MonopolyWinForms.GameLogic
             HousePrice = housePrice;
             HotelPrice = hotelPrice;
             Level = level;
-            MonoGroup = monoGroup;
+            Monopoly = monopoly;
         }
 
         // Hàm static để load từ file txt trong thư mục của ứng dụng
@@ -38,7 +38,7 @@ namespace MonopolyWinForms.GameLogic
             var tiles = new List<Tile>();
 
             // Đường dẫn đến file Tiles.txt trong thư mục của ứng dụng
-            string filePath = Path.Combine(Application.StartupPath, "Tile.txt");
+            string filePath = Path.Combine(Application.StartupPath, "Tiles.txt");
 
             // Kiểm tra nếu file không tồn tại
             if (!File.Exists(filePath))
@@ -73,11 +73,13 @@ namespace MonopolyWinForms.GameLogic
                     HousePrice = int.Parse(parts[4]), // Giá nhà
                     HotelPrice = int.Parse(parts[5]), // Giá khách sạn
                     Level = int.Parse(parts[6]),     // Cấp độ
-                    MonoGroup = parts[7]             // Nhóm màu
+                    Monopoly = parts[7].Trim()           // Nhóm màu
                 };
 
                 // Xử lý PlayerId (kiểm tra "null" và chuyển thành int? hoặc null)
-                tile.PlayerId = parts[2].ToLower() == "null" ? (int?)null : int.Parse(parts[2]);
+                tile.PlayerId = string.IsNullOrWhiteSpace(parts[2]) || parts[2].ToLower() == "null"
+                    ? (int?)null
+                    : int.TryParse(parts[2], out int playerId) ? playerId : (int?)null;
 
                 tiles.Add(tile);
             }
