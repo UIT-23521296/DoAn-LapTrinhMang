@@ -24,12 +24,10 @@ namespace MonopolyWinForms.BuyLand_Home
             InitializeComponent();
             this.playerID = playerID;
             this.tile = tile;
-            this.monopoly = new Monopoly(allTiles);  // Khởi tạo Monopoly với danh sách tất cả các ô đất
-
+            this.monopoly = new Monopoly(allTiles);
             // Cập nhật giá thuê khi mở form
             UpdateRentDisplay();
         }
-
         private void button2_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -39,23 +37,19 @@ namespace MonopolyWinForms.BuyLand_Home
         {
             if (tile.PlayerId == null)
             {
-                tile.PlayerId = playerID; // Gán người chơi hiện tại làm chủ
-                tile.Level = 1;           // Đặt level = 1 sau khi mua
-
+                tile.PlayerId = playerID;
+                tile.Level = 1;
                 // Cập nhật giá thuê sau khi mua
                 UpdateRentDisplay();
 
                 this.Close(); // Đóng form sau khi mua
             }
         }
-
-        // Phương thức cập nhật giá thuê
         private void UpdateRentDisplay()
         {
             int playerBuses = monopoly.CountBusesOwned(playerID);
-
             int Price = tile.LandPrice;
-            int rent = 50 * playerBuses;
+            int rent = 50 + 50 * playerBuses;
 
             label2.Text = $"Giá thuê: ${rent}";
             label3.Text = $"The price: ${Price}";

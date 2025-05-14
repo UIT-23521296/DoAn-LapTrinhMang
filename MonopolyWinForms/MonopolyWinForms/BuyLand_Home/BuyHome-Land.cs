@@ -13,7 +13,6 @@ namespace buyLand_Home
 
         private int playerID;
         private Tile tile;
-
         public BuyHome_Land(int playerID, Tile tile)
         {
             InitializeComponent();
@@ -28,7 +27,6 @@ namespace buyLand_Home
         {
             label1.Text = tile.Name;
 
-            // Reset trạng thái ban đầu
             checkBox1.Checked = false;
             checkBox2.Checked = false;
             checkBox3.Checked = false;
@@ -40,20 +38,17 @@ namespace buyLand_Home
             checkBox3.Enabled = false;
             checkBox4.Enabled = false;
             checkBox5.Enabled = false;
-
             // Hiển thị theo cấp độ đã có sẵn
             if (tile.Level >= 1) checkBox1.Checked = true;
             if (tile.Level >= 2) checkBox2.Checked = true;
             if (tile.Level >= 3) checkBox3.Checked = true;
             if (tile.Level >= 4) checkBox4.Checked = true;
-
             // Nếu chưa có chủ và level = 0 → có thể mua đất
             if (tile.PlayerId == null && tile.Level == 0)
             {
                 checkBox1.Enabled = true;
                 checkBox1.Checked = true;
             }
-
             // Nếu người chơi là chủ sở hữu
             if (tile.PlayerId == playerID)
             {
@@ -83,11 +78,8 @@ namespace buyLand_Home
                     checkBox5.Checked = true;
                 }
             }
-
             UpdatePrice();
         }
-
-
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             UpdatePrice();
@@ -133,11 +125,9 @@ namespace buyLand_Home
         private void UpdatePrice()
         {
             label1.Text = tile.Name;
-
             int totalPrice = 0;
 
             if (tile == null) return;
-
             if (checkBox1.Checked) totalPrice += tile.LandPrice;
             if (checkBox2.Checked) totalPrice += tile.HousePrice;
             if (checkBox3.Checked) totalPrice += tile.HousePrice;
