@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MonopolyWinForms.GameLogic
 {
-    class Monopoly
+    public class Monopoly
     {
         private List<Tile> tiles;
         public Monopoly(List<Tile> tiles)
@@ -39,9 +39,19 @@ namespace MonopolyWinForms.GameLogic
         // Đếm số lượng xe buýt mà người chơi sở hữu trong nhóm Monopoly
         public int CountBusesOwned(int playerId)
         {
-            // Lọc các ô đất thuộc nhóm "Bus" mà người chơi sở hữu (PlayerId == playerId)
             return tiles.Count(t => t.PlayerId == playerId && t.Monopoly == "9");
         }
-
+        public int CountCompaniesOwned(int playerId)
+        {
+            return tiles.Count(t => t.PlayerId == playerId && t.Monopoly == "10");
+        }
+        public bool CheckWin(int playerID)
+        {
+            if (GetAllFullMonopolyGroups(playerID) == 3)
+                return true;
+            else if (CountBusesOwned(playerID) == 4)
+                return true;
+            else return false;
+        }
     }
 }

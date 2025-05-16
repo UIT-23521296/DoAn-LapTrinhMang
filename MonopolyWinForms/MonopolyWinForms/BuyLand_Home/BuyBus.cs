@@ -16,15 +16,18 @@ namespace MonopolyWinForms.BuyLand_Home
         private int playerID;
         private Tile tile;
         private Monopoly monopoly;
+        private MainForm mainForm;
 
         //Thêm cơ chế kiểm tra có đủ tiền không
 
-        public BuyBus(int playerID, Tile tile, List<Tile> allTiles)
+        public BuyBus(int playerID, Tile tile, Monopoly monopoly, MainForm mainForm)
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterScreen;
             this.playerID = playerID;
             this.tile = tile;
-            this.monopoly = new Monopoly(allTiles);
+            this.monopoly = monopoly;
+            this.mainForm = mainForm;
             // Cập nhật giá thuê khi mở form
             UpdateRentDisplay();
         }
@@ -41,8 +44,9 @@ namespace MonopolyWinForms.BuyLand_Home
                 tile.Level = 1;
                 // Cập nhật giá thuê sau khi mua
                 UpdateRentDisplay();
-
-                this.Close(); // Đóng form sau khi mua
+                mainForm.UpdateBusStationRent(playerID);
+                this.DialogResult = DialogResult.OK;
+                this.Close();
             }
         }
         private void UpdateRentDisplay()
@@ -51,7 +55,7 @@ namespace MonopolyWinForms.BuyLand_Home
             int Price = tile.LandPrice;
             int rent = 50 + 50 * playerBuses;
 
-            label2.Text = $"Giá thuê: ${rent}";
+            label2.Text = $"Rent rate: ${rent}";
             label3.Text = $"The price: ${Price}";
         }
     }

@@ -15,6 +15,7 @@ namespace MonopolyWinForms.GameLogic
         public int HotelPrice { get; set; }
         public int Level { get; set; }
         public string Monopoly { get; set; } = string.Empty;
+        public int RentPrice { get; set; }
         public Tile() { }
         public Tile(int id, string name, int playerId, int landPrice, int housePrice, int hotelPrice, int level, string monopoly)
         {

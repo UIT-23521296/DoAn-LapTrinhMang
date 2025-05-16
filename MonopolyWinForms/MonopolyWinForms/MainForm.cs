@@ -1,17 +1,14 @@
 ﻿using buyLand_Home;
 using MonopolyWinForms.BuyLand_Home;
 using MonopolyWinForms.GameLogic;
-
 namespace MonopolyWinForms
 {
     public partial class MainForm : Form
     {
         private List<Tile> tiles;       // Danh sách các ô đất
         private Panel[] panels;         // Mảng các Panel tương ứng với các ô
-        private Monopoly? monopoly;
-
+        private Monopoly monopoly;
         private int playerID = 1;       // Cái này để thử
-
         private readonly Dictionary<string, Color> monopolyColors = new()
         {
             ["1"] = Color.Violet,
@@ -26,6 +23,7 @@ namespace MonopolyWinForms
         public MainForm()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterScreen;
             panels = new Panel[] {
             panel1, panel2, panel3, panel4, panel5,
             panel6, panel7, panel8, panel9, panel10,
@@ -41,44 +39,55 @@ namespace MonopolyWinForms
         }
         private void MainForm_Load(object sender, EventArgs e)
         {
-            // Gán dữ liệu Tile vào từng panel
-            for (int i = 0; i < panels.Length && i < tiles.Count; i++)
-            {
+            for (int i = 0; i < panels.Length && i < tiles.Count; i++){
                 panels[i].Tag = tiles[i];          // Gán dữ liệu Tile vào Tag của panel
                 AttachClickEventRecursively(panels[i]);    // cái này chỉ để test
                 UpdateTileDisplay(i);              // Hiển thị thông tin ban đầu
             }
         }
         // cái này để test chạy thoi
+        private void AttachClickEventRecursively(Control control)
+        {
+            control.Click += Panel_Click;
+            foreach (Control child in control.Controls)
+            {
+                AttachClickEventRecursively(child);
+            }
+        }
+        // cái này để test chạy
         private void Panel_Click(object? sender, EventArgs e)
         {
             Control? current = sender as Control;
             // Dò lên đến khi tìm thấy Panel chứa Tile trong Tag
-            while (current != null && (current.Tag == null || !(current.Tag is Tile)))
-            {
+            while (current != null && (current.Tag == null || !(current.Tag is Tile))){
                 current = current.Parent;
             }
-            if (current is Panel panel && panel.Tag is Tile tile)
-            {
+            if (current is Panel panel && panel.Tag is Tile tile){
                 int index = Array.IndexOf(panels, panel);
-                if (index == -1)
-                    return;
-                switch (tile.Monopoly)
+                if (index == -1) return;
+                switch ((tile.Monopoly, tile.PlayerId))
                 {
-                    case "0":
+                    case ("0", _): return;
+                    case ("9", null): //chưa có chủ
+                        BuyBus buyBusForm = new BuyBus(playerID, tile, monopoly!, this);
+                        var result = buyBusForm.ShowDialog();
+                        UpdateTileDisplay(index);
+                        if (result == DialogResult.OK){
+                            if (monopoly.CheckWin(playerID)){
+                                MessageBox.Show($"Player {playerID} win!");
+                                this.Close();
+                            }
+                        }
                         return;
-
-                    case "9":
-                        new BuyBus(playerID, tile, tiles).ShowDialog();
+                    case ("9", _): //đã có chủ
+                        return;
+                    case ("10", null): //chưa có chủ
+                        new BuyCompany(playerID, tile, monopoly!, this).ShowDialog();
                         UpdateTileDisplay(index);
                         return;
-
-                    case "10":
-                        new BuyCompany(playerID, tile).ShowDialog();
-                        UpdateTileDisplay(index);
+                    case ("10", _): //đã có chủ
                         return;
                 }
-                // Các ô đất thông thường (monopoly từ 1–8)
                 int rentPrice = tile.Level switch
                 {
                     1 => tile.LandPrice,
@@ -86,16 +95,16 @@ namespace MonopolyWinForms
                     5 => tile.LandPrice + tile.HousePrice * 3 + tile.HotelPrice,
                     _ => 0
                 };
-                // Nếu ô chưa có chủ hoặc thuộc người chơi, và chưa đạt cấp tối đa
-                if ((tile.PlayerId == null || tile.PlayerId == playerID) && tile.Level < 5)
-                {
-                    new BuyHome_Land(playerID, tile).ShowDialog();
-                    // Cập nhật lại thông tin trên panel sau khi form đóng
+                if ((tile.PlayerId == null || tile.PlayerId == playerID) && tile.Level < 5){
+                    BuyHome_Land Buyhome_land = new BuyHome_Land(playerID, tile, monopoly!, this);
+                    var result = Buyhome_land.ShowDialog();
                     UpdateTileDisplay(index);
-                }
-                else
-                {
-                    MessageBox.Show($"Bạn đang ở ô: {tile.Name}, giá thuê: ${rentPrice / 2}, chủ sở hữu: Player {tile.PlayerId}");
+                    if (result == DialogResult.OK){
+                        if (monopoly.CheckWin(playerID)){
+                            MessageBox.Show($"Player {playerID} win!");
+                            this.Close();
+                        }
+                    }
                 }
             }
         }
@@ -108,53 +117,44 @@ namespace MonopolyWinForms
             panels[index].Controls.Clear();
             panels[index].BackgroundImage = null;
             int rentPrice = 0;
-            if (tile.Monopoly == "9" && monopoly != null)
-            {
+            if (tile.Monopoly == "9" && monopoly != null){
                 rentPrice = 50 * monopoly.CountBusesOwned(playerID);
-            }
-            else if (tile.Monopoly != "9" && tile.Monopoly != "10")
-            {
-                rentPrice = tile.Level switch
-                {
+            }else if (tile.Monopoly == "10" && monopoly != null){
+                if(monopoly.CountCompaniesOwned(playerID) == 1){
+                    rentPrice = 25;
+                }
+                else{
+                    rentPrice = 100;
+                }
+            }else if (tile.Monopoly != "9" && tile.Monopoly != "10"){
+                rentPrice = tile.Level switch{
                     1 => tile.LandPrice,
                     >= 2 and <= 4 => tile.LandPrice + tile.HousePrice * (tile.Level - 1),
                     5 => tile.LandPrice + tile.HousePrice * 3 + tile.HotelPrice,
                     _ => 0
                 };
-            }
-            if (tile.Monopoly != "0" && tile.Monopoly != "9" && tile.Monopoly != "10")
-            {
-                if (panels[index].Width > panels[index].Height)
-                {
-                    if (panels[index].Location.X < 500)
-                    {
-                        Panel colorPanel = new Panel
-                        {
+            }if (tile.Monopoly != "0" && tile.Monopoly != "9" && tile.Monopoly != "10"){
+                if (panels[index].Width > panels[index].Height){
+                    if (panels[index].Location.X < 500){
+                        Panel colorPanel = new Panel{
+                            Size = new Size(panels[index].Width / 7, panels[index].Height),
+                            BackColor = GetPanelColor(tile.Monopoly),
+                            Location = new Point(panels[index].Width - panels[index].Width / 7, 0) //bên trái
+                        };
+                        colorPanel.Click += Panel_Click;
+                        panels[index].Controls.Add(colorPanel);
+                    }else{
+                        Panel colorPanel = new Panel{
                             Size = new Size(panels[index].Width / 7, panels[index].Height),
                             BackColor = GetPanelColor(tile.Monopoly),
                             // Đặt vị trí sao cho nó nằm bên trái của panel cha
-                            Location = new Point(panels[index].Width - panels[index].Width / 7, 0)
+                            Location = new Point(panels[index].Width - panels[index].Width, 0) // bên phải
                         };
                         colorPanel.Click += Panel_Click;
                         panels[index].Controls.Add(colorPanel);
                     }
-                    else
-                    {
-                        Panel colorPanel = new Panel
-                        {
-                            Size = new Size(panels[index].Width / 7, panels[index].Height),
-                            BackColor = GetPanelColor(tile.Monopoly),
-                            // Đặt vị trí sao cho nó nằm bên trái của panel cha
-                            Location = new Point(panels[index].Width - panels[index].Width, 0)
-                        };
-                        colorPanel.Click += Panel_Click;
-                        panels[index].Controls.Add(colorPanel);
-                    }
-                }
-                else
-                {
-                    Panel colorPanel = new Panel
-                    {
+                }else{
+                    Panel colorPanel = new Panel{
                         Size = new Size(panels[index].Width, panels[index].Height / 5),
                         BackColor = GetPanelColor(tile.Monopoly),
                         Location = new Point(0, 0)
@@ -164,8 +164,8 @@ namespace MonopolyWinForms
                 }
             }
             // === 2. Label chữ nằm ở dưới ===
-            Label label = new Label
-            {
+            Label label = new Label{
+                Name = "labelrent",
                 AutoSize = false,
                 ForeColor = Color.Black,
                 Font = new Font("Arial", 6, FontStyle.Bold)
@@ -174,10 +174,8 @@ namespace MonopolyWinForms
             // Ô bình thường
             if (tile.Monopoly != "0" && tile.Monopoly != "9" && tile.Monopoly != "10")
             {
-                if (panels[index].Width > panels[index].Height)
-                {
-                    if (panels[index].Location.X < 500)
-                    {
+                if (panels[index].Width > panels[index].Height){
+                    if (panels[index].Location.X < 500){
                         label.TextAlign = ContentAlignment.MiddleCenter;
                         label.Size = new Size(panels[index].Width * 6 / 7, panels[index].Height);
                         label.Location = new Point(0, 0);
@@ -185,9 +183,7 @@ namespace MonopolyWinForms
                         label.Text = tile.PlayerId == null
                             ? $"{tile.Name}\n${tile.LandPrice}"
                             : $"{tile.Name}\nPlayer {tile.PlayerId}\n${rentPrice}";
-                    }
-                    else
-                    {
+                    }else{
                         label.TextAlign = ContentAlignment.MiddleCenter;
                         label.Size = new Size(panels[index].Width * 6 / 7, panels[index].Height);
                         label.Location = new Point(panels[index].Width / 7, 0);
@@ -196,9 +192,7 @@ namespace MonopolyWinForms
                             ? $"{tile.Name}\n${tile.LandPrice}"
                             : $"{tile.Name}\nPlayer {tile.PlayerId}\n${rentPrice}";
                     }
-                }
-                else
-                {
+                }else{
                     label.TextAlign = ContentAlignment.MiddleCenter;
                     label.Size = new Size(panels[index].Width, panels[index].Height * 4 / 5);
                     label.Location = new Point(0, panels[index].Height / 5);
@@ -209,12 +203,9 @@ namespace MonopolyWinForms
                 }
             }
             // Bến xe
-            else if (tile.Monopoly == "9")
-            {
-                if (panels[index].Width > panels[index].Height)
-                {
-                    if (panels[index].Location.X < 500)
-                    {
+            else if (tile.Monopoly == "9"){
+                if (panels[index].Width > panels[index].Height){
+                    if (panels[index].Location.X < 500){
                         label.TextAlign = ContentAlignment.MiddleRight;
                         label.Size = new Size(panels[index].Width / 2, panels[index].Height);
                         label.Location = new Point(panels[index].Width - panels[index].Width / 2, 0);
@@ -223,9 +214,7 @@ namespace MonopolyWinForms
                             ? $"{tile.Name}\n${tile.LandPrice}"
                             : $"{tile.Name}\nPlayer {tile.PlayerId}\n${rentPrice}";
                         SetTileBackgroundImage(index, "ben_xe.png", tile);
-                    }
-                    else
-                    {
+                    }else{
                         label.TextAlign = ContentAlignment.MiddleLeft;
                         label.Size = new Size(panels[index].Width / 2, panels[index].Height);
                         label.Location = new Point(panels[index].Width - panels[index].Width, 0);
@@ -235,11 +224,9 @@ namespace MonopolyWinForms
                             : $"{tile.Name}\nPlayer {tile.PlayerId}\n${rentPrice}";
                         SetTileBackgroundImage(index, "ben_xe.png", tile);
                     }
-                }
-                else
-                {
+                }else{
                     label.TextAlign = ContentAlignment.MiddleCenter;
-                    label.Size = new Size(panels[index].Width, panels[index].Height * 3/7);
+                    label.Size = new Size(panels[index].Width, panels[index].Height * 3 / 7);
                     label.Location = new Point(0, 0);
                     label.BackColor = Color.Transparent;
                     label.Text = tile.PlayerId == null
@@ -249,12 +236,9 @@ namespace MonopolyWinForms
                 }
             }
             //Công ty
-            else if (tile.Monopoly == "10")
-            {
-                if (panels[index].Width > panels[index].Height)
-                {
-                    if (panels[index].Location.X < 500)
-                    {
+            else if (tile.Monopoly == "10"){
+                if (panels[index].Width > panels[index].Height){
+                    if (panels[index].Location.X < 500) {
                         label.TextAlign = ContentAlignment.MiddleRight;
                         label.Size = new Size(panels[index].Width / 2, panels[index].Height);
                         label.Location = new Point(panels[index].Width - panels[index].Width / 2, 0);
@@ -266,9 +250,7 @@ namespace MonopolyWinForms
                             SetTileBackgroundImage(index, "cty_nuoc.png", tile);
                         else if (tile.Name == "Công ty Điện lực")
                             SetTileBackgroundImage(index, "cty_dien.png", tile);
-                    }
-                    else
-                    {
+                    }else{
                         label.TextAlign = ContentAlignment.MiddleLeft;
                         label.Size = new Size(panels[index].Width / 2, panels[index].Height);
                         label.Location = new Point(panels[index].Width - panels[index].Width, 0);
@@ -281,11 +263,9 @@ namespace MonopolyWinForms
                         else if (tile.Name == "Công ty Điện lực")
                             SetTileBackgroundImage(index, "cty_dien.png", tile);
                     }
-                }
-                else
-                {
+                }else{
                     label.TextAlign = ContentAlignment.MiddleCenter;
-                    label.Size = new Size(panels[index].Width, panels[index].Height * 3/7);
+                    label.Size = new Size(panels[index].Width, panels[index].Height * 3 / 7);
                     label.Location = new Point(0, 0);
                     label.BackColor = Color.Transparent;
                     label.Text = tile.PlayerId == null
@@ -298,30 +278,34 @@ namespace MonopolyWinForms
                 }
             }
             // Khí vận
-            else if (tile.Name == "Khí vận")
-            {
+            else if (tile.Name == "Khí vận"){
                 label.Size = panels[index].Size;
                 label.Location = new Point(0, 0);
                 label.BackColor = Color.Transparent;
                 SetTileBackgroundImage(index, "khi_van.png", tile);
             }
-            else if (tile.Name == "Thuế thu nhập")
-            {
+            // Thuế
+            else if (tile.Name == "Thuế thu nhập"){
                 label.Size = panels[index].Size;
                 label.TextAlign = ContentAlignment.MiddleCenter;
                 label.Location = new Point(0, 0);
                 label.BackColor = Color.Lavender;
                 label.Text = $"{tile.Name}\n\n$200 hoặc 10% tổng tài sản";
             }
+            else if (tile.Name == "Thuế đặc biệt"){
+                label.Size = panels[index].Size;
+                label.TextAlign = ContentAlignment.MiddleCenter;
+                label.Location = new Point(0, 0);
+                label.BackColor = Color.Lavender;
+                label.Text = $"{tile.Name}\n\n15% tổng tài sản";
+            }
             // 4 góc
-            else
-            {
+            else{
                 label.TextAlign = ContentAlignment.MiddleCenter;
                 label.Size = panels[index].Size;
                 label.Location = new Point(0, 0);
                 label.BackColor = Color.Transparent;
                 label.Text = tile.Name;
-
                 switch (tile.Name)
                 {
                     case "Bãi đậu xe":
@@ -336,6 +320,9 @@ namespace MonopolyWinForms
                         SetTileBackgroundImage(index, "police.png", tile);
                         label.TextAlign = ContentAlignment.BottomCenter;
                         break;
+                    case "Ô bắt đầu":
+                        label.Text = $"{tile.Name}\n\nNhận $200 khi đi qua";
+                        break;
                     default:
                         label.BackColor = Color.Lavender;
                         break;
@@ -343,7 +330,6 @@ namespace MonopolyWinForms
             }
             label.Click += Panel_Click;
             panels[index].Controls.Add(label);
-
         }
         // Màu nền cho Monopoly
         private Color GetPanelColor(string monopolyType)
@@ -355,27 +341,18 @@ namespace MonopolyWinForms
             string path = Path.Combine(Application.StartupPath, "Assets", "Images", imageName);
             if (!File.Exists(path)) return;
             Image img = Image.FromFile(path);
-            if (tile.Monopoly == "9" || tile.Monopoly == "10")
-            {
+            if (tile.Monopoly == "9" || tile.Monopoly == "10"){
                 Bitmap resizedImage = new Bitmap(panels[index].Width, panels[index].Height);
-                using (Graphics g = Graphics.FromImage(resizedImage))
-                {
+                using (Graphics g = Graphics.FromImage(resizedImage)){
                     g.Clear(panels[index].BackColor);
-
-                    if (panels[index].Width > panels[index].Height)
-                    {
+                    if (panels[index].Width > panels[index].Height){
                         int newWidth = panels[index].Width / 2;
-                        if (panels[index].Location.X < 500)
-                        {
+                        if (panels[index].Location.X < 500){
                             g.DrawImage(img, new Rectangle(0, 0, newWidth, panels[index].Height));
-                        }
-                        else
-                        {
+                        }else{
                             g.DrawImage(img, new Rectangle(panels[index].Width - newWidth, 0, newWidth, panels[index].Height));
                         }
-                    }
-                    else
-                    {
+                    }else{
                         int newHeight = panels[index].Height * 4 / 7;
                         g.DrawImage(img, new Rectangle(0, panels[index].Height - newHeight, panels[index].Width, newHeight));
                     }
@@ -383,14 +360,10 @@ namespace MonopolyWinForms
                 img.Dispose();
                 panels[index].BackgroundImage = resizedImage;
                 panels[index].BackgroundImageLayout = ImageLayout.None;
-            }
-            else if (tile.Name == "Khí vận")
-            {
+            }else if (tile.Name == "Khí vận"){
                 panels[index].BackgroundImage = img;
                 panels[index].BackgroundImageLayout = ImageLayout.Stretch;
-            }
-            else
-            {
+            }else{
                 int newHeight = panels[index].Height * 6 / 7;
                 Bitmap resizedImage = new Bitmap(panels[index].Width, panels[index].Height);
 
@@ -399,19 +372,54 @@ namespace MonopolyWinForms
                     g.Clear(panels[index].BackColor);
                     g.DrawImage(img, new Rectangle(0, 0, panels[index].Width, newHeight));
                 }
-
                 img.Dispose();
                 panels[index].BackgroundImage = resizedImage;
                 panels[index].BackgroundImageLayout = ImageLayout.None;
             }
         }
-        // cái này để test chạy thoi
-        private void AttachClickEventRecursively(Control control)
+        public void UpdateBusStationRent(int playerId)
         {
-            control.Click += Panel_Click;
-            foreach (Control child in control.Controls)
-            {
-                AttachClickEventRecursively(child);
+            // Lấy tất cả bến xe người chơi sở hữu
+            var ownedBusStations = tiles.FindAll(t => t.Monopoly == "9" && t.PlayerId == playerId);
+            int count = ownedBusStations.Count;
+            int rent = count switch{
+                1 => 50,
+                2 => 100,
+                3 => 150,
+                4 => 200,
+                _ => 0
+            };
+            foreach (var tile in ownedBusStations){
+                tile.RentPrice = rent;
+                foreach (Panel panel in panels){
+                    if (panel.Tag is Tile t && t.Id == tile.Id){
+                        var rentLabel = panel.Controls.OfType<Label>().FirstOrDefault(l => l.Name == "labelrent");
+                        if (rentLabel != null){
+                            rentLabel.Text = $"{tile.Name}\nPlayer {tile.PlayerId}\n${rent}";
+                        }
+                    }
+                }
+            }
+        }
+        public void UpdateCompanyRent(int playerId)
+        {
+            var ownedCompany = tiles.FindAll(t => t.Monopoly == "10" && t.PlayerId == playerId);
+            int count = ownedCompany.Count;
+            int rent = count switch{
+                1 => 25,
+                2 => 100,
+                _ => 0
+            };
+            foreach (var tile in ownedCompany){
+                tile.RentPrice = rent;
+                foreach (Panel panel in panels){
+                    if (panel.Tag is Tile t && t.Id == tile.Id){
+                        var rentLabel = panel.Controls.OfType<Label>().FirstOrDefault(l => l.Name == "labelrent");
+                        if (rentLabel != null){
+                            rentLabel.Text = $"{tile.Name}\nPlayer {tile.PlayerId}\n${rent}";
+                        }
+                    }
+                }
             }
         }
     }

@@ -72,289 +72,289 @@
             // 
             // panel1
             // 
-            panel1.Location = new Point(79, 28);
+            panel1.Location = new Point(12, 12);
             panel1.Name = "panel1";
-            panel1.Size = new Size(147, 136);
+            panel1.Size = new Size(150, 150);
             panel1.TabIndex = 0;
             // 
             // panel2
             // 
-            panel2.Location = new Point(232, 28);
+            panel2.Location = new Point(168, 12);
             panel2.Name = "panel2";
-            panel2.Size = new Size(86, 136);
+            panel2.Size = new Size(80, 150);
             panel2.TabIndex = 1;
             // 
             // panel3
             // 
-            panel3.Location = new Point(324, 28);
+            panel3.Location = new Point(254, 12);
             panel3.Name = "panel3";
-            panel3.Size = new Size(86, 136);
+            panel3.Size = new Size(80, 150);
             panel3.TabIndex = 2;
             // 
             // panel4
             // 
-            panel4.Location = new Point(416, 28);
+            panel4.Location = new Point(340, 12);
             panel4.Name = "panel4";
-            panel4.Size = new Size(86, 136);
+            panel4.Size = new Size(80, 150);
             panel4.TabIndex = 3;
             // 
             // panel5
             // 
-            panel5.Location = new Point(508, 28);
+            panel5.Location = new Point(426, 12);
             panel5.Name = "panel5";
-            panel5.Size = new Size(86, 136);
+            panel5.Size = new Size(80, 150);
             panel5.TabIndex = 4;
             // 
             // panel6
             // 
-            panel6.Location = new Point(600, 28);
+            panel6.Location = new Point(512, 12);
             panel6.Name = "panel6";
-            panel6.Size = new Size(86, 136);
+            panel6.Size = new Size(80, 150);
             panel6.TabIndex = 5;
             // 
             // panel7
             // 
-            panel7.Location = new Point(692, 28);
+            panel7.Location = new Point(598, 12);
             panel7.Name = "panel7";
-            panel7.Size = new Size(86, 136);
+            panel7.Size = new Size(80, 150);
             panel7.TabIndex = 6;
             // 
             // panel8
             // 
-            panel8.Location = new Point(784, 28);
+            panel8.Location = new Point(684, 12);
             panel8.Name = "panel8";
-            panel8.Size = new Size(86, 136);
+            panel8.Size = new Size(80, 150);
             panel8.TabIndex = 7;
             // 
             // panel9
             // 
-            panel9.Location = new Point(876, 28);
+            panel9.Location = new Point(770, 12);
             panel9.Name = "panel9";
-            panel9.Size = new Size(86, 136);
+            panel9.Size = new Size(80, 150);
             panel9.TabIndex = 8;
             // 
             // panel10
             // 
-            panel10.Location = new Point(968, 28);
+            panel10.Location = new Point(856, 12);
             panel10.Name = "panel10";
-            panel10.Size = new Size(86, 136);
+            panel10.Size = new Size(80, 150);
             panel10.TabIndex = 9;
             // 
             // panel11
             // 
-            panel11.Location = new Point(1060, 28);
+            panel11.Location = new Point(942, 12);
             panel11.Name = "panel11";
-            panel11.Size = new Size(147, 136);
+            panel11.Size = new Size(150, 150);
             panel11.TabIndex = 10;
             // 
             // panel12
             // 
-            panel12.Location = new Point(1060, 170);
+            panel12.Location = new Point(942, 168);
             panel12.Name = "panel12";
-            panel12.Size = new Size(147, 71);
+            panel12.Size = new Size(150, 80);
             panel12.TabIndex = 11;
             // 
             // panel13
             // 
-            panel13.Location = new Point(1060, 247);
+            panel13.Location = new Point(942, 254);
             panel13.Name = "panel13";
-            panel13.Size = new Size(147, 71);
+            panel13.Size = new Size(150, 80);
             panel13.TabIndex = 12;
             // 
             // panel14
             // 
-            panel14.Location = new Point(1060, 324);
+            panel14.Location = new Point(942, 340);
             panel14.Name = "panel14";
-            panel14.Size = new Size(147, 71);
+            panel14.Size = new Size(150, 80);
             panel14.TabIndex = 13;
             // 
             // panel15
             // 
-            panel15.Location = new Point(1060, 401);
+            panel15.Location = new Point(942, 426);
             panel15.Name = "panel15";
-            panel15.Size = new Size(147, 71);
+            panel15.Size = new Size(150, 80);
             panel15.TabIndex = 14;
             // 
             // panel16
             // 
-            panel16.Location = new Point(1060, 478);
+            panel16.Location = new Point(942, 512);
             panel16.Name = "panel16";
-            panel16.Size = new Size(147, 71);
+            panel16.Size = new Size(150, 80);
             panel16.TabIndex = 15;
             // 
             // panel17
             // 
-            panel17.Location = new Point(1060, 555);
+            panel17.Location = new Point(942, 598);
             panel17.Name = "panel17";
-            panel17.Size = new Size(147, 71);
+            panel17.Size = new Size(150, 80);
             panel17.TabIndex = 16;
             // 
             // panel18
             // 
-            panel18.Location = new Point(1060, 632);
+            panel18.Location = new Point(942, 684);
             panel18.Name = "panel18";
-            panel18.Size = new Size(147, 71);
+            panel18.Size = new Size(150, 80);
             panel18.TabIndex = 17;
             // 
             // panel19
             // 
-            panel19.Location = new Point(1060, 709);
+            panel19.Location = new Point(942, 770);
             panel19.Name = "panel19";
-            panel19.Size = new Size(147, 71);
+            panel19.Size = new Size(150, 80);
             panel19.TabIndex = 18;
             // 
             // panel20
             // 
-            panel20.Location = new Point(1060, 786);
+            panel20.Location = new Point(942, 856);
             panel20.Name = "panel20";
-            panel20.Size = new Size(147, 71);
+            panel20.Size = new Size(150, 80);
             panel20.TabIndex = 19;
             // 
             // panel21
             // 
-            panel21.Location = new Point(1060, 863);
+            panel21.Location = new Point(942, 942);
             panel21.Name = "panel21";
-            panel21.Size = new Size(147, 136);
+            panel21.Size = new Size(150, 150);
             panel21.TabIndex = 30;
             // 
             // panel22
             // 
-            panel22.Location = new Point(968, 863);
+            panel22.Location = new Point(856, 942);
             panel22.Name = "panel22";
-            panel22.Size = new Size(86, 136);
+            panel22.Size = new Size(80, 150);
             panel22.TabIndex = 29;
             // 
             // panel23
             // 
-            panel23.Location = new Point(876, 863);
+            panel23.Location = new Point(684, 942);
             panel23.Name = "panel23";
-            panel23.Size = new Size(86, 136);
+            panel23.Size = new Size(80, 150);
             panel23.TabIndex = 28;
             // 
             // panel24
             // 
-            panel24.Location = new Point(784, 863);
+            panel24.Location = new Point(770, 942);
             panel24.Name = "panel24";
-            panel24.Size = new Size(86, 136);
+            panel24.Size = new Size(80, 150);
             panel24.TabIndex = 27;
             // 
             // panel25
             // 
-            panel25.Location = new Point(692, 863);
+            panel25.Location = new Point(598, 942);
             panel25.Name = "panel25";
-            panel25.Size = new Size(86, 136);
+            panel25.Size = new Size(80, 150);
             panel25.TabIndex = 26;
             // 
             // panel26
             // 
-            panel26.Location = new Point(600, 863);
+            panel26.Location = new Point(512, 942);
             panel26.Name = "panel26";
-            panel26.Size = new Size(86, 136);
+            panel26.Size = new Size(80, 150);
             panel26.TabIndex = 25;
             // 
             // panel27
             // 
-            panel27.Location = new Point(508, 863);
+            panel27.Location = new Point(426, 942);
             panel27.Name = "panel27";
-            panel27.Size = new Size(86, 136);
+            panel27.Size = new Size(80, 150);
             panel27.TabIndex = 24;
             // 
             // panel28
             // 
-            panel28.Location = new Point(416, 863);
+            panel28.Location = new Point(340, 942);
             panel28.Name = "panel28";
-            panel28.Size = new Size(86, 136);
+            panel28.Size = new Size(80, 150);
             panel28.TabIndex = 23;
             // 
             // panel29
             // 
-            panel29.Location = new Point(324, 863);
+            panel29.Location = new Point(254, 942);
             panel29.Name = "panel29";
-            panel29.Size = new Size(86, 136);
+            panel29.Size = new Size(80, 150);
             panel29.TabIndex = 22;
             // 
             // panel30
             // 
-            panel30.Location = new Point(232, 863);
+            panel30.Location = new Point(168, 942);
             panel30.Name = "panel30";
-            panel30.Size = new Size(86, 136);
+            panel30.Size = new Size(80, 150);
             panel30.TabIndex = 21;
             // 
             // panel31
             // 
-            panel31.Location = new Point(79, 863);
+            panel31.Location = new Point(12, 942);
             panel31.Name = "panel31";
-            panel31.Size = new Size(147, 136);
+            panel31.Size = new Size(150, 150);
             panel31.TabIndex = 20;
             // 
             // panel32
             // 
-            panel32.Location = new Point(79, 786);
+            panel32.Location = new Point(12, 856);
             panel32.Name = "panel32";
-            panel32.Size = new Size(147, 71);
+            panel32.Size = new Size(150, 80);
             panel32.TabIndex = 39;
             // 
             // panel33
             // 
-            panel33.Location = new Point(79, 709);
+            panel33.Location = new Point(12, 770);
             panel33.Name = "panel33";
-            panel33.Size = new Size(147, 71);
+            panel33.Size = new Size(150, 80);
             panel33.TabIndex = 38;
             // 
             // panel34
             // 
-            panel34.Location = new Point(79, 632);
+            panel34.Location = new Point(12, 684);
             panel34.Name = "panel34";
-            panel34.Size = new Size(147, 71);
+            panel34.Size = new Size(150, 80);
             panel34.TabIndex = 37;
             // 
             // panel35
             // 
-            panel35.Location = new Point(79, 555);
+            panel35.Location = new Point(12, 598);
             panel35.Name = "panel35";
-            panel35.Size = new Size(147, 71);
+            panel35.Size = new Size(150, 80);
             panel35.TabIndex = 36;
             // 
             // panel36
             // 
-            panel36.Location = new Point(79, 478);
+            panel36.Location = new Point(12, 512);
             panel36.Name = "panel36";
-            panel36.Size = new Size(147, 71);
+            panel36.Size = new Size(150, 80);
             panel36.TabIndex = 35;
             // 
             // panel37
             // 
-            panel37.Location = new Point(79, 401);
+            panel37.Location = new Point(12, 426);
             panel37.Name = "panel37";
-            panel37.Size = new Size(147, 71);
+            panel37.Size = new Size(150, 80);
             panel37.TabIndex = 34;
             // 
             // panel38
             // 
-            panel38.Location = new Point(79, 324);
+            panel38.Location = new Point(12, 340);
             panel38.Name = "panel38";
-            panel38.Size = new Size(147, 71);
+            panel38.Size = new Size(150, 80);
             panel38.TabIndex = 33;
             // 
             // panel39
             // 
-            panel39.Location = new Point(79, 247);
+            panel39.Location = new Point(12, 254);
             panel39.Name = "panel39";
-            panel39.Size = new Size(147, 71);
+            panel39.Size = new Size(150, 80);
             panel39.TabIndex = 32;
             // 
             // panel40
             // 
-            panel40.Location = new Point(79, 170);
+            panel40.Location = new Point(12, 168);
             panel40.Name = "panel40";
-            panel40.Size = new Size(147, 71);
+            panel40.Size = new Size(150, 80);
             panel40.TabIndex = 31;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1297, 1110);
+            ClientSize = new Size(1116, 1109);
             Controls.Add(panel32);
             Controls.Add(panel33);
             Controls.Add(panel34);

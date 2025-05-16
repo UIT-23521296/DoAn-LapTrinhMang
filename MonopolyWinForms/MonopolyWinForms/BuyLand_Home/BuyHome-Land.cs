@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic.Devices;
+using MonopolyWinForms;
 using MonopolyWinForms.GameLogic;
 using System;
 using System.Windows.Forms;
@@ -13,11 +14,16 @@ namespace buyLand_Home
 
         private int playerID;
         private Tile tile;
-        public BuyHome_Land(int playerID, Tile tile)
+        private MainForm mainform;
+        private Monopoly monopoly;
+        public BuyHome_Land(int playerID, Tile tile, Monopoly monopoly, MainForm mainform)
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterScreen;
             this.playerID = playerID;
             this.tile = tile;
+            this.monopoly = monopoly;
+            this.mainform = mainform;
         }
         private void button2_Click(object sender, EventArgs e)
         {
@@ -158,7 +164,7 @@ namespace buyLand_Home
                     tile.PlayerId = playerID;
                 }
             }
-
+            this.DialogResult = DialogResult.OK;
             this.Close();
         }
     }
