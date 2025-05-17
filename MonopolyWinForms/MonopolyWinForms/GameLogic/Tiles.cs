@@ -70,5 +70,30 @@ namespace MonopolyWinForms.GameLogic
             }
             return tiles;
         }
+        public void DestroyOneHouseLevel()
+        {
+            if (Level > 0)
+            {
+                Level--;
+                if (Level == 0)
+                {
+                    PlayerId = null;
+                }
+            }
+        }
+
+        // ✅ Trả về số tiền nhận được khi bán đất + nhà
+        public int SellLandAndHouses()
+        {
+            int value = LandPrice;
+            if (Level >= 1 && Level <= 4)
+                value += HousePrice * Level;
+            else if (Level == 5)
+                value += HotelPrice;
+
+            Level = 0;
+            PlayerId = null;
+            return value;
+        }
     }
 }

@@ -26,7 +26,7 @@
 26;Bến xe Chợ Lớn; null; 200; 0; 0; 0; 9
 27;Lê Đại Hành; null; 260; 100; 100; 0; 6
 28;Trường Chinh; null; 260; 100; 100; 0; 6
-29;Công ty Cấp nước; null; 200; 100; 100; 0; 10
+29;Công ty Cấp nước; null; 200; 0; 0; 0; 10
 30;Hoàng Văn Thụ; null; 280; 100; 100; 0; 6
 31;Đi thẳng vào tù; null; 0; 0; 0; 0; 0
 32;Hai Bà Trưng; null; 300; 150; 150; 0; 7
