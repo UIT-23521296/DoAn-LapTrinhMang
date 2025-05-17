@@ -22,5 +22,14 @@
     <Compile Update="Play_area\Draw_playarea.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Room\Create_Room.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Room\JoinRoom.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Room\WaitingRoom.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
 </Project>

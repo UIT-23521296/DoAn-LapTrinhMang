@@ -1,6 +1,7 @@
 using MonopolyWinForms.Login_Signup;
 using MonopolyWinForms.Home;
 using MonopolyWinForms.Play_area;
+using MonopolyWinForms.Room;
 namespace MonopolyWinForms
 {
     internal static class Program
@@ -15,7 +16,9 @@ namespace MonopolyWinForms
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             //Application.Run(new Main_login_signup());
-            Application.Run(new Draw_playarea());
+            //Application.Run(new Draw_playarea());
+            //Application.Run(new JoinRoom());
+            Application.Run(new Create_Room());
         }
     }
 }

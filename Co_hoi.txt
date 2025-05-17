@@ -1,0 +1,10 @@
+1; Đi thẳng vào tù; 11
+2; Tự do ra tù; 0
+3; Trả gấp đôi tiền thuê cho ô tiếp theo; 0
+4; Đi đến ô bắt đầu; 1
+5; Giảm 50% tiền thuê cho ô tiếp theo; 0
+6; Bán 1 căn nhà; 0
+7; Phá nhà; 0
+8; Đến ô bến xe tiếp theo, trả tiền thuê gấp đôi; 0
+9; Đến ô công ty tiếp theo; 0
+10; Đi đến ô tùy chọn; 0
