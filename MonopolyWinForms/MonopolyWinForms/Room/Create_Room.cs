@@ -178,11 +178,6 @@ namespace MonopolyWinForms.Room
 
                 MessageBox.Show("Tạo phòng thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                List<string> currentPlayers = new List<string> { hostID };
-                WaitingRoomForm waitingRoom = new WaitingRoomForm(roomName, hostID, maxPlayers, currentPlayers);
-                waitingRoom.Show();
-
-                this.Close();
             }
             catch (Exception ex)
             {
