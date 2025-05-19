@@ -17,15 +17,15 @@ namespace MonopolyWinForms.BuyLand_Home
         private int playerID;
         private Tile tile;
         private Monopoly monopoly;
-        private MainForm mainForm;
-        public BuyCompany(int playerID, Tile tile, Monopoly monopoly, MainForm mainForm)
+        private MainForm mainform;
+        public BuyCompany(int playerID, Tile tile, Monopoly monopoly, MainForm mainform)
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
             this.playerID = playerID;
             this.tile = tile;
             this.monopoly = monopoly;
-            this.mainForm = mainForm;
+            this.mainform = mainform;
             LoadCompanyImage();
         }
         private void button2_Click(object sender, EventArgs e)
@@ -55,17 +55,15 @@ namespace MonopolyWinForms.BuyLand_Home
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             UpdateRentDisplay();
         }
-
         private void button1_Click(object sender, EventArgs e)
         {
             if (tile.PlayerId == null)
             {
                 tile.PlayerId = playerID;
                 tile.Level = 1;
-                // Cập nhật giá thuê sau khi mua
                 UpdateRentDisplay();
-                mainForm.UpdateCompanyRent(playerID);
-
+                mainform.UpdateCompanyRent(playerID);
+                this.DialogResult = DialogResult.OK;
                 this.Close();
             }
         }

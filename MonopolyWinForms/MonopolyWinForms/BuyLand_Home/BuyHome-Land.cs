@@ -9,9 +9,6 @@ namespace buyLand_Home
 {
     public partial class BuyHome_Land : Form
     {
-
-        //Thêm cơ chế kiểm tra có đủ tiền không
-
         private int playerID;
         private Tile tile;
         private MainForm mainform;

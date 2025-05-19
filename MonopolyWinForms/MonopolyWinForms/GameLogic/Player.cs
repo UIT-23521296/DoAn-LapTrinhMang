@@ -17,9 +17,12 @@ namespace MonopolyWinForms.GameLogic
         public int TileIndex { get; set; }
         public bool IsBankrupt { get; set; }
         public Color Color { get; set; }
-        public Player(int id, int initialMoney)
+        public bool IsInJail { get; set; }
+        public int JailTurnCount { get; set; }
+        public Player(int id, int initialMoney, string name)
         {
             ID = id;
+            Name = name;
             Money = initialMoney;
             OutPrison = 0;
             ReduceHalfMoney = 0;
@@ -27,27 +30,6 @@ namespace MonopolyWinForms.GameLogic
             DoubleDices = 0;
             TileIndex = 1;
             Color = GetDefaultColor(id);
-        }
-        public void AddMoney(int amount)
-        {
-            if (DoubleMoney > 0){
-                Money += amount * 2;
-                DoubleMoney--;
-            }else{
-                Money += amount;
-            }
-        }
-        public void SubtractMoney(int amount)
-        {
-            int finalAmount = amount;
-            if (ReduceHalfMoney > 0){
-                finalAmount /= 2;
-                ReduceHalfMoney--;
-            }
-            if (Money >= finalAmount)
-                Money -= finalAmount;
-            else
-                Money = 0;
         }
         public void AddOutPrisonCard() => OutPrison++;
         public void AddReduceHalfCard() => ReduceHalfMoney++;
@@ -74,7 +56,6 @@ namespace MonopolyWinForms.GameLogic
         public void DeclareBankruptcy()
         {
             IsBankrupt = true;
-            // Có thể thêm logic khác khi phá sản
         }
     }
 }

@@ -81,8 +81,6 @@ namespace MonopolyWinForms.GameLogic
                 }
             }
         }
-
-        // ✅ Trả về số tiền nhận được khi bán đất + nhà
         public int SellLandAndHouses()
         {
             int value = LandPrice;
