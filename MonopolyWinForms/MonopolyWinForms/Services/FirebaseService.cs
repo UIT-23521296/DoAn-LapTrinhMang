@@ -7,31 +7,55 @@ using MonopolyWinForms.Room;
 
 public class FirebaseService
 {
-    private readonly HttpClient _httpClient;
-    private readonly string _firebaseUrl = "https://doanmang-8f5af-default-rtdb.asia-southeast1.firebasedatabase.app";
+    private readonly HttpClient _client;
+    private readonly string baseUrl = "https://doanmang-8f5af-default-rtdb.asia-southeast1.firebasedatabase.app";
 
     public FirebaseService()
     {
-        _httpClient = new HttpClient();
+        _client = new HttpClient();
     }
 
-    public async Task<bool> CreateRoomAsync(string roomId, object room)
+    public async Task<RoomInfo> GetRoomAsync(string roomId)
     {
-        string url = $"{_firebaseUrl}/rooms/{roomId}.json";
-        string json = JsonConvert.SerializeObject(room);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        string url = $"{baseUrl}/rooms/{roomId}.json";
+        var response = await _client.GetAsync(url);
+        if (!response.IsSuccessStatusCode)
+            return null;
 
-        var response = await _httpClient.PutAsync(url, content);
-        return response.IsSuccessStatusCode;
+        string json = await response.Content.ReadAsStringAsync();
+        if (string.IsNullOrEmpty(json) || json == "null")
+            return null;
+
+        var room = JsonConvert.DeserializeObject<RoomInfo>(json);
+        return room;
     }
 
     public async Task<Dictionary<string, RoomInfo>> GetAllRoomsAsync()
     {
-        string url = $"{_firebaseUrl}/rooms.json";
-        var response = await _httpClient.GetAsync(url);
-        if (!response.IsSuccessStatusCode) return null;
+        string url = $"{baseUrl}/rooms.json";
+        var response = await _client.GetAsync(url);
+        if (!response.IsSuccessStatusCode)
+            return null;
 
         string json = await response.Content.ReadAsStringAsync();
+        if (string.IsNullOrEmpty(json) || json == "null")
+            return null;
+
         return JsonConvert.DeserializeObject<Dictionary<string, RoomInfo>>(json);
+    }
+    public async Task CreateRoomAsync(string roomId, RoomInfo room)
+    {
+        string url = $"{baseUrl}/rooms/{roomId}.json";
+        string json = JsonConvert.SerializeObject(room);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var response = await _client.PutAsync(url, content);
+        response.EnsureSuccessStatusCode();
+    }
+
+    public async Task DeleteRoomAsync(string roomId)
+    {
+        string url = $"{baseUrl}/rooms/{roomId}.json";
+        var response = await _client.DeleteAsync(url);
+        response.EnsureSuccessStatusCode();
     }
 }

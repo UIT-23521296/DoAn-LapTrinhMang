@@ -1,4 +1,5 @@
 ﻿using MonopolyWinForms.Login_Signup;
+using MonopolyWinForms.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -88,11 +89,6 @@ namespace MonopolyWinForms.Room
                 column.Resizable = DataGridViewTriState.False;  // KHÓA resize cột
             }
 
-            // Dữ liệu mẫu
-            dgvRooms.Rows.Add("phòng 1", "Chủ phòng 1", "3/4");
-            dgvRooms.Rows.Add("phòng 2", "Chủ phòng 2", "1/4");
-            dgvRooms.Rows.Add("phòng 3", "Chủ phòng 3", "2/4");
-            dgvRooms.Rows.Add("phòng 4", "Chủ phòng 4", "4/4");
 
             this.Controls.Add(dgvRooms);
 
@@ -129,14 +125,36 @@ namespace MonopolyWinForms.Room
         {
             Create_Room createRoomForm = new Create_Room();
             createRoomForm.Show(); // mở không chặn form hiện tại
+            this.Hide();
         }
 
-        private void BtnJoinRoom_Click(object sender, EventArgs e)
+        private async void BtnJoinRoom_Click(object sender, EventArgs e)
         {
             if (dgvRooms.SelectedRows.Count > 0)
             {
+                // Lấy RoomId từ cột ẩn hoặc từ tên phòng (nên có RoomId lưu sẵn)
                 string roomName = dgvRooms.SelectedRows[0].Cells["RoomName"].Value.ToString();
-                MessageBox.Show($"Đang vào {roomName}");
+
+                // Giả sử bạn có dictionary lưu các phòng từ Firebase (cách đơn giản)
+                var firebase = new FirebaseService();
+                var rooms = await firebase.GetAllRoomsAsync();
+
+                // Tìm roomId theo tên phòng (nếu trùng tên, bạn cần xử lý thêm)
+                string roomId = rooms?.FirstOrDefault(r => r.Value.RoomName == roomName).Key;
+
+                if (roomId != null)
+                {
+                    // Mở form Waiting_Room_Client với roomId truyền vào
+                    Waiting_Room_Client waitingRoomClientForm = new Waiting_Room_Client(roomId);
+                    waitingRoomClientForm.Show();
+
+                    // Đóng form JoinRoom nếu muốn
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Không tìm thấy phòng này.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             else
             {

@@ -11,6 +11,7 @@ using MonopolyWinForms.Home;
 using MonopolyWinForms.Login_Signup;
 using Newtonsoft.Json;
 using System.Configuration;
+using MonopolyWinForms.Services;
 
 namespace MonopolyWinForms.Login_Signup
 {
@@ -82,9 +83,37 @@ namespace MonopolyWinForms.Login_Signup
                     string idToken = data.idToken;
                     string localId = data.localId;
 
-                    MessageBox.Show("Đăng nhập thành công!");
-                    Login_success();
+                    // Gọi API để lấy thông tin người dùng (displayName)
+                    var infoPayload = new
+                    {
+                        idToken = idToken
+                    };
+                    var infoJson = JsonConvert.SerializeObject(infoPayload);
+                    var infoContent = new StringContent(infoJson, Encoding.UTF8, "application/json");
+
+                    var infoResponse = await client.PostAsync(
+                        $"https://identitytoolkit.googleapis.com/v1/accounts:lookup?key={apiKey}",
+                        infoContent);
+                    var infoResult = await infoResponse.Content.ReadAsStringAsync();
+
+                    if (infoResponse.IsSuccessStatusCode)
+                    {
+                        dynamic userInfo = JsonConvert.DeserializeObject(infoResult);
+                        string displayName = userInfo.users[0].displayName;
+
+                        // ✅ Lưu vào SessionManager
+                        SessionManager.CurrentUserId = localId;
+                        SessionManager.CurrentUserDisplayName = displayName;
+
+                        MessageBox.Show("Đăng nhập thành công!");
+                        Login_success();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Đăng nhập thành công, nhưng không lấy được tên hiển thị.");
+                    }
                 }
+
                 else
                 {
                     dynamic errorData = JsonConvert.DeserializeObject(result);

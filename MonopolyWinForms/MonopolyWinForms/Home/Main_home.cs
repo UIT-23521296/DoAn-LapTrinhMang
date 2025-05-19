@@ -30,8 +30,8 @@ namespace MonopolyWinForms.Home
 
         private void btn_play_Click(object sender, EventArgs e)
         {
-            JoinRoom JoinRoom = new JoinRoom();
-            JoinRoom.Show();
+            JoinRoom joinRoomForm = new JoinRoom();
+            joinRoomForm.Show();
         }
     }
 }

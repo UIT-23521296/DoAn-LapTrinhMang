@@ -28,5 +28,11 @@
     <Compile Update="Room\JoinRoom.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Room\Waiting_Room_Client.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Room\Waiting_Room_Host.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
 </Project>

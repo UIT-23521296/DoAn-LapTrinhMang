@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MonopolyWinForms.Services;
+using System;
 using System.Drawing;
 using System.Net;
 using System.Threading.Tasks;
@@ -19,6 +20,9 @@ namespace MonopolyWinForms.Room
             InitializeForm();
             InitializeUI();
             this.AcceptButton = btnCreate;
+
+            // Gán user ID khi mở form (ví dụ lấy username Windows)
+            SessionManager.CurrentUserId = Environment.UserName;
         }
 
         private void InitializeForm()
@@ -44,7 +48,6 @@ namespace MonopolyWinForms.Room
             txtHostIP.Text = GetLocalIPAddress();
             top += spacing;
 
-            // Hiển thị port cố định, readonly
             AddLabel("Cổng (port):", top);
             var txtPort = AddTextBox(top);
             txtPort.ReadOnly = true;
@@ -60,7 +63,7 @@ namespace MonopolyWinForms.Room
                 Font = new Font("Segoe UI", 12)
             };
             cmbMaxPlayers.Items.AddRange(new object[] { "2", "3", "4" });
-            cmbMaxPlayers.SelectedIndex = 0;  // mặc định chọn 2 người
+            cmbMaxPlayers.SelectedIndex = 0;
             this.Controls.Add(cmbMaxPlayers);
             top += spacing;
 
@@ -127,63 +130,49 @@ namespace MonopolyWinForms.Room
         {
             string roomName = txtRoomName.Text.Trim();
             string hostIP = txtHostIP.Text.Trim();
-            string portStr = FixedPort.ToString();
-            string maxPlayersStr = cmbMaxPlayers.SelectedItem.ToString();
-            string playTimeStr = cmbPlayTime.SelectedItem.ToString();
+            int port = FixedPort;
+            int maxPlayers = int.Parse(cmbMaxPlayers.SelectedItem.ToString());
+            int playTime = int.Parse(cmbPlayTime.SelectedItem.ToString());
 
-            string hostID = Environment.UserName; // Lấy tên account tạo phòng
-
-            // Validate dữ liệu
             if (string.IsNullOrEmpty(roomName))
             {
                 MessageBox.Show("Vui lòng nhập tên phòng.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            if (!int.TryParse(portStr, out int port) || port != FixedPort)
-            {
-                MessageBox.Show($"Port phải là {FixedPort}.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (!int.TryParse(maxPlayersStr, out int maxPlayers) || maxPlayers < 2 || maxPlayers > 4)
-            {
-                MessageBox.Show("Số người tối đa không hợp lệ (2-4).", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (!int.TryParse(playTimeStr, out int playTime))
-            {
-                MessageBox.Show("Thời gian chơi không hợp lệ.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
             string roomId = Guid.NewGuid().ToString();
 
-            var roomData = new
+            var roomInfo = new RoomInfo
             {
+                RoomId = roomId,
                 RoomName = roomName,
-                HostName = hostID,
+                HostId = SessionManager.CurrentUserId,
                 HostIP = hostIP,
                 Port = port,
-                CurrentPlayers = 1,
                 MaxPlayers = maxPlayers,
-                PlayTime = playTime
+                PlayTime = playTime,
+                PlayerDisplayNames = new List<string> { SessionManager.CurrentUserDisplayName },
+                IsStarted = false,
+                CreatedAt = DateTime.UtcNow
             };
 
             try
             {
                 var firebase = new FirebaseService();
-                await firebase.CreateRoomAsync(roomId, roomData);
+                await firebase.CreateRoomAsync(roomId, roomInfo);
 
-                MessageBox.Show("Tạo phòng thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // Lưu session phòng hiện tại
+                SessionManager.CurrentRoom = roomInfo;
 
+
+                var lobby = new Waiting_Room_Host();
+                lobby.Show();
+                this.Hide();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Lỗi khi tạo phòng: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
     }
 }
