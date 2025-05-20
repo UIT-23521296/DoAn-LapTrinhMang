@@ -51,7 +51,11 @@ namespace MonopolyWinForms.Login_Signup
             mainPage.Show();
 
             // Khi form chính đóng, thoát app
-            mainPage.FormClosed += (s, args) => Application.Exit();
+            mainPage.FormClosed += (s, args) =>
+            {
+                Session.EndSession();
+                Application.Exit();
+            };
         }
 
         private async void btn_login_Click(object sender, EventArgs e)
@@ -82,8 +86,26 @@ namespace MonopolyWinForms.Login_Signup
                     string idToken = data.idToken;
                     string localId = data.localId;
 
-                    MessageBox.Show("Đăng nhập thành công!");
-                    Login_success();
+                    // Truy vấn thông tin người dùng từ Firebase Realtime Database
+                    var userInfoUrl = $"https://doanmang-8f5af-default-rtdb.asia-southeast1.firebasedatabase.app/users/{localId}.json?auth={idToken}";
+                    var userInfoResponse = await client.GetAsync(userInfoUrl);
+                    var userInfoResult = await userInfoResponse.Content.ReadAsStringAsync();
+
+                    if (userInfoResponse.IsSuccessStatusCode)
+                    {
+                        dynamic userInfo = JsonConvert.DeserializeObject(userInfoResult);
+                        string username = userInfo.username; // Lấy username từ kết quả
+
+                        // Bắt đầu phiên làm việc với username
+                        Session.StartSession(localId, username);
+
+                        MessageBox.Show("Đăng nhập thành công!");
+                        Login_success();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Không thể lấy thông tin người dùng.");
+                    }
                 }
                 else
                 {
