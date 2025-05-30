@@ -18,6 +18,7 @@ namespace MonopolyWinForms.GameLogic
         public void AddMoney(int amount)
         {
             player.Money += amount;
+            
         }
         public void SubtractMoney(int amount)
         {
@@ -26,6 +27,7 @@ namespace MonopolyWinForms.GameLogic
                 mainForm.CheckPlayerBankruptcy(player);
             }
             else player.Money -= amount;
+            mainForm.UpdatePlayerPanel(player);
         }
     }
 }

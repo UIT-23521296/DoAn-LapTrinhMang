@@ -9,15 +9,15 @@ namespace buyLand_Home
 {
     public partial class BuyHome_Land : Form
     {
-        private int playerID;
+        private Player player;
         private Tile tile;
         private MainForm mainform;
         private Monopoly monopoly;
-        public BuyHome_Land(int playerID, Tile tile, Monopoly monopoly, MainForm mainform)
+        public BuyHome_Land(Player player, Tile tile, Monopoly monopoly, MainForm mainform)
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
-            this.playerID = playerID;
+            this.player = player;
             this.tile = tile;
             this.monopoly = monopoly;
             this.mainform = mainform;
@@ -28,6 +28,7 @@ namespace buyLand_Home
         }
         private void BuyLand_Home_Load(object sender, EventArgs e)
         {
+            UpdateImages();
             label1.Text = tile.Name;
 
             checkBox1.Checked = false;
@@ -53,7 +54,7 @@ namespace buyLand_Home
                 checkBox1.Checked = true;
             }
             // Nếu người chơi là chủ sở hữu
-            if (tile.PlayerId == playerID)
+            if (tile.PlayerId == player.ID)
             {
                 if (tile.Level == 1)
                 {
@@ -158,11 +159,26 @@ namespace buyLand_Home
                 // Nếu đang mua đất (tức từ level 0 lên level 1) thì gán luôn chủ sở hữu
                 if (tile.PlayerId == null && newLevel >= 1)
                 {
-                    tile.PlayerId = playerID;
+                    tile.PlayerId = player.ID;
                 }
             }
             this.DialogResult = DialogResult.OK;
             this.Close();
+        }
+        private void UpdateImages()
+        {
+
+            pictureBox1.Image = null;
+            pictureBox2.Image = null;
+            pictureBox3.Image = null;
+            pictureBox4.Image = null;
+            pictureBox5.Image = null;
+
+            pictureBox1.Image = mainform.GetHouseImage(1, player);
+            pictureBox2.Image = mainform.GetHouseImage(2, player);
+            pictureBox3.Image = mainform.GetHouseImage(3, player);
+            pictureBox4.Image = mainform.GetHouseImage(4, player);
+            pictureBox5.Image = mainform.GetHouseImage(5, player);
         }
     }
 }

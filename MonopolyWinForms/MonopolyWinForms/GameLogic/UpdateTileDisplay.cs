@@ -129,7 +129,22 @@ namespace MonopolyWinForms.GameLogic
                         label.BackColor = Color.LightBlue;
                         label.Text = tile.PlayerId == null
                             ? $"{tile.Name}\n${tile.LandPrice}"
-                            : $"{tile.Name}\nPlayer {currentPlayer.Name}\n${rentPrice}";
+                            : $"{tile.Name}\n${rentPrice/2}";
+                        if (tile.PlayerId != null)
+                        {
+                            AddOwnerImageToTilePanel(panels[index], tile, currentPlayer);
+                            label.TextAlign = ContentAlignment.TopCenter;
+                            label.Padding = new Padding(0, 10, 0, 0);
+                        }
+                        else
+                        {
+                            label.Location = new Point(0, 0);
+                            foreach (Control ctrl in panels[index].Controls.OfType<PictureBox>().ToList())
+                            {
+                                panels[index].Controls.Remove(ctrl);
+                                ctrl.Dispose();
+                            }
+                        }
                     }
                     else
                     {
@@ -139,7 +154,21 @@ namespace MonopolyWinForms.GameLogic
                         label.BackColor = Color.LightBlue;
                         label.Text = tile.PlayerId == null
                             ? $"{tile.Name}\n${tile.LandPrice}"
-                            : $"{tile.Name}\nPlayer {currentPlayer.Name}\n${rentPrice}";
+                            : $"{tile.Name}\n${rentPrice/2}";
+                        if (tile.PlayerId != null)
+                        {
+                            AddOwnerImageToTilePanel(panels[index], tile, currentPlayer);
+                            label.TextAlign = ContentAlignment.TopCenter;
+                            label.Padding = new Padding(0, 10, 0, 0);
+                        }
+                        else
+                        {
+                            foreach (Control ctrl in panels[index].Controls.OfType<PictureBox>().ToList())
+                            {
+                                panels[index].Controls.Remove(ctrl);
+                                ctrl.Dispose();
+                            }
+                        }
                     }
                 }
                 else
@@ -148,9 +177,24 @@ namespace MonopolyWinForms.GameLogic
                     label.Size = new Size(panels[index].Width, panels[index].Height * 4 / 5);
                     label.Location = new Point(0, panels[index].Height / 5);
                     label.BackColor = Color.LightBlue;
+
                     label.Text = tile.PlayerId == null
                         ? $"{tile.Name}\n${tile.LandPrice}"
-                        : $"{tile.Name}\n{currentPlayer.Name}\n${rentPrice}";
+                        : $"{tile.Name}\n${rentPrice / 2}";
+                    if (tile.PlayerId != null)
+                    {
+                        AddOwnerImageToTilePanel(panels[index], tile, currentPlayer);
+                        label.TextAlign = ContentAlignment.TopCenter;
+                        label.Padding = new Padding(0, 15, 0, 0);
+                    }
+                    else
+                    {
+                        foreach (Control ctrl in panels[index].Controls.OfType<PictureBox>().ToList())
+                        {
+                            panels[index].Controls.Remove(ctrl);
+                            ctrl.Dispose();
+                        }
+                    }
                 }
             }
             // Bến xe
@@ -166,7 +210,7 @@ namespace MonopolyWinForms.GameLogic
                         label.BackColor = Color.Transparent;
                         label.Text = tile.PlayerId == null
                             ? $"{tile.Name}\n${tile.LandPrice}"
-                            : $"{tile.Name}\nPlayer {currentPlayer.Name}\n${rentPrice}";
+                            : $"{tile.Name}\n{currentPlayer.Name}\n${rentPrice}";
                         SetTileBackgroundImage(index, "ben_xe.png", tile);
                     }
                     else
@@ -177,7 +221,7 @@ namespace MonopolyWinForms.GameLogic
                         label.BackColor = Color.Transparent;
                         label.Text = tile.PlayerId == null
                             ? $"{tile.Name}\n${tile.LandPrice}"
-                            : $"{tile.Name}\nPlayer {currentPlayer.Name}\n${rentPrice}";
+                            : $"{tile.Name}\n{currentPlayer.Name}\n${rentPrice}";
                         SetTileBackgroundImage(index, "ben_xe.png", tile);
                     }
                 }
@@ -189,7 +233,7 @@ namespace MonopolyWinForms.GameLogic
                     label.BackColor = Color.Transparent;
                     label.Text = tile.PlayerId == null
                         ? $"{tile.Name}\n${tile.LandPrice}"
-                        : $"{tile.Name}\nPlayer {currentPlayer.Name}\n${rentPrice}";
+                        : $"{tile.Name}\n{currentPlayer.Name}\n${rentPrice}";
                     SetTileBackgroundImage(index, "ben_xe.png", tile);
                 }
             }
@@ -206,7 +250,7 @@ namespace MonopolyWinForms.GameLogic
                         label.BackColor = Color.Transparent;
                         label.Text = tile.PlayerId == null
                             ? $"{tile.Name}\n${tile.LandPrice}"
-                            : $"{tile.Name}\nPlayer {currentPlayer.Name}\n${rentPrice}";
+                            : $"{tile.Name}\n{currentPlayer.Name}\n${rentPrice}";
                         if (tile.Name == "Công ty Cấp nước")
                             SetTileBackgroundImage(index, "cty_nuoc.png", tile);
                         else if (tile.Name == "Công ty Điện lực")
@@ -220,7 +264,7 @@ namespace MonopolyWinForms.GameLogic
                         label.BackColor = Color.Transparent;
                         label.Text = tile.PlayerId == null
                             ? $"{tile.Name}\n${tile.LandPrice}"
-                            : $"{tile.Name}\nPlayer {currentPlayer.Name}\n${rentPrice}";
+                            : $"{tile.Name}\n{currentPlayer.Name}\n${rentPrice}";
                         if (tile.Name == "Công ty Cấp nước")
                             SetTileBackgroundImage(index, "cty_nuoc.png", tile);
                         else if (tile.Name == "Công ty Điện lực")
@@ -235,7 +279,7 @@ namespace MonopolyWinForms.GameLogic
                     label.BackColor = Color.Transparent;
                     label.Text = tile.PlayerId == null
                         ? $"{tile.Name}\n${tile.LandPrice}"
-                        : $"{tile.Name}\nPlayer {currentPlayer.Name}\n${rentPrice}";
+                        : $"{tile.Name}\n{currentPlayer.Name}\n${rentPrice}";
                     if (tile.Name == "Công ty Cấp nước")
                         SetTileBackgroundImage(index, "cty_nuoc.png", tile);
                     else if (tile.Name == "Công ty Điện lực")
@@ -360,6 +404,55 @@ namespace MonopolyWinForms.GameLogic
                 panels[index].BackgroundImage = resizedImage;
                 panels[index].BackgroundImageLayout = ImageLayout.None;
             }
+        }
+        public Image GetHouseImage(int level, Player player)
+        {
+            // Giả sử bạn có các ảnh như: house1.png, house2.png, hotel.png
+            string imagePath;
+
+            if (level == 5)
+                imagePath = Path.Combine(Application.StartupPath, "Assets", "Images", $"{player.Color.Name}-hotel.png");
+            else if (level >= 2 && level <= 4)
+                imagePath = Path.Combine(Application.StartupPath, "Assets", "Images", $"{player.Color.Name}-house{level - 1}.png");
+
+            else
+                imagePath = Path.Combine(Application.StartupPath, "Assets", "Images", $"{player.Color.Name}-land.png");
+            return Image.FromFile(imagePath);
+        }
+        private void AddOwnerImageToTilePanel(Panel panel, Tile tile, Player player)
+        {
+            foreach (Control c in panel.Controls.OfType<PictureBox>().ToList())
+            {
+                panel.Controls.Remove(c);
+                c.Dispose();
+            }
+            if (tile.PlayerId == null) return;
+            PictureBox ownerPic = new PictureBox();
+            ownerPic.SizeMode = PictureBoxSizeMode.Zoom;
+            ownerPic.BackColor = Color.LightBlue;
+            ownerPic.Image = GetHouseImage(tile.Level, player);
+
+            if (panel.Width < panel.Height) // ô dọc
+            {
+                ownerPic.Size = new Size(panel.Width, panel.Height/3);
+                ownerPic.Location = new Point(0, panel.Height*2/3);
+            }
+            else // ô ngang
+            {
+                ownerPic.Size = new Size(panel.Width*6/7, panel.Height / 2);
+                if (panel.Left < panel.Width / 2)
+                {
+                    // Panel nằm bên trái
+                    ownerPic.Location = new Point(0, panel.Height /2);
+                }
+                else
+                {
+                    // Panel nằm bên phải
+                    ownerPic.Location = new Point(panel.Width / 7, panel.Height /2);
+                }
+            }
+            panel.Controls.Add(ownerPic);
+            ownerPic.BringToFront();
         }
         public void UpdateBusStationRent(int playerId)
         {

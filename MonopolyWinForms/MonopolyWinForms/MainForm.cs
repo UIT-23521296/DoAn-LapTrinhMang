@@ -1,4 +1,5 @@
-﻿using MonopolyWinForms.FormManage;
+﻿using Firebase.Database;
+using MonopolyWinForms.FormManage;
 using MonopolyWinForms.GameLogic;
 namespace MonopolyWinForms
 {
@@ -9,7 +10,7 @@ namespace MonopolyWinForms
         public int currentPlayerIndex = 0;
         
         private Chatbox? chatbox;
-        private BankruptcyManager BankManager;                                                  //Lỗi trừ tiền thuế ko chạy class BankruptcyManager - chưa bik sửa được chưa
+        private BankruptcyManager BankManager;
         private CountdownClock? countdown;
         private InitializePlayerMarker Initialize;
         public Monopoly monopoly;
@@ -88,6 +89,7 @@ namespace MonopolyWinForms
             UpdatePlayer.UpdatePlayerPanelUI(panel42, player2);
             UpdatePlayer.UpdatePlayerPanelUI(panel43, player3);
             UpdatePlayer.UpdatePlayerPanelUI(panel44, player4);
+
             for (int i = 0; i < panels.Length && i < tiles.Count; i++){
                panels[i].Tag = tiles[i];
                UpdateTile.UpdateTileDisplayUI(i, players[currentPlayerIndex]);
@@ -127,10 +129,10 @@ namespace MonopolyWinForms
         public void UpdateCompanyRent(int playerId){ UpdateTile.UpdateCompanyRent(playerId); }
         public void UpdateBusStationRent(int playerId){ UpdateTile.UpdateBusStationRent(playerId); }
         public void SubtractMoney (int money, Player player){
-            var Money = new Property(player,this);
+            Property Money = new Property(player,this);
             Money.SubtractMoney(money); }
         public void AddMoney(int money, Player player){
-            var Money = new Property(player,this);
+            Property Money = new Property(player,this);
             Money.AddMoney(money); }
         public void ShowTileActionForm(Tile tile, Player currentPlayer){ if (Action != null) Action.ShowTileActionForm(tile,currentPlayer); }
         public void UpdatePlayerMarkerPosition(Player player, int newIndex){ Initialize.UpdatePlayerMarkerPosition(player,newIndex); }
@@ -138,5 +140,7 @@ namespace MonopolyWinForms
         public void ForceSellAssets(Player player){ BankManager.ForceSellAssets(player); }
         public void HandleStart(Player player){ Action?.HandleStart(player); }
         public async Task MovePlayerStepByStep(Player player, int steps, int totalTiles){ await Initialize.MovePlayerStepByStep(player, steps, totalTiles); }
+        public Image GetHouseImage(int level, Player player){return UpdateTile.GetHouseImage(level, player);
+        }
     }
 }

@@ -20,7 +20,7 @@ public class CountdownClock
         displayLabel = new Label
         {
             Font = new Font("Segoe UI", 14, FontStyle.Bold),
-            ForeColor = Color.Blue,
+            ForeColor = Color.Black,
             AutoSize = true,
         };
         displayLabel.Location = new Point(

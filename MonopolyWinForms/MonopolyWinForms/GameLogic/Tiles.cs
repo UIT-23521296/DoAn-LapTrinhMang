@@ -84,14 +84,14 @@ namespace MonopolyWinForms.GameLogic
         public int SellLandAndHouses()
         {
             int value = LandPrice;
-            if (Level >= 1 && Level <= 4)
+            if (Level >= 2 && Level <= 4)
                 value += HousePrice * Level;
             else if (Level == 5)
                 value += HotelPrice;
 
             Level = 0;
             PlayerId = null;
-            return value;
+            return value/2;
         }
     }
 }

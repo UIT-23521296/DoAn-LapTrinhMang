@@ -27,6 +27,7 @@ namespace MonopolyWinForms.GameLogic
             int dice1 = random.Next(1, 7);
             int dice2 = random.Next(1, 7);
             int totalSteps = dice1 + dice2;
+            MessageBox.Show($"Bạn tung được: {dice1} và {dice2} (Tổng: {totalSteps})", "Kết quả xúc xắc");
             bool isDouble = dice1 == dice2;
             if (player.IsInJail)
             {
@@ -60,10 +61,8 @@ namespace MonopolyWinForms.GameLogic
                     }
                 }
             }
-            MessageBox.Show($"Bạn tung được: {dice1} và {dice2} (Tổng: {totalSteps})", "Kết quả xúc xắc");
-
             int totalTiles = panels.Length;
-            bool passStart = (player.TileIndex + totalSteps) >= totalTiles;
+            bool passStart = (player.TileIndex + totalSteps) > totalTiles;
 
             await mainForm.MovePlayerStepByStep(player, totalSteps, totalTiles);
 

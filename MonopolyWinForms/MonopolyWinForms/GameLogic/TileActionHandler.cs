@@ -47,7 +47,7 @@ namespace MonopolyWinForms.GameLogic
                     currentPlayer.DoubleMoney--;
                     mainForm.UpdatePlayerPanel(currentPlayer);
                     mainForm.UpdatePlayerPanel(players[owner - 1]);
-                    MessageBox.Show($"Bạn phải trả ${rent * 2} tiền thuê cho Player {tile.PlayerId}!", "Trả tiền thuê");
+                    MessageBox.Show($"Bạn phải trả ${rent * 2} tiền thuê cho {players[owner - 1].Name}!", "Trả tiền thuê");
                     return;
                 }
                 else if (currentPlayer.ReduceHalfMoney >= 1)
@@ -59,7 +59,7 @@ namespace MonopolyWinForms.GameLogic
                     currentPlayer.ReduceHalfMoney--;
                     mainForm.UpdatePlayerPanel(currentPlayer);
                     mainForm.UpdatePlayerPanel(players[owner - 1]);
-                    MessageBox.Show($"Bạn phải trả ${rent / 2} tiền thuê cho Player {tile.PlayerId}!", "Trả tiền thuê");
+                    MessageBox.Show($"Bạn phải trả ${rent / 2} tiền thuê cho {players[owner - 1].Name}!", "Trả tiền thuê");
                     return;
                 }else{
                     currentPlayer.Money -= rent;
@@ -67,7 +67,7 @@ namespace MonopolyWinForms.GameLogic
                     mainForm.AddMoney(rent, players[owner - 1]);
                     mainForm.UpdatePlayerPanel(currentPlayer);
                     mainForm.UpdatePlayerPanel(players[owner - 1]);
-                    MessageBox.Show($"Bạn phải trả ${rent} tiền thuê cho Player {tile.PlayerId}!", "Trả tiền thuê");
+                    MessageBox.Show($"Bạn phải trả ${rent} tiền thuê cho {players[owner - 1].Name}!", "Trả tiền thuê");
                     return;
                 }
             }
@@ -130,7 +130,7 @@ namespace MonopolyWinForms.GameLogic
                 ProcessCardEffect(player, card, "Cơ hội");
             }
         }
-        private void ProcessCardEffect(Player player, string card, string deckType)
+        private async void ProcessCardEffect(Player player, string card, string deckType)
         {
             string message = $"{deckType}: {card}";
             MessageBox.Show(message, "Thẻ Bài");
@@ -173,23 +173,25 @@ namespace MonopolyWinForms.GameLogic
                     moveToIndex = GetNextCompany(player.TileIndex);
                     movePlayer = true;
                     break;
-                case "Đi đến ô tùy chọn":
-                    int selectedIndex = PromptSelectTile();
-                    if (selectedIndex >= 0){
-                        moveToIndex = selectedIndex;
-                        movePlayer = true;
-                    }
-                    break;
-                default:
-                    break;
-            }if (movePlayer && moveToIndex >= 0){
-                mainForm.UpdatePlayerMarkerPosition(player, moveToIndex);
+            }
+            if (movePlayer && moveToIndex >= 0)
+            {
+                int currentIndex = player.TileIndex;
+                int totalTiles = tiles.Count;
+                int steps = (moveToIndex - currentIndex + totalTiles) % totalTiles;
+                bool passStart = (currentIndex + steps) > totalTiles;
+                await mainForm.MovePlayerStepByStep(player, steps, totalTiles);
+                if (passStart)
+                {
+                    mainForm.HandleStart(player);
+                }
             }
         }
         public void HandleStart(Player player)
         {
             mainForm.AddMoney(200,player);
             MessageBox.Show("Bạn đi qua ô bắt đầu, nhận $200!", "Nhận tiền");
+            mainForm.UpdatePlayerPanel(player);
         }
         private void HandleIncomeTax(Player player)
         {
@@ -257,7 +259,7 @@ namespace MonopolyWinForms.GameLogic
                 if (currentPlayer.Money < tile.LandPrice){
                     MessageBox.Show("Không đủ tiền mua đất!", "Thông báo");
                     return;
-                }using (var landForm = new BuyHome_Land(currentPlayer.ID, tile, monopoly, mainForm)){
+                }using (var landForm = new BuyHome_Land(currentPlayer, tile, monopoly, mainForm)){
                     if (landForm.ShowDialog() == DialogResult.OK){
                         currentPlayer.Money -= tile.LandPrice;
                         mainForm.UpdatePlayerPanel(currentPlayer);
@@ -269,7 +271,7 @@ namespace MonopolyWinForms.GameLogic
                 if (currentPlayer.Money < upgradeCost){
                     MessageBox.Show("Không đủ tiền nâng cấp!", "Thông báo");
                     return;
-                }using (var upgradeForm = new BuyHome_Land(currentPlayer.ID, tile, monopoly, mainForm)){
+                }using (var upgradeForm = new BuyHome_Land(currentPlayer, tile, monopoly, mainForm)){
                     if (upgradeForm.ShowDialog() == DialogResult.OK){
                         currentPlayer.Money -= upgradeCost;
                         mainForm.UpdatePlayerPanel(currentPlayer);
@@ -293,13 +295,6 @@ namespace MonopolyWinForms.GameLogic
                 if (comp > currentIndex)
                     return comp;
             }return companies[0];
-        }
-        private int PromptSelectTile()
-        {
-            string input = Microsoft.VisualBasic.Interaction.InputBox("Nhập số ô muốn đến (0-39):", "Chọn ô");
-            if (int.TryParse(input, out int tileIndex) && tileIndex >= 0 && tileIndex < 40)
-                return tileIndex;
-            return -1;
         }
     }
 }
