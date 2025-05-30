@@ -9,6 +9,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Tiles.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\Tiles.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Assets\Images\" />
     <Folder Include="Assets\Sounds\" />
   </ItemGroup>

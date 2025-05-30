@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MonopolyWinForms.Room;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -25,6 +26,12 @@ namespace MonopolyWinForms.Home
         private void btn_quit_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void btn_play_Click(object sender, EventArgs e)
+        {
+            JoinRoom joinRoomForm = new JoinRoom();
+            joinRoomForm.Show();
         }
     }
 }

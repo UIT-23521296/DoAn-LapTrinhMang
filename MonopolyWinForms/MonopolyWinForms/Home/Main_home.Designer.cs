@@ -81,6 +81,7 @@
             btn_play.TabIndex = 5;
             btn_play.Text = "CHƠI NGAY";
             btn_play.UseVisualStyleBackColor = false;
+            btn_play.Click += btn_play_Click;
             // 
             // btn_rule
             // 

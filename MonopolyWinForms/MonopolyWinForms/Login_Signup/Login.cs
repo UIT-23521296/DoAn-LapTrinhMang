@@ -12,6 +12,7 @@ using MonopolyWinForms.Login_Signup;
 using System.Configuration; // Thêm namespace này
 using Newtonsoft.Json;
 using System.Configuration;
+using MonopolyWinForms.Services;
 
 namespace MonopolyWinForms.Login_Signup
 {
@@ -87,6 +88,7 @@ namespace MonopolyWinForms.Login_Signup
                     string idToken = data.idToken;
                     string localId = data.localId;
 
+
                     // Truy vấn thông tin người dùng từ Firebase Realtime Database
                     var userInfoUrl = $"https://doanmang-8f5af-default-rtdb.asia-southeast1.firebasedatabase.app/users/{localId}.json?auth={idToken}";
                     var userInfoResponse = await client.GetAsync(userInfoUrl);
@@ -105,9 +107,11 @@ namespace MonopolyWinForms.Login_Signup
                     }
                     else
                     {
-                        MessageBox.Show("Không thể lấy thông tin người dùng.");
+                        MessageBox.Show("Đăng nhập thành công, nhưng không lấy được tên hiển thị.");
+
                     }
                 }
+
                 else
                 {
                     dynamic errorData = JsonConvert.DeserializeObject(result);

@@ -1,0 +1,9 @@
+Id; Tên; Id ô; Tiền nhận; Tiền trả
+1; Đi thẳng vào tù; 11; 0; 0
+2; Tự do ra tù; 0; 0; 0
+3; Đi đến ô bắt đầu; 1; 0; 0
+4; Chúc mừng sinh nhật; 0; 25; 0
+5; Được bầu làm giám đốc; 0; 0; 50
+6; Đưa con đi học; 0; 0; 150
+7; Trúng xổ số; 0; 200; 0
+8; Trả tiền bệnh viện; 0; 100
