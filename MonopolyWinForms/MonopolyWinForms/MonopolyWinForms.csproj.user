@@ -1,6 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Compile Update="BuyLand_Home\BuyBus.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="BuyLand_Home\BuyCompany.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="BuyLand_Home\BuyHome-Land.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormManage\FormDestroyHouse.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormManage\FormSellProperty.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="GameLogic\Chatbox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="FormManage\GameResultForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Home\Main_home.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -17,21 +38,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Play_area\Draw_playarea.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Room\Create_Room.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Room\JoinRoom.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Room\Waiting_Room_Client.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Room\Waiting_Room_Host.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
