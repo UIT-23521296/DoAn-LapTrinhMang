@@ -11,8 +11,6 @@ using MonopolyWinForms.Login_Signup;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Configuration; 
-
-
 using System.Data.SqlClient;
 
 namespace MonopolyWinForms.Login_Signup
@@ -21,8 +19,6 @@ namespace MonopolyWinForms.Login_Signup
     {
         private Form loginForm;
         private readonly string apiKey = ConfigurationManager.AppSettings["FirebaseApiKey"];
-
-
         public Signup(Form loginForm)
         {
             InitializeComponent();

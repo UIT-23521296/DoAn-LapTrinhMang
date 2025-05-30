@@ -11,12 +11,10 @@ using System.Windows.Forms;
 using Newtonsoft.Json;
 using System.Configuration; 
 
-
 namespace MonopolyWinForms.Login_Signup
 {
     public partial class Forgot : Form
     {
-
         private readonly string apiKey = ConfigurationManager.AppSettings["FirebaseApiKey"];
         public Forgot()
         {
