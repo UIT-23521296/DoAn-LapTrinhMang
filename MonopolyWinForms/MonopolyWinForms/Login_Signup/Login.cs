@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MonopolyWinForms.Home;
 using MonopolyWinForms.Login_Signup;
+using System.Configuration; // Thêm namespace này
 using Newtonsoft.Json;
 using System.Configuration;
 using MonopolyWinForms.Services;
@@ -17,7 +18,7 @@ namespace MonopolyWinForms.Login_Signup
 {
     public partial class Login : Form
     {
-        string apiKey = ConfigurationManager.AppSettings["FirebaseApiKey"];
+        private readonly string apiKey = ConfigurationManager.AppSettings["FirebaseApiKey"];
         private Form signupForm;
         public Login(Form signupForm)
         {
@@ -52,7 +53,11 @@ namespace MonopolyWinForms.Login_Signup
             mainPage.Show();
 
             // Khi form chính đóng, thoát app
-            mainPage.FormClosed += (s, args) => Application.Exit();
+            mainPage.FormClosed += (s, args) =>
+            {
+                Session.EndSession();
+                Application.Exit();
+            };
         }
 
         private async void btn_login_Click(object sender, EventArgs e)
@@ -83,27 +88,19 @@ namespace MonopolyWinForms.Login_Signup
                     string idToken = data.idToken;
                     string localId = data.localId;
 
-                    // Gọi API để lấy thông tin người dùng (displayName)
-                    var infoPayload = new
+
+                    // Truy vấn thông tin người dùng từ Firebase Realtime Database
+                    var userInfoUrl = $"https://doanmang-8f5af-default-rtdb.asia-southeast1.firebasedatabase.app/users/{localId}.json?auth={idToken}";
+                    var userInfoResponse = await client.GetAsync(userInfoUrl);
+                    var userInfoResult = await userInfoResponse.Content.ReadAsStringAsync();
+
+                    if (userInfoResponse.IsSuccessStatusCode)
                     {
-                        idToken = idToken
-                    };
-                    var infoJson = JsonConvert.SerializeObject(infoPayload);
-                    var infoContent = new StringContent(infoJson, Encoding.UTF8, "application/json");
+                        dynamic userInfo = JsonConvert.DeserializeObject(userInfoResult);
+                        string username = userInfo.username; // Lấy username từ kết quả
 
-                    var infoResponse = await client.PostAsync(
-                        $"https://identitytoolkit.googleapis.com/v1/accounts:lookup?key={apiKey}",
-                        infoContent);
-                    var infoResult = await infoResponse.Content.ReadAsStringAsync();
-
-                    if (infoResponse.IsSuccessStatusCode)
-                    {
-                        dynamic userInfo = JsonConvert.DeserializeObject(infoResult);
-                        string displayName = userInfo.users[0].displayName;
-
-                        // ✅ Lưu vào SessionManager
-                        SessionManager.CurrentUserId = localId;
-                        SessionManager.CurrentUserDisplayName = displayName;
+                        // Bắt đầu phiên làm việc với username
+                        Session.StartSession(localId, username);
 
                         MessageBox.Show("Đăng nhập thành công!");
                         Login_success();
@@ -111,6 +108,7 @@ namespace MonopolyWinForms.Login_Signup
                     else
                     {
                         MessageBox.Show("Đăng nhập thành công, nhưng không lấy được tên hiển thị.");
+
                     }
                 }
 

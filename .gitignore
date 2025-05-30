@@ -1,3 +1,4 @@
+App.config
 ## Build results
 bin/
 obj/
@@ -53,4 +54,3 @@ TestResults/
 
 # Publish output
 publish/
-

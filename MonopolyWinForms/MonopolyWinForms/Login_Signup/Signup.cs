@@ -18,9 +18,7 @@ namespace MonopolyWinForms.Login_Signup
     public partial class Signup : Form
     {
         private Form loginForm;
-        string apiKey = ConfigurationManager.AppSettings["FirebaseApiKey"];
-
-
+        private readonly string apiKey = ConfigurationManager.AppSettings["FirebaseApiKey"];
         public Signup(Form loginForm)
         {
             InitializeComponent();
