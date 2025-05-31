@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MonopolyWinForms.Login_Signup;
 
 namespace MonopolyWinForms.Room
 {
@@ -128,42 +129,44 @@ namespace MonopolyWinForms.Room
 
         private async Task BtnCreate_Click()
         {
-            string roomName = txtRoomName.Text.Trim();
-            string hostIP = txtHostIP.Text.Trim();
-            int port = FixedPort;
-            int maxPlayers = int.Parse(cmbMaxPlayers.SelectedItem.ToString());
-            int playTime = int.Parse(cmbPlayTime.SelectedItem.ToString());
+            if (!Session.IsLoggedIn)
+            {
+                MessageBox.Show("Vui lòng đăng nhập trước khi tạo phòng.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
+            string roomName = txtRoomName.Text.Trim();
+            
+            // Validate room name
             if (string.IsNullOrEmpty(roomName))
             {
                 MessageBox.Show("Vui lòng nhập tên phòng.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            string roomId = Guid.NewGuid().ToString();
-
-            var roomInfo = new RoomInfo
-            {
-                RoomId = roomId,
-                RoomName = roomName,
-                HostId = SessionManager.CurrentUserId,
-                HostIP = hostIP,
-                Port = port,
-                MaxPlayers = maxPlayers,
-                PlayTime = playTime,
-                PlayerDisplayNames = new List<string> { SessionManager.CurrentUserDisplayName },
-                IsStarted = false,
-                CreatedAt = DateTime.UtcNow
-            };
-
             try
             {
+                string roomId = Guid.NewGuid().ToString();
+                var roomInfo = new RoomInfo
+                {
+                    RoomId = roomId,
+                    RoomName = roomName,
+                    HostId = Session.UserId,  // Sử dụng UserId từ Session
+                    HostIP = GetLocalIPAddress(),
+                    Port = FixedPort,
+                    MaxPlayers = int.Parse(cmbMaxPlayers.SelectedItem.ToString()),
+                    PlayTime = int.Parse(cmbPlayTime.SelectedItem.ToString()),
+                    ReadyPlayers = new List<string> {Session.UserName},
+                    PlayerDisplayNames = new List<string> { Session.UserName },  // Sử dụng UserName từ Session
+                    IsStarted = false,
+                    CreatedAt = DateTime.UtcNow
+                };
+
                 var firebase = new FirebaseService();
                 await firebase.CreateRoomAsync(roomId, roomInfo);
 
-                // Lưu session phòng hiện tại
-                SessionManager.CurrentRoom = roomInfo;
-
+                // Cập nhật session
+                Session.JoinRoom(roomId, true);
 
                 var lobby = new Waiting_Room_Host();
                 lobby.Show();

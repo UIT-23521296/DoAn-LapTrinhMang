@@ -148,11 +148,12 @@
             // btn_Ready
             // 
             btn_Ready.Location = new Point(760, 640);
-            btn_Ready.Name = "btn_Play";
+            btn_Ready.Name = "btn_Ready";
             btn_Ready.Size = new Size(200, 50);
             btn_Ready.TabIndex = 10;
             btn_Ready.Text = "Sẵn sàng";
             btn_Ready.UseVisualStyleBackColor = true;
+            btn_Ready.Click += this.btn_Ready_Click;
             // 
             // Waiting_Room_Host
             // 

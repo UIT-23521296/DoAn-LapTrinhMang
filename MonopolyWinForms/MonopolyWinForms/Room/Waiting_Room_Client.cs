@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
+using MonopolyWinForms.Login_Signup;
 
 namespace MonopolyWinForms.Room
 {
@@ -16,7 +18,7 @@ namespace MonopolyWinForms.Room
         private string roomId;
         private FirebaseService firebase;
         private System.Windows.Forms.Timer refreshTimer;
-
+        private bool isReady = false;
 
         public Waiting_Room_Client(string roomId)
         {
@@ -38,13 +40,25 @@ namespace MonopolyWinForms.Room
             if (room == null)
             {
                 refreshTimer.Stop();
-                MessageBox.Show("Phòng đã bị đóng hoặc không tồn tại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.Close();
+                return;
+            }
+
+            if (room.IsStarted)
+            {
+                refreshTimer.Stop();
+                this.Close();
+                return;
+            }
+
+            if (room.PlayerDisplayNames.Count <= 1)
+            {
+                refreshTimer.Stop();
                 this.Close();
                 return;
             }
 
             txb_RoomName.Text = room.RoomName;
-
             UpdatePlayerNames(room.PlayerDisplayNames);
         }
 
@@ -65,14 +79,32 @@ namespace MonopolyWinForms.Room
         {
             refreshTimer.Stop();
 
-            var room = await firebase.GetRoomAsync(roomId);
-            if (room != null)
+            if (Session.CurrentRoomId != null)
             {
-                string currentUserId = SessionManager.CurrentUserId;
-                if (room.PlayerDisplayNames.Contains(currentUserId))
+                try
                 {
-                    room.PlayerDisplayNames.Remove(currentUserId);
-                    await firebase.CreateRoomAsync(roomId, room);
+                    var room = await firebase.GetRoomAsync(Session.CurrentRoomId);
+                    if (room != null)
+                    {
+                        if (room.PlayerDisplayNames.Contains(Session.UserName))
+                        {
+                            room.PlayerDisplayNames.Remove(Session.UserName);
+                            
+                            if (room.PlayerDisplayNames.Count == 0)
+                            {
+                                await firebase.DeleteRoomAsync(Session.CurrentRoomId);
+                            }
+                            else
+                            {
+                                await firebase.CreateRoomAsync(Session.CurrentRoomId, room);
+                            }
+                        }
+                    }
+                    Session.LeaveRoom();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Lỗi khi thoát phòng: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
 
@@ -85,5 +117,41 @@ namespace MonopolyWinForms.Room
             this.Close();
         }
 
+        private async void btn_Ready_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var room = await firebase.GetRoomAsync(roomId);
+                if (room != null)
+                {
+                    isReady = !isReady;
+                    btn_Ready.Text = isReady ? "Hủy sẵn sàng" : "Sẵn sàng";
+                    btn_Ready.BackColor = isReady ? Color.Green : Color.SkyBlue;
+                    File.AppendAllText("log.txt", "Tôi đã o day\n");
+                    System.Diagnostics.Debug.WriteLine("tôi đã o day");
+
+                    // Cập nhật trạng thái sẵn sàng lên Firebase
+                    if (isReady)
+                    {
+                        File.AppendAllText("log.txt", "Tôi đã sẵn sàng\n");
+                        System.Diagnostics.Debug.WriteLine("tôi đã sẵn sàng");
+
+                        if (!room.ReadyPlayers.Contains(Session.UserName))
+                        {
+                            room.ReadyPlayers.Add(Session.UserName);
+                        }
+                    }
+                    else
+                    {
+                        room.ReadyPlayers.Remove(Session.UserName);
+                    }
+                    await firebase.CreateRoomAsync(roomId, room);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi cập nhật trạng thái: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

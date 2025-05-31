@@ -152,6 +152,7 @@
             btn_Play.TabIndex = 10;
             btn_Play.Text = "Chơi";
             btn_Play.UseVisualStyleBackColor = true;
+            btn_Play.Click += this.btn_Play_Click;
             // 
             // Waiting_Room_Host
             // 
