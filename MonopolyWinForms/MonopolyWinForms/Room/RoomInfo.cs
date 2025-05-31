@@ -15,8 +15,9 @@ namespace MonopolyWinForms.Room
         public int Port { get; set; }
         public int MaxPlayers { get; set; }
         public int PlayTime { get; set; }
-        public List<string> PlayerIds { get; set; }           // Firebase UID
-        public List<string> PlayerDisplayNames { get; set; }  // Tên hiển thị
+        public List<string> PlayerIds { get; set; } = new List<string>();
+        public List<string> PlayerDisplayNames { get; set; } = new List<string>();
+        public List<string> ReadyPlayers { get; set; } = new List<string>();
         public bool IsStarted { get; set; } = false;
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
