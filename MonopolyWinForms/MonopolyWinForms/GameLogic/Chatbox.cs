@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
+using MonopolyWinForms.Login_Signup;
 
 namespace MonopolyWinForms.GameLogic
 {
@@ -12,7 +14,7 @@ namespace MonopolyWinForms.GameLogic
         private RichTextBox rtbDisplay;
         private TextBox txtInput;
         private Button btnSend;
-        public event Action<string> OnSendMessage;
+        public event Action<string, string> OnSendMessage;
         private Player curPlayer;
         public Chatbox(Player player)
         {
@@ -29,6 +31,8 @@ namespace MonopolyWinForms.GameLogic
                 Size = new Size(480, 320),
                 BorderStyle = BorderStyle.None,
                 ReadOnly = true,
+                BackColor = Color.White,
+                Font = new Font("Arial", 10)
             };
             txtInput = new TextBox
             {
@@ -65,18 +69,53 @@ namespace MonopolyWinForms.GameLogic
             string message = txtInput.Text.Trim();
             if (!string.IsNullOrEmpty(message))
             {
-                rtbDisplay.AppendText($"Player {curPlayer.ID}: {message}{Environment.NewLine}");
-                OnSendMessage?.Invoke(message);
+                OnSendMessage?.Invoke(Session.UserName, message);
                 txtInput.Clear();
             }
         }
-        public void AddMessage(string message)
+        public void AddMessageWithColor(string message, Color color)
         {
-            rtbDisplay.AppendText(message + Environment.NewLine);
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => AddMessageWithColor(message, color)));
+                return;
+            }
+            rtbDisplay.SelectionStart = rtbDisplay.TextLength;
+            rtbDisplay.SelectionLength = 0;
+            rtbDisplay.SelectionColor = color;
+            rtbDisplay.AppendText($"[{DateTime.Now:HH:mm:ss}] {message}{Environment.NewLine}");
+            rtbDisplay.ScrollToCaret();
+        }
+        public void AddSystemMessage(string message)
+        {
+            AddMessageWithColor($"[Hệ thống] {message}", Color.Gray);
+        }
+        public void AddNotificationMessage(string message)
+        {
+            AddMessageWithColor($"[Thông báo] {message}", Color.DarkGreen);
+        }
+        public void AddWarningMessage(string message)
+        {
+            AddMessageWithColor($"[Cảnh báo] {message}", Color.Orange);
+        }
+        public void AddErrorMessage(string message)
+        {
+            AddMessageWithColor($"[Lỗi] {message}", Color.Red);
         }
         public void UpdatePlayer(Player player)
         {
             curPlayer = player;
+        }
+        public void ReceiveMessage(string senderName, string message)
+        {
+            if (senderName == Session.UserName)
+            {
+                AddMessageWithColor($"Bạn: {message}", Color.Blue);
+            }
+            else
+            {
+                AddMessageWithColor($"{senderName}: {message}", Color.Black);
+            }
         }
     }
 }

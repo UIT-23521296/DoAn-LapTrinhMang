@@ -156,6 +156,12 @@ namespace MonopolyWinForms.Room
 
                     // Mở form game
                     // TODO: Mở form game mới
+                    GameManager.StartGame(Session.CurrentRoomId, room.PlayerDisplayNames);
+                    File.AppendAllText("log.txt", $"Host called started with roomId: {Session.CurrentRoomId}\n");
+                    Form mainForm = new MainForm(); // nếu bạn muốn truyền gameManager sang
+                    mainForm.Show();
+                    this.Hide();
+
                 }
             }
             catch (Exception ex)

@@ -156,8 +156,9 @@ namespace MonopolyWinForms.Room
                     Port = FixedPort,
                     MaxPlayers = int.Parse(cmbMaxPlayers.SelectedItem.ToString()),
                     PlayTime = int.Parse(cmbPlayTime.SelectedItem.ToString()),
-                    ReadyPlayers = new List<string> {Session.UserName},
+                    ReadyPlayers = new List<string> { Session.UserName },
                     PlayerDisplayNames = new List<string> { Session.UserName },  // Sử dụng UserName từ Session
+                    PlayerIds = new List<string> { Session.UserId },
                     IsStarted = false,
                     CreatedAt = DateTime.UtcNow
                 };

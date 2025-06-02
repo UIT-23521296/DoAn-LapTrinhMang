@@ -8,6 +8,7 @@ namespace MonopolyWinForms.Login_Signup
 {
     class Session
     {
+        public static int PlayerInGameId { get; set; }
         public static string UserId { get; private set; }
         public static string UserName { get; private set; }
         public static bool IsLoggedIn { get; private set; }

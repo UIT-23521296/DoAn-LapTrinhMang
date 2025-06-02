@@ -47,7 +47,12 @@ namespace MonopolyWinForms.Room
             if (room.IsStarted)
             {
                 refreshTimer.Stop();
-                this.Close();
+
+                //Khởi tạo game cho client
+                GameManager.StartGame(Session.CurrentRoomId, room.PlayerDisplayNames);
+                Form mainFrom = new MainForm();
+                mainFrom.Show();
+                this.Hide();
                 return;
             }
 
@@ -75,10 +80,18 @@ namespace MonopolyWinForms.Room
             }
         }
 
-        private async void Waiting_Room_Client_FormClosing(object sender, FormClosingEventArgs e)
+        private async void  Waiting_Room_Client_FormClosing(object sender, FormClosingEventArgs e)
         {
+            // Dừng timer
             refreshTimer.Stop();
 
+            // Nếu game đã bắt đầu, không cần xử lý thoát phòng
+            if (GameManager.IsGameStarted)
+            {
+                return;
+            }
+
+            // Xử lý thoát phòng như cũ
             if (Session.CurrentRoomId != null)
             {
                 try
@@ -127,15 +140,10 @@ namespace MonopolyWinForms.Room
                     isReady = !isReady;
                     btn_Ready.Text = isReady ? "Hủy sẵn sàng" : "Sẵn sàng";
                     btn_Ready.BackColor = isReady ? Color.Green : Color.SkyBlue;
-                    File.AppendAllText("log.txt", "Tôi đã o day\n");
-                    System.Diagnostics.Debug.WriteLine("tôi đã o day");
 
                     // Cập nhật trạng thái sẵn sàng lên Firebase
                     if (isReady)
                     {
-                        File.AppendAllText("log.txt", "Tôi đã sẵn sàng\n");
-                        System.Diagnostics.Debug.WriteLine("tôi đã sẵn sàng");
-
                         if (!room.ReadyPlayers.Contains(Session.UserName))
                         {
                             room.ReadyPlayers.Add(Session.UserName);

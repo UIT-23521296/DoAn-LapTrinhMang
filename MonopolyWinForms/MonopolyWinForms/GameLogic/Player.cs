@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Drawing;  // nhớ thêm namespace này nếu dùng Color, Image
+using System.Drawing;  // Thêm namespace này nếu dùng Color, Image
 using System.IO;
 using System.Windows.Forms;
 

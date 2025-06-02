@@ -1,7 +1,10 @@
 ﻿using buyLand_Home;
 using MonopolyWinForms.BuyLand_Home;
 using MonopolyWinForms.FormManage;
+using MonopolyWinForms.Login_Signup;
+using MonopolyWinForms;
 using System.Security.Policy;
+using static MonopolyWinForms.MainForm;
 
 namespace MonopolyWinForms.GameLogic
 {
@@ -133,45 +136,70 @@ namespace MonopolyWinForms.GameLogic
         private async void ProcessCardEffect(Player player, string card, string deckType)
         {
             string message = $"{deckType}: {card}";
-            MessageBox.Show(message, "Thẻ Bài");
+
+            // Hiển thị MessageBox cho người chơi hiện tại
+            if (Session.PlayerInGameId == player.ID)
+            {
+                MessageBox.Show(message, "Thẻ Bài");
+            }
+
+            // Ghi log cho tất cả người chơi
+            MainForm mainForm = new MainForm();
+            mainForm.AddToGameLog($"{player.Name} rút được thẻ {deckType}: {card}", MainForm.LogType.Notification);
+    
             bool movePlayer = false;
             int moveToIndex = -1;
             switch (card)
             {
                 case "Đi thẳng vào tù":
                     HandleGoToJail(player);
+                    mainForm.AddToGameLog($"{player.Name} bị vào tù do rút thẻ", LogType.Warning);
                     return;
                 case "Tự do ra tù":
                     player.AddOutPrisonCard();
+                    mainForm.AddToGameLog($"{player.Name} nhận được thẻ thoát tù", LogType.Notification);
                     break;
                 case "Trả gấp đôi tiền thuê cho ô tiếp theo":
                     player.DoubleMoney++;
+                    mainForm.AddToGameLog($"{player.Name} sẽ trả gấp đôi tiền thuê cho ô tiếp theo", LogType.Warning);
                     break;
                 case "Giảm 50% tiền thuê cho ô tiếp theo":
                     player.ReduceHalfMoney++;
+                    mainForm.AddToGameLog($"{player.Name} sẽ giảm 50% tiền thuê cho ô tiếp theo", LogType.Notification);
                     break;
                 case "Đi đến ô bắt đầu":
                     moveToIndex = 0;
                     movePlayer = true;
+                    mainForm.AddToGameLog($"{player.Name} được di chuyển đến ô bắt đầu", LogType.System);
                     break;
                 case "Bán 1 căn nhà":
-                    var sellPropertyForm = new FormSellProperty(players[currentPlayerIndex], tiles, mainForm);
-                    if (sellPropertyForm.CanOpen)
-                        sellPropertyForm.ShowDialog();
+                    if (Session.PlayerInGameId == player.ID)
+                    {
+                        var sellPropertyForm = new FormSellProperty(players[currentPlayerIndex], tiles, mainForm);
+                        if (sellPropertyForm.CanOpen)
+                            sellPropertyForm.ShowDialog();
+                    }
+                    mainForm.AddToGameLog($"{player.Name} phải bán 1 căn nhà", LogType.Warning);
                     break;
                 case "Phá nhà":
-                    var destroyHouseForm = new FormDestroyHouse(players[currentPlayerIndex], tiles, mainForm);
-                    if (destroyHouseForm.CanOpen)
-                        destroyHouseForm.ShowDialog();
+                    if (Session.PlayerInGameId == player.ID)
+                    {
+                        var destroyHouseForm = new FormDestroyHouse(players[currentPlayerIndex], tiles, mainForm);
+                        if (destroyHouseForm.CanOpen)
+                            destroyHouseForm.ShowDialog();
+                    }
+                    mainForm.AddToGameLog($"{player.Name} phải phá 1 căn nhà", LogType.Warning);
                     break;
                 case "Đến ô bến xe tiếp theo":
                     moveToIndex = GetNextBusStation(player.TileIndex);
                     player.DoubleMoney++;
                     movePlayer = true;
+                    mainForm.AddToGameLog($"{player.Name} được di chuyển đến bến xe tiếp theo và sẽ trả gấp đôi tiền thuê", LogType.System);
                     break;
                 case "Đến ô công ty tiếp theo":
                     moveToIndex = GetNextCompany(player.TileIndex);
                     movePlayer = true;
+                    mainForm.AddToGameLog($"{player.Name} được di chuyển đến công ty tiếp theo", LogType.System);
                     break;
             }
             if (movePlayer && moveToIndex >= 0)

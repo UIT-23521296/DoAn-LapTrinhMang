@@ -79,356 +79,401 @@
             // panel1
             // 
             panel1.BorderStyle = BorderStyle.FixedSingle;
-            panel1.Location = new Point(12, 12);
+            panel1.Location = new Point(10, 10);
+            panel1.Margin = new Padding(2);
             panel1.Name = "panel1";
-            panel1.Size = new Size(150, 150);
+            panel1.Size = new Size(120, 120);
             panel1.TabIndex = 0;
             // 
             // panel2
             // 
             panel2.BorderStyle = BorderStyle.FixedSingle;
-            panel2.Location = new Point(168, 12);
+            panel2.Location = new Point(134, 10);
+            panel2.Margin = new Padding(2);
             panel2.Name = "panel2";
-            panel2.Size = new Size(90, 150);
+            panel2.Size = new Size(72, 120);
             panel2.TabIndex = 1;
             // 
             // panel3
             // 
             panel3.BorderStyle = BorderStyle.FixedSingle;
-            panel3.Location = new Point(264, 12);
+            panel3.Location = new Point(211, 10);
+            panel3.Margin = new Padding(2);
             panel3.Name = "panel3";
-            panel3.Size = new Size(90, 150);
+            panel3.Size = new Size(72, 120);
             panel3.TabIndex = 2;
             // 
             // panel4
             // 
             panel4.BorderStyle = BorderStyle.FixedSingle;
-            panel4.Location = new Point(360, 12);
+            panel4.Location = new Point(288, 10);
+            panel4.Margin = new Padding(2);
             panel4.Name = "panel4";
-            panel4.Size = new Size(90, 150);
+            panel4.Size = new Size(72, 120);
             panel4.TabIndex = 3;
             // 
             // panel5
             // 
             panel5.BorderStyle = BorderStyle.FixedSingle;
-            panel5.Location = new Point(456, 12);
+            panel5.Location = new Point(365, 10);
+            panel5.Margin = new Padding(2);
             panel5.Name = "panel5";
-            panel5.Size = new Size(90, 150);
+            panel5.Size = new Size(72, 120);
             panel5.TabIndex = 4;
             // 
             // panel6
             // 
             panel6.BorderStyle = BorderStyle.FixedSingle;
-            panel6.Location = new Point(552, 12);
+            panel6.Location = new Point(442, 10);
+            panel6.Margin = new Padding(2);
             panel6.Name = "panel6";
-            panel6.Size = new Size(90, 150);
+            panel6.Size = new Size(72, 120);
             panel6.TabIndex = 5;
             // 
             // panel7
             // 
             panel7.BorderStyle = BorderStyle.FixedSingle;
-            panel7.Location = new Point(648, 12);
+            panel7.Location = new Point(518, 10);
+            panel7.Margin = new Padding(2);
             panel7.Name = "panel7";
-            panel7.Size = new Size(90, 150);
+            panel7.Size = new Size(72, 120);
             panel7.TabIndex = 6;
             // 
             // panel8
             // 
             panel8.BorderStyle = BorderStyle.FixedSingle;
-            panel8.Location = new Point(744, 12);
+            panel8.Location = new Point(595, 10);
+            panel8.Margin = new Padding(2);
             panel8.Name = "panel8";
-            panel8.Size = new Size(90, 150);
+            panel8.Size = new Size(72, 120);
             panel8.TabIndex = 7;
             // 
             // panel9
             // 
             panel9.BorderStyle = BorderStyle.FixedSingle;
-            panel9.Location = new Point(840, 12);
+            panel9.Location = new Point(672, 10);
+            panel9.Margin = new Padding(2);
             panel9.Name = "panel9";
-            panel9.Size = new Size(90, 150);
+            panel9.Size = new Size(72, 120);
             panel9.TabIndex = 8;
             // 
             // panel10
             // 
             panel10.BorderStyle = BorderStyle.FixedSingle;
-            panel10.Location = new Point(936, 12);
+            panel10.Location = new Point(749, 10);
+            panel10.Margin = new Padding(2);
             panel10.Name = "panel10";
-            panel10.Size = new Size(90, 150);
+            panel10.Size = new Size(72, 120);
             panel10.TabIndex = 9;
             // 
             // panel11
             // 
             panel11.BorderStyle = BorderStyle.FixedSingle;
-            panel11.Location = new Point(1032, 12);
+            panel11.Location = new Point(826, 10);
+            panel11.Margin = new Padding(2);
             panel11.Name = "panel11";
-            panel11.Size = new Size(150, 150);
+            panel11.Size = new Size(120, 120);
             panel11.TabIndex = 10;
             // 
             // panel12
             // 
             panel12.BorderStyle = BorderStyle.FixedSingle;
-            panel12.Location = new Point(1032, 168);
+            panel12.Location = new Point(826, 134);
+            panel12.Margin = new Padding(2);
             panel12.Name = "panel12";
-            panel12.Size = new Size(150, 90);
+            panel12.Size = new Size(120, 72);
             panel12.TabIndex = 11;
             // 
             // panel13
             // 
             panel13.BorderStyle = BorderStyle.FixedSingle;
-            panel13.Location = new Point(1032, 264);
+            panel13.Location = new Point(826, 211);
+            panel13.Margin = new Padding(2);
             panel13.Name = "panel13";
-            panel13.Size = new Size(150, 90);
+            panel13.Size = new Size(120, 72);
             panel13.TabIndex = 12;
             // 
             // panel14
             // 
             panel14.BorderStyle = BorderStyle.FixedSingle;
-            panel14.Location = new Point(1032, 360);
+            panel14.Location = new Point(826, 288);
+            panel14.Margin = new Padding(2);
             panel14.Name = "panel14";
-            panel14.Size = new Size(150, 90);
+            panel14.Size = new Size(120, 72);
             panel14.TabIndex = 13;
             // 
             // panel15
             // 
             panel15.BorderStyle = BorderStyle.FixedSingle;
-            panel15.Location = new Point(1032, 456);
+            panel15.Location = new Point(826, 365);
+            panel15.Margin = new Padding(2);
             panel15.Name = "panel15";
-            panel15.Size = new Size(150, 90);
+            panel15.Size = new Size(120, 72);
             panel15.TabIndex = 14;
             // 
             // panel16
             // 
             panel16.BorderStyle = BorderStyle.FixedSingle;
-            panel16.Location = new Point(1032, 552);
+            panel16.Location = new Point(826, 442);
+            panel16.Margin = new Padding(2);
             panel16.Name = "panel16";
-            panel16.Size = new Size(150, 90);
+            panel16.Size = new Size(120, 72);
             panel16.TabIndex = 15;
             // 
             // panel17
             // 
             panel17.BorderStyle = BorderStyle.FixedSingle;
-            panel17.Location = new Point(1032, 648);
+            panel17.Location = new Point(826, 518);
+            panel17.Margin = new Padding(2);
             panel17.Name = "panel17";
-            panel17.Size = new Size(150, 90);
+            panel17.Size = new Size(120, 72);
             panel17.TabIndex = 16;
             // 
             // panel18
             // 
             panel18.BorderStyle = BorderStyle.FixedSingle;
-            panel18.Location = new Point(1032, 744);
+            panel18.Location = new Point(826, 595);
+            panel18.Margin = new Padding(2);
             panel18.Name = "panel18";
-            panel18.Size = new Size(150, 90);
+            panel18.Size = new Size(120, 72);
             panel18.TabIndex = 17;
             // 
             // panel19
             // 
             panel19.BorderStyle = BorderStyle.FixedSingle;
-            panel19.Location = new Point(1032, 840);
+            panel19.Location = new Point(826, 672);
+            panel19.Margin = new Padding(2);
             panel19.Name = "panel19";
-            panel19.Size = new Size(150, 90);
+            panel19.Size = new Size(120, 72);
             panel19.TabIndex = 18;
             // 
             // panel20
             // 
             panel20.BorderStyle = BorderStyle.FixedSingle;
-            panel20.Location = new Point(1032, 936);
+            panel20.Location = new Point(826, 749);
+            panel20.Margin = new Padding(2);
             panel20.Name = "panel20";
-            panel20.Size = new Size(150, 90);
+            panel20.Size = new Size(120, 72);
             panel20.TabIndex = 19;
             // 
             // panel21
             // 
             panel21.BorderStyle = BorderStyle.FixedSingle;
-            panel21.Location = new Point(1032, 1032);
+            panel21.Location = new Point(826, 826);
+            panel21.Margin = new Padding(2);
             panel21.Name = "panel21";
-            panel21.Size = new Size(150, 150);
+            panel21.Size = new Size(120, 120);
             panel21.TabIndex = 20;
             // 
             // panel22
             // 
             panel22.BorderStyle = BorderStyle.FixedSingle;
-            panel22.Location = new Point(936, 1032);
+            panel22.Location = new Point(749, 826);
+            panel22.Margin = new Padding(2);
             panel22.Name = "panel22";
-            panel22.Size = new Size(90, 150);
+            panel22.Size = new Size(72, 120);
             panel22.TabIndex = 21;
             // 
             // panel23
             // 
             panel23.BorderStyle = BorderStyle.FixedSingle;
-            panel23.Location = new Point(840, 1032);
+            panel23.Location = new Point(672, 826);
+            panel23.Margin = new Padding(2);
             panel23.Name = "panel23";
-            panel23.Size = new Size(90, 150);
+            panel23.Size = new Size(72, 120);
             panel23.TabIndex = 22;
             // 
             // panel24
             // 
             panel24.BorderStyle = BorderStyle.FixedSingle;
-            panel24.Location = new Point(744, 1032);
+            panel24.Location = new Point(595, 826);
+            panel24.Margin = new Padding(2);
             panel24.Name = "panel24";
-            panel24.Size = new Size(90, 150);
+            panel24.Size = new Size(72, 120);
             panel24.TabIndex = 23;
             // 
             // panel25
             // 
             panel25.BorderStyle = BorderStyle.FixedSingle;
-            panel25.Location = new Point(648, 1032);
+            panel25.Location = new Point(518, 826);
+            panel25.Margin = new Padding(2);
             panel25.Name = "panel25";
-            panel25.Size = new Size(90, 150);
+            panel25.Size = new Size(72, 120);
             panel25.TabIndex = 24;
             // 
             // panel26
             // 
             panel26.BorderStyle = BorderStyle.FixedSingle;
-            panel26.Location = new Point(552, 1032);
+            panel26.Location = new Point(442, 826);
+            panel26.Margin = new Padding(2);
             panel26.Name = "panel26";
-            panel26.Size = new Size(90, 150);
+            panel26.Size = new Size(72, 120);
             panel26.TabIndex = 25;
             // 
             // panel27
             // 
             panel27.BorderStyle = BorderStyle.FixedSingle;
-            panel27.Location = new Point(456, 1032);
+            panel27.Location = new Point(365, 826);
+            panel27.Margin = new Padding(2);
             panel27.Name = "panel27";
-            panel27.Size = new Size(90, 150);
+            panel27.Size = new Size(72, 120);
             panel27.TabIndex = 26;
             // 
             // panel28
             // 
             panel28.BorderStyle = BorderStyle.FixedSingle;
-            panel28.Location = new Point(360, 1032);
+            panel28.Location = new Point(288, 826);
+            panel28.Margin = new Padding(2);
             panel28.Name = "panel28";
-            panel28.Size = new Size(90, 150);
+            panel28.Size = new Size(72, 120);
             panel28.TabIndex = 27;
             // 
             // panel29
             // 
             panel29.BorderStyle = BorderStyle.FixedSingle;
-            panel29.Location = new Point(264, 1032);
+            panel29.Location = new Point(211, 826);
+            panel29.Margin = new Padding(2);
             panel29.Name = "panel29";
-            panel29.Size = new Size(90, 150);
+            panel29.Size = new Size(72, 120);
             panel29.TabIndex = 28;
             // 
             // panel30
             // 
             panel30.BorderStyle = BorderStyle.FixedSingle;
-            panel30.Location = new Point(168, 1032);
+            panel30.Location = new Point(134, 826);
+            panel30.Margin = new Padding(2);
             panel30.Name = "panel30";
-            panel30.Size = new Size(90, 150);
+            panel30.Size = new Size(72, 120);
             panel30.TabIndex = 29;
             // 
             // panel31
             // 
             panel31.BorderStyle = BorderStyle.FixedSingle;
-            panel31.Location = new Point(12, 1032);
+            panel31.Location = new Point(10, 826);
+            panel31.Margin = new Padding(2);
             panel31.Name = "panel31";
-            panel31.Size = new Size(150, 150);
+            panel31.Size = new Size(120, 120);
             panel31.TabIndex = 30;
             // 
             // panel32
             // 
             panel32.BorderStyle = BorderStyle.FixedSingle;
-            panel32.Location = new Point(12, 936);
+            panel32.Location = new Point(10, 749);
+            panel32.Margin = new Padding(2);
             panel32.Name = "panel32";
-            panel32.Size = new Size(150, 90);
+            panel32.Size = new Size(120, 72);
             panel32.TabIndex = 31;
             // 
             // panel33
             // 
             panel33.BorderStyle = BorderStyle.FixedSingle;
-            panel33.Location = new Point(12, 840);
+            panel33.Location = new Point(10, 672);
+            panel33.Margin = new Padding(2);
             panel33.Name = "panel33";
-            panel33.Size = new Size(150, 90);
+            panel33.Size = new Size(120, 72);
             panel33.TabIndex = 32;
             // 
             // panel34
             // 
             panel34.BorderStyle = BorderStyle.FixedSingle;
-            panel34.Location = new Point(12, 744);
+            panel34.Location = new Point(10, 595);
+            panel34.Margin = new Padding(2);
             panel34.Name = "panel34";
-            panel34.Size = new Size(150, 90);
+            panel34.Size = new Size(120, 72);
             panel34.TabIndex = 33;
             // 
             // panel35
             // 
             panel35.BorderStyle = BorderStyle.FixedSingle;
-            panel35.Location = new Point(12, 648);
+            panel35.Location = new Point(10, 518);
+            panel35.Margin = new Padding(2);
             panel35.Name = "panel35";
-            panel35.Size = new Size(150, 90);
+            panel35.Size = new Size(120, 72);
             panel35.TabIndex = 34;
             // 
             // panel36
             // 
             panel36.BorderStyle = BorderStyle.FixedSingle;
-            panel36.Location = new Point(12, 552);
+            panel36.Location = new Point(10, 442);
+            panel36.Margin = new Padding(2);
             panel36.Name = "panel36";
-            panel36.Size = new Size(150, 90);
+            panel36.Size = new Size(120, 72);
             panel36.TabIndex = 35;
             // 
             // panel37
             // 
             panel37.BorderStyle = BorderStyle.FixedSingle;
-            panel37.Location = new Point(12, 456);
+            panel37.Location = new Point(10, 365);
+            panel37.Margin = new Padding(2);
             panel37.Name = "panel37";
-            panel37.Size = new Size(150, 90);
+            panel37.Size = new Size(120, 72);
             panel37.TabIndex = 36;
             // 
             // panel38
             // 
             panel38.BorderStyle = BorderStyle.FixedSingle;
-            panel38.Location = new Point(12, 360);
+            panel38.Location = new Point(10, 288);
+            panel38.Margin = new Padding(2);
             panel38.Name = "panel38";
-            panel38.Size = new Size(150, 90);
+            panel38.Size = new Size(120, 72);
             panel38.TabIndex = 37;
             // 
             // panel39
             // 
             panel39.BorderStyle = BorderStyle.FixedSingle;
-            panel39.Location = new Point(12, 264);
+            panel39.Location = new Point(10, 211);
+            panel39.Margin = new Padding(2);
             panel39.Name = "panel39";
-            panel39.Size = new Size(150, 90);
+            panel39.Size = new Size(120, 72);
             panel39.TabIndex = 38;
             // 
             // panel40
             // 
             panel40.BorderStyle = BorderStyle.FixedSingle;
-            panel40.Location = new Point(12, 168);
+            panel40.Location = new Point(10, 134);
+            panel40.Margin = new Padding(2);
             panel40.Name = "panel40";
-            panel40.Size = new Size(150, 90);
+            panel40.Size = new Size(120, 72);
             panel40.TabIndex = 39;
             // 
             // panel41
             // 
-            panel41.Location = new Point(1230, 12);
+            panel41.Location = new Point(984, 10);
+            panel41.Margin = new Padding(2);
             panel41.Name = "panel41";
-            panel41.Size = new Size(180, 100);
+            panel41.Size = new Size(144, 80);
             panel41.TabIndex = 40;
             // 
             // panel42
             // 
-            panel42.Location = new Point(1230, 162);
+            panel42.Location = new Point(984, 130);
+            panel42.Margin = new Padding(2);
             panel42.Name = "panel42";
-            panel42.Size = new Size(180, 100);
+            panel42.Size = new Size(144, 80);
             panel42.TabIndex = 41;
             // 
             // panel43
             // 
-            panel43.Location = new Point(1230, 312);
+            panel43.Location = new Point(984, 250);
+            panel43.Margin = new Padding(2);
             panel43.Name = "panel43";
-            panel43.Size = new Size(180, 100);
+            panel43.Size = new Size(144, 80);
             panel43.TabIndex = 42;
             // 
             // panel44
             // 
-            panel44.Location = new Point(1230, 462);
+            panel44.Location = new Point(984, 370);
+            panel44.Margin = new Padding(2);
             panel44.Name = "panel44";
-            panel44.Size = new Size(180, 100);
+            panel44.Size = new Size(144, 80);
             panel44.TabIndex = 43;
             // 
             // button1
             // 
-            button1.Location = new Point(536, 485);
+            button1.Location = new Point(429, 388);
+            button1.Margin = new Padding(2);
             button1.Name = "button1";
-            button1.Size = new Size(133, 85);
+            button1.Size = new Size(106, 68);
             button1.TabIndex = 44;
             button1.Text = "Lắc xúc xắc";
             button1.UseVisualStyleBackColor = true;
@@ -437,16 +482,17 @@
             // panelTimer
             // 
             panelTimer.BorderStyle = BorderStyle.FixedSingle;
-            panelTimer.Location = new Point(456, 294);
+            panelTimer.Location = new Point(365, 235);
+            panelTimer.Margin = new Padding(2);
             panelTimer.Name = "panelTimer";
-            panelTimer.Size = new Size(282, 100);
+            panelTimer.Size = new Size(226, 80);
             panelTimer.TabIndex = 45;
             // 
             // MainForm
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1878, 1244);
+            ClientSize = new Size(1582, 853);
             Controls.Add(panelTimer);
             Controls.Add(button1);
             Controls.Add(panel44);
@@ -493,8 +539,10 @@
             Controls.Add(panel3);
             Controls.Add(panel2);
             Controls.Add(panel1);
+            Margin = new Padding(2);
             Name = "MainForm";
             Text = "Form1";
+            WindowState = FormWindowState.Maximized;
             Load += MainForm_Load;
             ResumeLayout(false);
         }

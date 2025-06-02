@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MonopolyWinForms.Login_Signup;
 
 namespace MonopolyWinForms.GameLogic
 {
@@ -27,8 +28,17 @@ namespace MonopolyWinForms.GameLogic
             int dice1 = random.Next(1, 7);
             int dice2 = random.Next(1, 7);
             int totalSteps = dice1 + dice2;
-            MessageBox.Show($"Bạn tung được: {dice1} và {dice2} (Tổng: {totalSteps})", "Kết quả xúc xắc");
             bool isDouble = dice1 == dice2;
+            if (Session.PlayerInGameId == player.ID)
+            {
+                MessageBox.Show($"Bạn tung được: {dice1} và {dice2} (Tổng: {totalSteps})", "Kết quả xúc xắc");
+            }
+            else 
+            {
+                mainForm.AddToGameLog($"{players[currentPlayerIndex].Name} lắc được {dice1} và {dice2} (tổng: {totalSteps})" + 
+                (isDouble ? " - Được lắc tiếp!" : ""), MainForm.LogType.System);
+            }
+            
             if (player.IsInJail)
             {
                 if (isDouble)
@@ -44,7 +54,7 @@ namespace MonopolyWinForms.GameLogic
                         MessageBox.Show("Bạn đã ở tù 3 lượt. Trả $100 để ra tù và tiếp tục đi.", "Thoát tù sau 3 lượt");
                         if (player.Money < 100)
                         {
-                            mainForm.ForceSellAssets(player);
+                            mainForm.ForceSellAssets(player);   
                             mainForm.SubtractMoney(100, player);
                         }
                         else

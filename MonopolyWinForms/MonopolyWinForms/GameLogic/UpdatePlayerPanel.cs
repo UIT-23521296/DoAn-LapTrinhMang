@@ -12,7 +12,7 @@ namespace MonopolyWinForms.GameLogic
         public void UpdatePlayerPanelUI(Panel playerPanel, Player player)
         {
             playerPanel.Controls.Clear();
-
+            playerPanel.Size = new Size(220, 60);
             PictureBox pic = new PictureBox
             {
                 Size = new Size(50, 50),
