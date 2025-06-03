@@ -93,7 +93,7 @@ namespace MonopolyWinForms.Room
             Panel gridPanel = new Panel
             {
                 Location = new Point(50, 150),
-                Size = new Size(1040, 500),
+                Size = new Size(1000, 500),
                 BackColor = Color.White,
                 BorderStyle = BorderStyle.FixedSingle
             };
@@ -323,11 +323,18 @@ namespace MonopolyWinForms.Room
 
         private void UpdateRoomsUI(List<KeyValuePair<string, RoomInfo>> rooms, List<string> newRooms)
         {
+            // Ghi nhớ dòng đang được chọn (nếu có)
+            string selectedRoomName = null;
+            if (dgvRooms.SelectedRows.Count > 0)
+            {
+                selectedRoomName = dgvRooms.SelectedRows[0].Cells["RoomName"].Value.ToString();
+            }
+
             dgvRooms.Rows.Clear();
 
             foreach (var room in rooms)
             {
-                var row = dgvRooms.Rows.Add(
+                int rowIndex = dgvRooms.Rows.Add(
                     room.Value.RoomName,
                     room.Value.HostIP,
                     $"{room.Value.CurrentPlayers}/{room.Value.MaxPlayers}",
@@ -337,10 +344,23 @@ namespace MonopolyWinForms.Room
                 // Đánh dấu phòng mới
                 if (newRooms.Contains(room.Key))
                 {
-                    dgvRooms.Rows[row].DefaultCellStyle.BackColor = Color.FromArgb(230, 255, 230);
-                    dgvRooms.Rows[row].DefaultCellStyle.SelectionBackColor = Color.FromArgb(200, 255, 200);
+                    dgvRooms.Rows[rowIndex].DefaultCellStyle.BackColor = Color.FromArgb(230, 255, 230);
+                    dgvRooms.Rows[rowIndex].DefaultCellStyle.SelectionBackColor = Color.FromArgb(200, 255, 200);
+                }
+
+                // Nếu là dòng đang được chọn trước đó thì chọn lại
+                if (room.Value.RoomName == selectedRoomName)
+                {
+                    dgvRooms.Rows[rowIndex].Selected = true;
                 }
             }
+
+            // Nếu không có dòng nào được chọn thì xóa chọn
+            if (dgvRooms.SelectedRows.Count == 0 && dgvRooms.Rows.Count > 0)
+            {
+                dgvRooms.ClearSelection();
+            }
         }
+
     }
 }

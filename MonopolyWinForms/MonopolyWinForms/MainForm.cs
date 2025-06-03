@@ -212,7 +212,9 @@ namespace MonopolyWinForms
                             _ = MovePlayerStepByStep(localPlayer, steps, 40).ContinueWith(_ => {
                                 // Chỉ cập nhật TileIndex sau khi hoàn thành animation
                                 localPlayer.TileIndex = remotePlayer.TileIndex;
+                                UpdatePlayerMarkerPosition(localPlayer, remotePlayer.TileIndex);
                             });
+                            
                         }
                     }
                 }
@@ -574,8 +576,9 @@ namespace MonopolyWinForms
 
                     // Đóng form và quay về màn hình danh sách phòng
                     this.Hide();
-                    var joinRoomForm = new JoinRoom();
-                    joinRoomForm.Show();
+            
+                    // Không tạo form JoinRoom ở đây, để HandlePlayerLeft xử lý
+                    // Điều này sẽ tránh việc tạo nhiều form JoinRoom
                     this.Close();
                 }
             }
@@ -613,8 +616,21 @@ namespace MonopolyWinForms
 
             // Đóng form và quay về màn hình danh sách phòng
             this.Hide();
-            var joinRoomForm = new JoinRoom();
-            joinRoomForm.Show();
+            
+            // Kiểm tra xem đã có form JoinRoom nào đang mở chưa
+            var existingJoinRoom = Application.OpenForms.OfType<JoinRoom>().FirstOrDefault();
+            if (existingJoinRoom == null)
+            {
+                // Nếu chưa có form nào, tạo form mới
+                var joinRoomForm = new JoinRoom();
+                joinRoomForm.Show();
+            }
+            else
+            {
+                // Nếu đã có form, kích hoạt form đó
+                existingJoinRoom.Activate();
+            }
+            
             this.Close();
         }
 

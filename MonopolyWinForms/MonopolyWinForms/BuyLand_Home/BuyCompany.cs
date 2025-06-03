@@ -68,8 +68,12 @@ namespace MonopolyWinForms.BuyLand_Home
             {
                 tile.PlayerId = playerID;
                 tile.Level = 1;
+
+                //Cập nhật UI
                 UpdateRentDisplay();
                 mainform.UpdateCompanyRent(playerID);
+
+                //Cập nhật game state 
                 var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
                 await GameManager.UpdateGameState(gameState);
                 this.DialogResult = DialogResult.OK;

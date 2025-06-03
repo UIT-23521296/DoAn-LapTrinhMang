@@ -83,49 +83,57 @@ namespace MonopolyWinForms.Room
             }
         }
 
-        private async void  Waiting_Room_Client_FormClosing(object sender, FormClosingEventArgs e)
+        private async void Waiting_Room_Client_FormClosing(object sender, FormClosingEventArgs e)
         {
-            // Dừng timer
-            refreshTimer.Stop();
-
-            // Nếu game đã bắt đầu, không cần xử lý thoát phòng
-            if (GameManager.IsGameStarted)
+            try
             {
-                return;
-            }
+                // Dừng timer refresh trước
+                if (refreshTimer != null)
+                {
+                    refreshTimer.Stop();
+                    refreshTimer.Dispose();
+                }
 
-            // Xử lý thoát phòng như cũ
-            if (Session.CurrentRoomId != null)
-            {
-                try
+                // Nếu đang trong phòng
+                if (Session.CurrentRoomId != null)
                 {
                     var room = await firebase.GetRoomAsync(Session.CurrentRoomId);
                     if (room != null)
                     {
-                        if (room.PlayerDisplayNames.Contains(Session.UserName))
+                        // Xóa người chơi khỏi danh sách
+                        room.PlayerDisplayNames.Remove(Session.UserName);
+                        room.PlayerIds.Remove(Session.UserId);
+                        room.ReadyPlayers.Remove(Session.UserName);
+
+                        // Nếu không còn ai trong phòng, xóa phòng
+                        if (room.PlayerDisplayNames.Count == 0)
                         {
-                            room.PlayerDisplayNames.Remove(Session.UserName);
-                            
-                            if (room.PlayerDisplayNames.Count == 0)
-                            {
-                                await firebase.DeleteRoomAsync(Session.CurrentRoomId);
-                            }
-                            else
-                            {
-                                await firebase.CreateRoomAsync(Session.CurrentRoomId, room);
-                            }
+                            await firebase.DeleteRoomAsync(Session.CurrentRoomId);
+                        }
+                        else
+                        {
+                            // Cập nhật thông tin phòng
+                            await firebase.CreateRoomAsync(Session.CurrentRoomId, room);
                         }
                     }
+
+                    // Reset session
                     Session.LeaveRoom();
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Lỗi khi thoát phòng: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
 
-            JoinRoom joinRoomForm = new JoinRoom();
-            joinRoomForm.Show();
+                // Đóng form và quay về màn hình danh sách phòng
+                this.Hide();
+                
+                // Luôn tạo một form JoinRoom mới khi thoát
+                var joinRoomForm = new JoinRoom();
+                joinRoomForm.Show();
+                
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi xử lý thoát phòng: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btn_Out_Click(object sender, EventArgs e)
@@ -189,12 +197,16 @@ namespace MonopolyWinForms.Room
             if (refreshTimer != null)
             {
                 refreshTimer.Stop();
+                refreshTimer.Dispose();
             }
 
             // Đóng form và quay về màn hình danh sách phòng
             this.Hide();
+            
+            // Luôn tạo một form JoinRoom mới khi có người thoát
             var joinRoomForm = new JoinRoom();
             joinRoomForm.Show();
+            
             this.Close();
         }
 

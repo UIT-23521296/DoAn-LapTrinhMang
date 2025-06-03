@@ -118,8 +118,11 @@ namespace MonopolyWinForms.Room
                         }
                     }
                     Session.LeaveRoom();
-                    var roomListForm = new JoinRoom();
-                    roomListForm.Show();
+
+                    // Kiểm tra xem đã có form JoinRoom nào đang mở chưa
+                    this.Close();
+                    var joinRoom = new JoinRoom();
+                    joinRoom.Show();
                 }
                 catch (Exception ex)
                 {
@@ -198,8 +201,19 @@ namespace MonopolyWinForms.Room
 
             // Đóng form và quay về màn hình danh sách phòng
             this.Hide();
-            var joinRoomForm = new JoinRoom();
-            joinRoomForm.Show();
+            
+            // Kiểm tra xem đã có form JoinRoom nào đang mở chưa
+            var existingJoinRoom = Application.OpenForms.OfType<JoinRoom>().FirstOrDefault();
+            if (existingJoinRoom == null)
+            {
+                var joinRoomForm = new JoinRoom();
+                joinRoomForm.Show();
+            }
+            else
+            {
+                existingJoinRoom.Activate();
+            }
+            
             this.Close();
         }
 
