@@ -7,6 +7,7 @@ using MonopolyWinForms.Room;
 using MonopolyWinForms;
 using System.Security.Policy;
 using static MonopolyWinForms.MainForm;
+using System.Threading.Tasks;
 
 namespace MonopolyWinForms.GameLogic
 {
@@ -39,7 +40,7 @@ namespace MonopolyWinForms.GameLogic
         {
             this.currentPlayerIndex = newIndex;
         }
-        public void ShowTileActionForm(Tile tile, Player currentPlayer)
+        public async Task ShowTileActionForm(Tile tile, Player currentPlayer)
         {
             if (tile.PlayerId != null && tile.PlayerId != currentPlayer.ID)
             {
@@ -54,6 +55,8 @@ namespace MonopolyWinForms.GameLogic
                     mainForm.UpdatePlayerPanel(currentPlayer);
                     mainForm.UpdatePlayerPanel(players[owner - 1]);
                     MessageBox.Show($"Bạn phải trả ${rent * 2} tiền thuê cho {players[owner - 1].Name}!", "Trả tiền thuê");
+                    var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
+                    await GameManager.UpdateGameState(gameState);
                     return;
                 }
                 else if (currentPlayer.ReduceHalfMoney >= 1)
@@ -66,6 +69,8 @@ namespace MonopolyWinForms.GameLogic
                     mainForm.UpdatePlayerPanel(currentPlayer);
                     mainForm.UpdatePlayerPanel(players[owner - 1]);
                     MessageBox.Show($"Bạn phải trả ${rent / 2} tiền thuê cho {players[owner - 1].Name}!", "Trả tiền thuê");
+                    var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
+                    await GameManager.UpdateGameState(gameState);
                     return;
                 }else{
                     currentPlayer.Money -= rent;
@@ -74,6 +79,8 @@ namespace MonopolyWinForms.GameLogic
                     mainForm.UpdatePlayerPanel(currentPlayer);
                     mainForm.UpdatePlayerPanel(players[owner - 1]);
                     MessageBox.Show($"Bạn phải trả ${rent} tiền thuê cho {players[owner - 1].Name}!", "Trả tiền thuê");
+                    var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
+                    await GameManager.UpdateGameState(gameState);
                     return;
                 }
             }
@@ -123,8 +130,8 @@ namespace MonopolyWinForms.GameLogic
             var path = "Co_hoi.txt";
             var cards = File.ReadAllLines(path).Where(line => !string.IsNullOrWhiteSpace(line)).ToArray();
             if (cards.Length > 0){
-                //string card = cards[random.Next(cards.Length)];
-                string card = cards[8];
+                string card = cards[random.Next(cards.Length)];
+                //string card = cards[8];
                 ProcessCardEffect(player, card, "Khí vận");
             }
         }
@@ -133,8 +140,8 @@ namespace MonopolyWinForms.GameLogic
             var path = "Co_hoi.txt";
             var cards = File.ReadAllLines(path).Where(line => !string.IsNullOrWhiteSpace(line)).ToArray();
             if (cards.Length > 0){
-                //string card = cards[random.Next(cards.Length)];
-                string card = cards[8];
+                string card = cards[random.Next(cards.Length)];
+                //string card = cards[8];
                 ProcessCardEffect(player, card, "Cơ hội");
             }
         }

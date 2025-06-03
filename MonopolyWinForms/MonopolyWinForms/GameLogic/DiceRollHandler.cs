@@ -29,10 +29,10 @@ namespace MonopolyWinForms.GameLogic
         public async Task RollDiceAndMoveAsync()
         {
             var player = players[currentPlayerIndex];
-            //int dice1 = random.Next(1, 7);
-            //int dice2 = random.Next(1, 7);
-            int dice1 = 0;
-            int dice2 = 2;
+            int dice1 = random.Next(1, 7);
+            int dice2 = random.Next(1, 7);
+            //int dice1 = 0;
+            //int dice2 = 2;
             int totalSteps = dice1 + dice2;
             bool isDouble = dice1 == dice2;
             if (Session.PlayerInGameId == player.ID)
