@@ -235,4 +235,170 @@ public class FirebaseService
             return null;
         }
     }
+
+    public async Task CleanupGameDataAsync(string roomId)
+    {
+        try
+        {
+            // Xóa game state
+            string gameStateUrl = $"{baseUrl}/gameStates/{roomId}.json";
+            await _client.DeleteAsync(gameStateUrl);
+
+            // Xóa chat
+            string chatUrl = $"{baseUrl}/chat/{roomId}.json";
+            await _client.DeleteAsync(chatUrl);
+
+            // Xóa phòng
+            string roomUrl = $"{baseUrl}/rooms/{roomId}.json";
+            await _client.DeleteAsync(roomUrl);
+        }
+        catch (Exception ex)
+        {
+            Log($"Error cleaning up game data: {ex.Message}");
+            throw;
+        }
+    }
+
+    // Lấy thông tin session của một user
+    public async Task<Dictionary<string, dynamic>> GetSessionAsync(string userId)
+    {
+        try
+        {
+            string url = $"{baseUrl}/sessions/{userId}.json";
+            var response = await _client.GetAsync(url);
+            if (!response.IsSuccessStatusCode)
+                return null;
+
+            string json = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrEmpty(json) || json == "null")
+                return null;
+
+            return JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(json);
+        }
+        catch (Exception ex)
+        {
+            Log($"Error getting session: {ex.Message}");
+            return null;
+        }
+    }
+
+    // Tạo session mới
+    public async Task CreateSessionAsync(string userId, object sessionData)
+    {
+        try
+        {
+            string url = $"{baseUrl}/sessions/{userId}.json";
+            var content = new StringContent(
+                JsonConvert.SerializeObject(sessionData),
+                Encoding.UTF8,
+                "application/json"
+            );
+            var response = await _client.PutAsync(url, content);
+            response.EnsureSuccessStatusCode();
+        }
+        catch (Exception ex)
+        {
+            Log($"Error creating session: {ex.Message}");
+            throw;
+        }
+    }
+
+    // Cập nhật session
+    public async Task UpdateSessionAsync(string userId, object sessionData)
+    {
+        try
+        {
+            string url = $"{baseUrl}/sessions/{userId}.json";
+            var content = new StringContent(
+                JsonConvert.SerializeObject(sessionData),
+                Encoding.UTF8,
+                "application/json"
+            );
+            var response = await _client.PatchAsync(url, content);
+            response.EnsureSuccessStatusCode();
+        }
+        catch (Exception ex)
+        {
+            Log($"Error updating session: {ex.Message}");
+            throw;
+        }
+    }
+
+    // Xóa session
+    public async Task DeleteSessionAsync(string userId)
+    {
+        try
+        {
+            string url = $"{baseUrl}/sessions/{userId}.json";
+            var response = await _client.DeleteAsync(url);
+            response.EnsureSuccessStatusCode();
+        }
+        catch (Exception ex)
+        {
+            Log($"Error deleting session: {ex.Message}");
+            throw;
+        }
+    }
+
+    // Lấy tất cả session đang active
+    public async Task<Dictionary<string, dynamic>> GetActiveSessionsAsync()
+    {
+        try
+        {
+            string url = $"{baseUrl}/sessions.json";
+            var response = await _client.GetAsync(url);
+            if (!response.IsSuccessStatusCode)
+                return null;
+
+            string json = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrEmpty(json) || json == "null")
+                return null;
+
+            var allSessions = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(json);
+            
+            // Lọc chỉ lấy các session đang active
+            return allSessions?.Where(s => s.Value.isActive == true)
+                             .ToDictionary(k => k.Key, v => v.Value);
+        }
+        catch (Exception ex)
+        {
+            Log($"Error getting active sessions: {ex.Message}");
+            return null;
+        }
+    }
+
+    // Kiểm tra session có hợp lệ không
+    public async Task<bool> ValidateSessionAsync(string userId)
+    {
+        try
+        {
+            var session = await GetSessionAsync(userId);
+            if (session == null)
+                return false;
+
+            // Kiểm tra session có active không
+            if (!session.ContainsKey("isActive") || !session["isActive"])
+                return false;
+
+            // Kiểm tra thời gian hoạt động cuối
+            if (session.ContainsKey("lastActive"))
+            {
+                var lastActive = DateTime.Parse(session["lastActive"].ToString());
+                var timeout = TimeSpan.FromMinutes(30); // Session timeout sau 30 phút
+                if (DateTime.UtcNow - lastActive > timeout)
+                {
+                    // Session hết hạn, cập nhật trạng thái
+                    await UpdateSessionAsync(userId, new { isActive = false });
+                    return false;
+                }
+            }
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Log($"Error validating session: {ex.Message}");
+            return false;
+        }
+    }
 }

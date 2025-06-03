@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MonopolyWinForms.Services;
 using MonopolyWinForms.GameLogic;
 using Newtonsoft.Json;
+using MonopolyWinForms.Room;
 using System.Net.Http;
 
 namespace MonopolyWinForms.Services
@@ -14,6 +15,7 @@ namespace MonopolyWinForms.Services
     {
         public static bool IsGameStarted { get; private set; }
         public static string CurrentRoomId { get; private set; }
+        public static int PlayTime { get; private set; }
         public static List<string> Players { get; private set; }
         private static FirebaseService firebase;
         private static System.Windows.Forms.Timer syncTimer;
@@ -22,8 +24,9 @@ namespace MonopolyWinForms.Services
         private static DateTime lastChatUpdateTime = DateTime.MinValue;
         public static event Action<GameState> OnGameStateUpdated;
         public static event Action<string, string> OnChatMessageReceived;
+        public static event Action<string> OnPlayerLeft;
 
-        public static void StartGame(string roomId, List<string> players)
+        public static void StartGame(string roomId, List<string> players, int playtime)
         {
             try
             {
@@ -31,6 +34,7 @@ namespace MonopolyWinForms.Services
                 IsGameStarted = true;
                 CurrentRoomId = roomId;
                 Players = players;
+                PlayTime = playtime;
                 firebase = new FirebaseService();
                 File.AppendAllText("log.txt", $"Firebase initialized\n");
                 InitializeSyncTimer();
@@ -183,6 +187,86 @@ namespace MonopolyWinForms.Services
             catch (Exception ex)
             {
                 File.AppendAllText("log.txt", $"Error sending chat message: {ex.Message}\n");
+            }
+        }
+
+        public static async Task CleanupGameData(string roomId)
+        {
+            try
+            {
+                await firebase.CleanupGameDataAsync(roomId);
+                EndGame();
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText("log.txt", $"Error in GameManager.CleanupGameData: {ex.Message}\n");
+            }
+        }
+
+        public static async Task<RoomInfo> GetRoomAsync(string roomId)
+        {
+            try
+            {
+                return await firebase.GetRoomAsync(roomId);
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText("log.txt", $"Error in GameManager.GetRoomAsync: {ex.Message}\n");
+                return null;
+            }
+        }
+
+        public static async Task UpdateRoomAsync(string roomId, RoomInfo room)
+        {
+            try
+            {
+                await firebase.CreateRoomAsync(roomId, room);
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText("log.txt", $"Error in GameManager.UpdateRoomAsync: {ex.Message}\n");
+            }
+        }
+
+        public static async Task NotifyPlayerLeft(string roomId, string playerName)
+        {
+            try
+            {
+                // Kiểm tra xem game đã kết thúc chưa
+                if (!IsGameStarted)
+                {
+                    return;
+                }
+
+                // Đánh dấu game đã kết thúc
+                IsGameStarted = false;
+
+                // Gửi thông báo chat trước
+                await SendChatMessage(roomId, new
+                {
+                    SenderName = "Hệ thống",
+                    Message = $"{playerName} đã thoát game. Trò chơi kết thúc!",
+                    Timestamp = DateTime.UtcNow
+                });
+
+                // Kích hoạt event để các form khác biết
+                OnPlayerLeft?.Invoke(playerName);
+
+                // Đợi một chút để đảm bảo thông báo được gửi và nhận
+                await Task.Delay(500);
+
+                // Cleanup dữ liệu game
+                await CleanupGameData(roomId);
+
+                // Reset trạng thái game
+                CurrentRoomId = null;
+                Players = null;
+                syncTimer?.Stop();
+                chatSyncTimer?.Stop();
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText("log.txt", $"Error in NotifyPlayerLeft: {ex.Message}\n");
             }
         }
     }

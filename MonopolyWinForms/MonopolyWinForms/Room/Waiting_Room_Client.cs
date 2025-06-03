@@ -32,6 +32,9 @@ namespace MonopolyWinForms.Room
             refreshTimer.Start();
 
             this.FormClosing += Waiting_Room_Client_FormClosing;
+
+            // Đăng ký event handler
+            GameManager.OnPlayerLeft += HandlePlayerLeft;
         }
 
         private async void RefreshTimer_Tick(object sender, EventArgs e)
@@ -49,7 +52,7 @@ namespace MonopolyWinForms.Room
                 refreshTimer.Stop();
 
                 //Khởi tạo game cho client
-                GameManager.StartGame(Session.CurrentRoomId, room.PlayerDisplayNames);
+                GameManager.StartGame(Session.CurrentRoomId, room.PlayerDisplayNames, room.PlayTime);
                 Form mainFrom = new MainForm();
                 mainFrom.Show();
                 this.Hide();
@@ -160,6 +163,45 @@ namespace MonopolyWinForms.Room
             {
                 MessageBox.Show($"Lỗi khi cập nhật trạng thái: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void HandlePlayerLeft(string playerName)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => HandlePlayerLeft(playerName)));
+                return;
+            }
+
+            // Kiểm tra xem form đã đóng chưa
+            if (this.IsDisposed || !this.IsHandleCreated)
+                return;
+
+            // Hiển thị thông báo
+            MessageBox.Show(
+                $"{playerName} đã thoát phòng. Phòng sẽ đóng.",
+                "Thông báo",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+            );
+
+            // Dừng timer refresh
+            if (refreshTimer != null)
+            {
+                refreshTimer.Stop();
+            }
+
+            // Đóng form và quay về màn hình danh sách phòng
+            this.Hide();
+            var joinRoomForm = new JoinRoom();
+            joinRoomForm.Show();
+            this.Close();
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            base.OnFormClosed(e);
+            GameManager.OnPlayerLeft -= HandlePlayerLeft;
         }
     }
 }

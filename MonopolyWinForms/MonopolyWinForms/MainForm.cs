@@ -3,6 +3,7 @@ using MonopolyWinForms.FormManage;
 using MonopolyWinForms.GameLogic;
 using MonopolyWinForms.Services;
 using MonopolyWinForms.Login_Signup;
+using MonopolyWinForms.Room;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 namespace MonopolyWinForms
@@ -79,11 +80,35 @@ namespace MonopolyWinForms
                 AddToGameLog($"Lỗi gửi tin nhắn: {ex.Message}", LogType.Error);
             }
         }
-        private void GameOver(){
-            MessageBox.Show("⏰ Hết thời gian! Trò chơi kết thúc!", "Thông báo");
-            var resultForm = new GameResultForm(players, tiles);
-            resultForm.ShowDialog();
-            Application.Exit();
+        private async void GameOver()
+        {
+            try
+            {
+                MessageBox.Show("⏰ Hết thời gian! Trò chơi kết thúc!", "Thông báo");
+                
+                // Hiển thị kết quả game
+                var resultForm = new GameResultForm(players, tiles);
+                resultForm.ShowDialog();
+
+                // Gửi thông báo kết thúc game cho tất cả người chơi
+                await GameManager.SendChatMessage(GameManager.CurrentRoomId, new
+                {
+                    SenderName = "Hệ thống",
+                    Message = "Trò chơi đã kết thúc!",
+                    Timestamp = DateTime.UtcNow
+                });
+
+                // Dọn dẹp dữ liệu game
+                await GameManager.CleanupGameData(GameManager.CurrentRoomId);
+                
+                // Đóng form
+                Application.Exit();
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText("log.txt", $"Error in GameOver: {ex.Message}\n");
+                Application.Exit();
+            }
         }
         public MainForm()
         {
@@ -111,6 +136,12 @@ namespace MonopolyWinForms
             Action = new TileActionHandler(players, tiles, panels, currentPlayerIndex, monopoly, this, random, playerMarkers);
             rentCalculator = new RentCalculator(monopoly);
             BankManager = new BankruptcyManager(players, tiles, panels, playerMarkers, this, currentPlayerIndex);
+            
+            // Thêm event handler cho FormClosing
+            this.FormClosing += MainForm_FormClosing;
+
+            // Đăng ký event handler cho sự kiện người chơi thoát
+            GameManager.OnPlayerLeft += HandlePlayerLeft;
         }
 
         private void HandleGameStateUpdate(GameState gameState)
@@ -262,8 +293,14 @@ namespace MonopolyWinForms
             {
                 File.AppendAllText("log.txt", $"Error in MainForm_Load: {ex.Message}\n");
             }
-            await Task.Delay(3000);
-            countdown.Start(30);
+
+            //_ = Task.Run(async () =>
+            //{
+            //    await Task.Delay(3000);
+            //    countdown.Start(GameManager.PlayTime);
+            //});
+
+            countdown.Start(GameManager.PlayTime);
         }
         private async void button1_Click(object sender, EventArgs e){
             var handler = new DiceRollHandler(players, panels, this, currentPlayerIndex, tiles);
@@ -508,6 +545,94 @@ namespace MonopolyWinForms
                     }
                     return $"{player.Name} đã đến {tile.Name}";
             }
+        }
+
+        private async void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            try
+            {
+                // Nếu game đang diễn ra
+                if (GameManager.IsGameStarted)
+                {
+                    // Hiển thị xác nhận
+                    var result = MessageBox.Show(
+                        "Bạn có chắc muốn thoát game? Điều này sẽ kết thúc game cho tất cả người chơi.",
+                        "Xác nhận thoát",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning
+                    );
+
+                    if (result == DialogResult.No)
+                    {
+                        e.Cancel = true;
+                        return;
+                    }
+
+                    // Thông báo cho tất cả người chơi và đợi một chút để đảm bảo thông báo được gửi
+                    await GameManager.NotifyPlayerLeft(GameManager.CurrentRoomId, Session.UserName);
+                    await Task.Delay(500); // Đợi 500ms để đảm bảo thông báo được gửi
+
+                    // Đóng form và quay về màn hình danh sách phòng
+                    this.Hide();
+                    var joinRoomForm = new JoinRoom();
+                    joinRoomForm.Show();
+                    this.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText("log.txt", $"Error in MainForm_FormClosing: {ex.Message}\n");
+            }
+        }
+
+        private void HandlePlayerLeft(string playerName)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => HandlePlayerLeft(playerName)));
+                return;
+            }
+
+            // Kiểm tra xem form đã đóng chưa
+            if (this.IsDisposed || !this.IsHandleCreated)
+                return;
+
+            // Hiển thị thông báo
+            MessageBox.Show(
+                $"{playerName} đã thoát game. Trò chơi kết thúc!",
+                "Thông báo",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+            );
+
+            // Dừng tất cả timer và event
+            if (countdown != null)
+            {
+                countdown.Stop();
+            }
+
+            // Đóng form và quay về màn hình danh sách phòng
+            this.Hide();
+            var joinRoomForm = new JoinRoom();
+            joinRoomForm.Show();
+            this.Close();
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            base.OnFormClosed(e);
+            
+            // Hủy đăng ký event khi form đóng
+            GameManager.OnPlayerLeft -= HandlePlayerLeft;
+            
+            // Đảm bảo tất cả timer và event được dọn dẹp
+            if (countdown != null)
+            {
+                countdown.Stop();
+            }
+                
+            // Reset session
+            Session.LeaveRoom();
         }
     }
 }
