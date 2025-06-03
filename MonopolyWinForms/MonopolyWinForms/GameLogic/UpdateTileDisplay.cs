@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MonopolyWinForms.Login_Signup;
 
 namespace MonopolyWinForms.GameLogic
 {
@@ -10,14 +11,16 @@ namespace MonopolyWinForms.GameLogic
     {        
         private Panel[] panels;
         private List<Tile> tiles;
+        private List<Player> players;
         private MainForm mainform;
         private Monopoly monopoly;
-        public UpdateTileDisplay(Panel[] panels, List<Tile> tiles, MainForm mainform, Monopoly monopoly)
+        public UpdateTileDisplay(Panel[] panels, List<Tile> tiles, MainForm mainform, Monopoly monopoly, List<Player> players)
         {
             this.panels = panels;
             this.tiles = tiles;
             this.mainform = mainform;
             this.monopoly = monopoly;
+            this.players = players;
         }
 
         public void UpdateTileDisplayUI(int index, Player currentPlayer)
@@ -405,19 +408,33 @@ namespace MonopolyWinForms.GameLogic
                 panels[index].BackgroundImageLayout = ImageLayout.None;
             }
         }
-        public Image GetHouseImage(int level, Player player)
+        public Image GetHouseImage(int level, Player player, List<Player> players, Tile tile)
         {
-            // Giả sử bạn có các ảnh như: house1.png, house2.png, hotel.png
+            // Giả sử có các ảnh như: house1.png, house2.png, hotel.png
             string imagePath;
 
-            if (level == 5)
-                imagePath = Path.Combine(Application.StartupPath, "Assets", "Images", $"{player.Color.Name}-hotel.png");
-            else if (level >= 2 && level <= 4)
-                imagePath = Path.Combine(Application.StartupPath, "Assets", "Images", $"{player.Color.Name}-house{level - 1}.png");
-
+            
+            if (tile.PlayerId != null)
+            {
+                if (level == 5)
+                    imagePath = Path.Combine(Application.StartupPath, "Assets", "Images", $"{players[tile.PlayerId.Value - 1].Color.Name}-hotel.png");
+                else if (level >= 2 && level <= 4)
+                    imagePath = Path.Combine(Application.StartupPath, "Assets", "Images", $"{players[tile.PlayerId.Value - 1].Color.Name}-house{level - 1}.png");
+                else
+                    imagePath = Path.Combine(Application.StartupPath, "Assets", "Images", $"{players[tile.PlayerId.Value - 1].Color.Name}-land.png");
+                return Image.FromFile(imagePath);
+            }
             else
-                imagePath = Path.Combine(Application.StartupPath, "Assets", "Images", $"{player.Color.Name}-land.png");
-            return Image.FromFile(imagePath);
+            {
+                if (level == 5)
+                    imagePath = Path.Combine(Application.StartupPath, "Assets", "Images", $"{player.Color.Name}-hotel.png");
+                else if (level >= 2 && level <= 4)
+                    imagePath = Path.Combine(Application.StartupPath, "Assets", "Images", $"{player.Color.Name}-house{level - 1}.png");
+
+                else
+                    imagePath = Path.Combine(Application.StartupPath, "Assets", "Images", $"{player.Color.Name}-land.png");
+                return Image.FromFile(imagePath);
+            }
         }
         private void AddOwnerImageToTilePanel(Panel panel, Tile tile, Player player)
         {
@@ -430,7 +447,7 @@ namespace MonopolyWinForms.GameLogic
             PictureBox ownerPic = new PictureBox();
             ownerPic.SizeMode = PictureBoxSizeMode.Zoom;
             ownerPic.BackColor = Color.LightBlue;
-            ownerPic.Image = GetHouseImage(tile.Level, player);
+            ownerPic.Image = GetHouseImage(tile.Level, player, players, tile);
 
             if (panel.Width < panel.Height) // ô dọc
             {

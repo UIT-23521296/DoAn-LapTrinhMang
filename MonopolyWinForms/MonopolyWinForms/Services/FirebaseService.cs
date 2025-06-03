@@ -100,6 +100,7 @@ public class FirebaseService
                 RoomId = roomId,
                 CurrentPlayerIndex = info.currentPlayerIndex,
                 IsGameStarted = info.isGameStarted,
+                PlayTime = info.PlayTime,
                 LastUpdateTime = info.lastUpdateTime
             };
 
@@ -154,6 +155,7 @@ public class FirebaseService
             {
                 currentPlayerIndex = gameState.CurrentPlayerIndex,
                 isGameStarted = gameState.IsGameStarted,
+                PlayTime = gameState.PlayTime,
                 lastUpdateTime = DateTime.UtcNow
             };
 

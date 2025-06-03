@@ -45,7 +45,7 @@ namespace MonopolyWinForms.Services
         {
             // Timer cho game state
             syncTimer = new System.Windows.Forms.Timer();
-            syncTimer.Interval = 100;
+            syncTimer.Interval = 500;
             syncTimer.Tick += SyncTimer_Tick;
             syncTimer.Start();
 
@@ -148,7 +148,21 @@ namespace MonopolyWinForms.Services
                 File.AppendAllText("log.txt", $"Error in GameManager.UpdateGameState: {ex.Message}\n");
             }
         }
-        
+
+        public static async Task<GameState> GetLatestGameState()
+        {
+            try
+            {
+                return await firebase.GetGameStateAsync(CurrentRoomId);
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText("log.txt", $"Error in GameManager.GetLatestGameState: {ex.Message}\n");
+                return null;
+            }
+        }
+
+
         public static void EndGame()
         {
             IsGameStarted = false;

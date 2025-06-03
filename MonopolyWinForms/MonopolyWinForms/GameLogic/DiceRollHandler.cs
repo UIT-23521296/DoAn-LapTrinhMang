@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MonopolyWinForms.Services;
+using MonopolyWinForms.Room;
 using MonopolyWinForms.Login_Signup;
 
 namespace MonopolyWinForms.GameLogic
@@ -10,34 +12,51 @@ namespace MonopolyWinForms.GameLogic
     public class DiceRollHandler
     {
         private List<Player> players;
+        private List<Tile> tiles;
         private Panel[] panels;
         private Random random;
         private int currentPlayerIndex;
         private MainForm mainForm;
-        public DiceRollHandler(List<Player> players, Panel[] panels, MainForm mainForm, int currentPlayerIndex)
+        public DiceRollHandler(List<Player> players, Panel[] panels, MainForm mainForm, int currentPlayerIndex, List<Tile> tiles)
         {
             this.players = players;
             this.panels = panels;
             this.random = new Random();
             this.mainForm = mainForm;
             this.currentPlayerIndex = currentPlayerIndex;
+            this.tiles = tiles;
         }
         public async Task RollDiceAndMoveAsync()
         {
             var player = players[currentPlayerIndex];
-            int dice1 = random.Next(1, 7);
-            int dice2 = random.Next(1, 7);
+            //int dice1 = random.Next(1, 7);
+            //int dice2 = random.Next(1, 7);
+            int dice1 = 0;
+            int dice2 = 2;
             int totalSteps = dice1 + dice2;
             bool isDouble = dice1 == dice2;
             if (Session.PlayerInGameId == player.ID)
             {
                 MessageBox.Show($"Bạn tung được: {dice1} và {dice2} (Tổng: {totalSteps})", "Kết quả xúc xắc");
             }
-            else 
+            
+            //Gửi log cho tất cả người chơi
+            try
             {
-                mainForm.AddToGameLog($"{players[currentPlayerIndex].Name} lắc được {dice1} và {dice2} (tổng: {totalSteps})" + 
-                (isDouble ? " - Được lắc tiếp!" : ""), MainForm.LogType.System);
+                var chatMessage = new
+                {
+                    SenderName = "Hệ thống",
+                    Message = $"{players[currentPlayerIndex].Name} lắc được {dice1} và {dice2} (tổng: {totalSteps})" +
+                    (isDouble ? " - Được lắc tiếp!" : ""),
+                    Timestamp = DateTime.UtcNow
+                };
+                await GameManager.SendChatMessage(GameManager.CurrentRoomId, chatMessage);
             }
+            catch (Exception ex)
+            {
+                mainForm.AddToGameLog($"Lỗi gửi thông tin xúc xắc: {ex.Message}", MainForm.LogType.Error);
+            }
+            
             
             if (player.IsInJail)
             {
@@ -87,12 +106,35 @@ namespace MonopolyWinForms.GameLogic
                 {
                     player.ResetDoubleDice();
                     mainForm.NextTurn();
+
+                    if (Session.PlayerInGameId == player.ID)
+                    {
+                        MessageBox.Show("Bạn quá hên, nhường lượt cho người khác", "Lắc đôi 2 lần liên tiếp");
+                    }
+
+                    try
+                    {
+                        var chatMessage = new
+                        {
+                            SenderName = "Hệ thống",
+                            Message = $"{players[currentPlayerIndex].Name} lắc được đôi 2 lần liên tiếp. Đổi lượt",
+                            Timestamp = DateTime.UtcNow
+                        };
+                        await GameManager.SendChatMessage(GameManager.CurrentRoomId, chatMessage);
+                    }
+                    catch (Exception ex)
+                    {
+                        mainForm.AddToGameLog($"Lỗi gửi thông tin xúc xắc: {ex.Message}", MainForm.LogType.Error);
+                    }
                     return;
                 }
                 else
                 {
                     player.DoubleDices++;
                 }
+
+                var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
+                await GameManager.UpdateGameState(gameState);
             }
             else
             {

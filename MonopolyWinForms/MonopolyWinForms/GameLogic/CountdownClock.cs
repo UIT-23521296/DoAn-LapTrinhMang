@@ -54,4 +54,27 @@ public class CountdownClock
     {
         displayLabel.Text = "⏳: " + remainingTime.ToString(@"mm\:ss");
     }
+
+    public void UpdateRemainingTime(int remainingSeconds)
+    {
+        if (displayLabel.InvokeRequired)
+        {
+            displayLabel.Invoke(new Action(() => UpdateRemainingTime(remainingSeconds)));
+            return;
+        }
+
+        remainingTime = TimeSpan.FromSeconds(remainingSeconds);
+        UpdateLabel();
+        
+        // Nếu hết thời gian thì dừng timer
+        if (remainingSeconds <= 0)
+        {
+            timer.Stop();
+            onTimeUp?.Invoke();
+        }
+        else if (!timer.Enabled)
+        {
+            timer.Start();
+        }
+    }
 }

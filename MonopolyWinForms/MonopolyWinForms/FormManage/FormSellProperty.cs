@@ -6,14 +6,20 @@ namespace MonopolyWinForms.FormManage
     public partial class FormSellProperty : Form
     {
         public List<Tile> ownedTiles;
+        public List<Tile> GameStateTiles;
+        public List<Player> players;
+        public int currentPlayerIndex;
         public Player player;
         private MainForm mainForm;
         public bool CanOpen { get; private set; } = true;
-        public FormSellProperty(Player player, List<Tile> tiles, MainForm mainForm)
+        public FormSellProperty(Player player, List<Tile> tiles, MainForm mainForm, List<Player> players, int currentPlayerIndex)
         {
             InitializeComponent();
             this.player = player;
             this.mainForm = mainForm;
+            this.players = players;
+            this.GameStateTiles = tiles;
+            this.currentPlayerIndex = currentPlayerIndex;
             // Lọc các ô đất của người chơi (có thể có nhà hoặc không)
             ownedTiles = tiles.Where(t => t.PlayerId == player.ID).ToList();
             if (ownedTiles.Count == 0)
@@ -30,7 +36,7 @@ namespace MonopolyWinForms.FormManage
             btnSell.Text = "💰 Bán đất & nhà";
             btnSell.Click += BtnSell_Click;
         }
-        private void BtnSell_Click(object? sender, EventArgs e)
+        private async void BtnSell_Click(object? sender, EventArgs e)
         {
             if (listBoxTiles.SelectedIndex == -1)
             {
@@ -38,7 +44,7 @@ namespace MonopolyWinForms.FormManage
                 return;
             }
             var selectedTile = ownedTiles[listBoxTiles.SelectedIndex];
-            int refund = selectedTile.SellLandAndHouses();
+            int refund = await selectedTile.SellLandAndHouses(currentPlayerIndex, players, GameStateTiles);
             mainForm.AddMoney(refund,player);
             selectedTile.PlayerId = null;
             mainForm.UpdateTileDisplay(selectedTile.Id - 1, player);

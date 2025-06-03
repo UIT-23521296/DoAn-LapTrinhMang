@@ -1,6 +1,8 @@
-﻿using System;
+﻿using MonopolyWinForms.Services;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MonopolyWinForms.GameLogic
@@ -70,7 +72,7 @@ namespace MonopolyWinForms.GameLogic
             }
             return tiles;
         }
-        public void DestroyOneHouseLevel()
+        public async Task DestroyOneHouseLevel(int currentPlayerIndex, List<Player> players, List<Tile> tiles)
         {
             if (Level > 0)
             {
@@ -80,8 +82,10 @@ namespace MonopolyWinForms.GameLogic
                     PlayerId = null;
                 }
             }
+            var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
+            await GameManager.UpdateGameState(gameState);
         }
-        public int SellLandAndHouses()
+        public async Task<int> SellLandAndHouses(int currentPlayerIndex, List<Player> players, List<Tile> tiles)
         {
             int value = LandPrice;
             if (Level >= 2 && Level <= 4)
@@ -91,6 +95,8 @@ namespace MonopolyWinForms.GameLogic
 
             Level = 0;
             PlayerId = null;
+            var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
+            await GameManager.UpdateGameState(gameState);
             return value/2;
         }
     }

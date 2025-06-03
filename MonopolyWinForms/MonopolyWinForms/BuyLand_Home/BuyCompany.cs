@@ -1,4 +1,5 @@
 ﻿using MonopolyWinForms.GameLogic;
+using MonopolyWinForms.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,9 +17,12 @@ namespace MonopolyWinForms.BuyLand_Home
     {
         private int playerID;
         private Tile tile;
+        private List<Tile> tiles;
+        private List<Player> players;
+        private int currentPlayerIndex;
         private Monopoly monopoly;
         private MainForm mainform;
-        public BuyCompany(int playerID, Tile tile, Monopoly monopoly, MainForm mainform)
+        public BuyCompany(int playerID, Tile tile, Monopoly monopoly, MainForm mainform, List<Tile> tiles, List<Player> players, int currentPlayerIndex)
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
@@ -26,6 +30,9 @@ namespace MonopolyWinForms.BuyLand_Home
             this.tile = tile;
             this.monopoly = monopoly;
             this.mainform = mainform;
+            this.tiles = tiles;
+            this.players = players;
+            this.currentPlayerIndex = currentPlayerIndex;
             LoadCompanyImage();
         }
         private void button2_Click(object sender, EventArgs e)
@@ -55,7 +62,7 @@ namespace MonopolyWinForms.BuyLand_Home
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             UpdateRentDisplay();
         }
-        private void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e)
         {
             if (tile.PlayerId == null)
             {
@@ -63,11 +70,13 @@ namespace MonopolyWinForms.BuyLand_Home
                 tile.Level = 1;
                 UpdateRentDisplay();
                 mainform.UpdateCompanyRent(playerID);
+                var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
+                await GameManager.UpdateGameState(gameState);
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
         }
-        private void UpdateRentDisplay()
+        private async void UpdateRentDisplay()
         {
             int playerCompanies = monopoly.CountCompaniesOwned(playerID);
             int Price = tile.LandPrice;
@@ -82,6 +91,8 @@ namespace MonopolyWinForms.BuyLand_Home
             }
             label2.Text = $"Rent rate: ${rent} * {"number of dices"}";
             label3.Text = $"The price: ${Price}";
+            var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
+            await GameManager.UpdateGameState(gameState);
         }
     }
 }

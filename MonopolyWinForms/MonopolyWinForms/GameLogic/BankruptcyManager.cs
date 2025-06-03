@@ -11,17 +11,19 @@ namespace MonopolyWinForms.GameLogic
     {
         private List<Player> players;
         private List<Tile> tiles;
+        private int currentPlayerIndex;
         private Panel[] panels;
         private Dictionary<int, Panel> playerMarkers;
         private MainForm mainForm;
         public BankruptcyManager(List<Player> players, List<Tile> tiles, Panel[] panels,
-                                 Dictionary<int, Panel> playerMarkers, MainForm form)
+                                 Dictionary<int, Panel> playerMarkers, MainForm form, int currentPlayerIndex)
         {
             this.players = players;
             this.tiles = tiles;
             this.panels = panels;
             this.playerMarkers = playerMarkers;
             this.mainForm = form;
+            this.currentPlayerIndex = currentPlayerIndex;
         }
 
         public void CheckPlayerBankruptcy(Player player)
@@ -143,7 +145,7 @@ namespace MonopolyWinForms.GameLogic
                     Tile tile = selected.Tile;
                     int sellValue = selected.Value;
 
-                    tile.SellLandAndHouses();
+                    tile.SellLandAndHouses(currentPlayerIndex, players, tiles);
                     player.Money += sellValue;
 
                     mainForm.UpdateTileDisplay(tiles.IndexOf(tile), player);

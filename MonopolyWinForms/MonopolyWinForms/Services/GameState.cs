@@ -11,6 +11,7 @@ namespace MonopolyWinForms.Services
     {
         public string RoomId { get; set; }
         public int CurrentPlayerIndex { get; set; }
+        public int PlayTime { get; set; }
         public List<Player> Players { get; set; }
         public List<Tile> Tiles { get; set; }
         public bool IsGameStarted { get; set; }

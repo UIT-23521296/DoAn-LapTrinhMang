@@ -4,6 +4,7 @@ using MonopolyWinForms.GameLogic;
 using MonopolyWinForms.Services;
 using MonopolyWinForms.Login_Signup;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 namespace MonopolyWinForms
 {
     public partial class MainForm : Form
@@ -104,12 +105,12 @@ namespace MonopolyWinForms
             tiles = Tile.LoadTilesFromFile();
             monopoly = new Monopoly(tiles);
             UpdatePlayer = new UpdatePlayerPanel();
-            UpdateTile = new UpdateTileDisplay(panels, tiles, this, monopoly);
+            UpdateTile = new UpdateTileDisplay(panels, tiles, this, monopoly, players);
             UpdatePlayer = new UpdatePlayerPanel();
             Initialize = new InitializePlayerMarker(panels, playerMarkers, this);
             Action = new TileActionHandler(players, tiles, panels, currentPlayerIndex, monopoly, this, random, playerMarkers);
             rentCalculator = new RentCalculator(monopoly);
-            BankManager = new BankruptcyManager(players, tiles, panels, playerMarkers, this);
+            BankManager = new BankruptcyManager(players, tiles, panels, playerMarkers, this, currentPlayerIndex);
         }
 
         private void HandleGameStateUpdate(GameState gameState)
@@ -123,8 +124,11 @@ namespace MonopolyWinForms
                 UpdateGameState(gameState);
             }
         }
-        private void UpdateGameState(GameState gameState)
+        public async Task UpdateGameState(GameState gameState)
         {
+            //gameState = await GameManager.GetLatestGameState();
+            File.AppendAllText("log.txt", $"Tôi là {Session.UserName} thấy người chơi " +
+                $"{players[currentPlayerIndex]} đi tới ô {players[currentPlayerIndex].TileIndex}\n");
             try
             {
                 // Cập nhật currentPlayerIndex
@@ -222,7 +226,6 @@ namespace MonopolyWinForms
         {
             InitializeTurnLabel();
             countdown = new CountdownClock(panelTimer, GameOver);
-            countdown.Start(30);
             int indexPanel = 0;
             int indexPlayer = 1;
             List<Panel> playerPanels = new List<Panel> { panel41, panel42, panel43, panel44 };
@@ -233,6 +236,7 @@ namespace MonopolyWinForms
                 if (playerName == Session.UserName) // Nếu là người chơi hiện tại
                 {
                     Session.PlayerInGameId = indexPlayer;
+                    Session.Color = GetPlayerColor(indexPlayer - 1);
                 }
                 players.Add(player);
                 UpdatePlayer.UpdatePlayerPanelUI(playerPanels[indexPanel++], player);
@@ -258,9 +262,11 @@ namespace MonopolyWinForms
             {
                 File.AppendAllText("log.txt", $"Error in MainForm_Load: {ex.Message}\n");
             }
+            await Task.Delay(3000);
+            countdown.Start(30);
         }
         private async void button1_Click(object sender, EventArgs e){
-            var handler = new DiceRollHandler(players, panels, this, currentPlayerIndex);
+            var handler = new DiceRollHandler(players, panels, this, currentPlayerIndex, tiles);
             await handler.RollDiceAndMoveAsync();
         }
         // VÙNG GỌI HÀM
@@ -384,7 +390,7 @@ namespace MonopolyWinForms
         public void ForceSellAssets(Player player){ BankManager.ForceSellAssets(player); }
         public void HandleStart(Player player){ Action?.HandleStart(player); }
         public async Task MovePlayerStepByStep(Player player, int steps, int totalTiles){ await Initialize.MovePlayerStepByStep(player, steps, totalTiles); }
-        public Image GetHouseImage(int level, Player player){return UpdateTile.GetHouseImage(level, player);
+        public Image GetHouseImage(int level, Player player, Tile tile, List<Player> players){return UpdateTile.GetHouseImage(level, player, players, tile);
         }
 
         public void AddToGameLog(string message, LogType type = LogType.System)
@@ -449,9 +455,9 @@ namespace MonopolyWinForms
                             return $"{player.Name} đang ở trong tù";
                         case "Ô bắt đầu":
                             return $"{player.Name} đi qua ô Start và nhận 200$";
-                        //case "Khí vận":
-                        //case "Cơ hội":
-                        //    return $"{player.Name} đã rút thẻ {tile.Name} với nội dung ";
+                        case "Khí vận":
+                        case "Cơ hội":
+                            return "";
                         case "Đi thẳng vào tù":
                             return $"{player.Name} bị vào tù";
                         default:

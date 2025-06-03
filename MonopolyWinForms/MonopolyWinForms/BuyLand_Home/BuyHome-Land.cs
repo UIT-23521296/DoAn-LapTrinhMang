@@ -11,9 +11,10 @@ namespace buyLand_Home
     {
         private Player player;
         private Tile tile;
+        private List<Player> players;
         private MainForm mainform;
         private Monopoly monopoly;
-        public BuyHome_Land(Player player, Tile tile, Monopoly monopoly, MainForm mainform)
+        public BuyHome_Land(Player player, Tile tile, Monopoly monopoly, MainForm mainform, List<Player> players)
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
@@ -21,6 +22,7 @@ namespace buyLand_Home
             this.tile = tile;
             this.monopoly = monopoly;
             this.mainform = mainform;
+            this.players = players;
         }
         private void button2_Click(object sender, EventArgs e)
         {
@@ -174,11 +176,11 @@ namespace buyLand_Home
             pictureBox4.Image = null;
             pictureBox5.Image = null;
 
-            pictureBox1.Image = mainform.GetHouseImage(1, player);
-            pictureBox2.Image = mainform.GetHouseImage(2, player);
-            pictureBox3.Image = mainform.GetHouseImage(3, player);
-            pictureBox4.Image = mainform.GetHouseImage(4, player);
-            pictureBox5.Image = mainform.GetHouseImage(5, player);
+            pictureBox1.Image = mainform.GetHouseImage(1, player, tile, players);
+            pictureBox2.Image = mainform.GetHouseImage(2, player, tile, players);
+            pictureBox3.Image = mainform.GetHouseImage(3, player, tile, players);
+            pictureBox4.Image = mainform.GetHouseImage(4, player, tile, players);
+            pictureBox5.Image = mainform.GetHouseImage(5, player, tile, players);
         }
     }
 }

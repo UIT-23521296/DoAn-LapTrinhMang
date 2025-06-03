@@ -6,14 +6,20 @@ namespace MonopolyWinForms.FormManage
     public partial class FormDestroyHouse : Form
     {
         public List<Tile> ownedTiles;
+        public List<Tile> GameStateTiles;
+        public List<Player> players;
+        public int currentPlayerIndex;
         public Player player;
         private MainForm mainForm;
         public bool CanOpen { get; private set; } = true;
-        public FormDestroyHouse(Player player, List<Tile> tiles, MainForm mainForm)
+        public FormDestroyHouse(Player player, List<Tile> tiles, MainForm mainForm, List<Player> players, int currentPlayerIndex)
         {
             InitializeComponent();
             this.player = player;
+            this.players = players;
+            this.GameStateTiles = tiles;
             this.mainForm = mainForm;
+            this.currentPlayerIndex = currentPlayerIndex;
             // Lọc các ô đất của người chơi có nhà > 0
             ownedTiles = tiles.Where(t => t.PlayerId == player.ID && t.Level > 0).ToList();
             if (ownedTiles.Count == 0)
@@ -39,7 +45,7 @@ namespace MonopolyWinForms.FormManage
                 return;
             }
             var selectedTile = ownedTiles[listBoxTiles.SelectedIndex];
-            selectedTile.DestroyOneHouseLevel();
+            selectedTile.DestroyOneHouseLevel(currentPlayerIndex, players, GameStateTiles);
             string msg = $"Đã phá 1 cấp nhà tại ô {selectedTile.Name}. Cấp hiện tại: {selectedTile.Level}";
             if (selectedTile.Level == 0)
             {

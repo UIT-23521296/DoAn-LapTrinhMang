@@ -10,6 +10,7 @@ namespace MonopolyWinForms.Login_Signup
     {
         public static int PlayerInGameId { get; set; }
         public static string UserId { get; private set; }
+        public static Color Color { get; set; }
         public static string UserName { get; private set; }
         public static bool IsLoggedIn { get; private set; }
         public static string CurrentRoomId { get; private set; }  // Theo dõi phòng hiện tại
