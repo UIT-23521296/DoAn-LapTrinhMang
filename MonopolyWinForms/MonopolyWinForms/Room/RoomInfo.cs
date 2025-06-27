@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.Globalization;
 
 namespace MonopolyWinForms.Room
 {
@@ -19,7 +21,20 @@ namespace MonopolyWinForms.Room
         public List<string> PlayerDisplayNames { get; set; } = new List<string>();
         public List<string> ReadyPlayers { get; set; } = new List<string>();
         public bool IsStarted { get; set; } = false;
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public string CreatedAt { get; set; } = DateTime.UtcNow.ToString("o"); // ISO 8601
+
+        [JsonIgnore]
+        public DateTime CreatedAtDateTime
+        {
+            get
+            {
+                if (DateTime.TryParse(CreatedAt, null, DateTimeStyles.RoundtripKind, out var dt))
+                    return dt;
+                if (DateTime.TryParse(CreatedAt, out dt))
+                    return dt;
+                return DateTime.MinValue;
+            }
+        }
 
         public int CurrentPlayers => PlayerDisplayNames?.Count ?? 0;
 

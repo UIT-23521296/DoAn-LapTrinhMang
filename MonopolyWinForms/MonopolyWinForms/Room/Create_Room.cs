@@ -160,7 +160,7 @@ namespace MonopolyWinForms.Room
                     PlayerDisplayNames = new List<string> { Session.UserName },  // Sử dụng UserName từ Session
                     PlayerIds = new List<string> { Session.UserId },
                     IsStarted = false,
-                    CreatedAt = DateTime.UtcNow
+                    CreatedAt = DateTime.UtcNow.ToString("o")
                 };
 
                 var firebase = new FirebaseService();

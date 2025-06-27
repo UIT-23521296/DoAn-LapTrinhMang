@@ -286,13 +286,13 @@ namespace MonopolyWinForms.Room
                     // Lọc và sắp xếp phòng
                     var availableRooms = rooms
                         .Where(r => !r.Value.IsStarted && r.Value.CurrentPlayers < r.Value.MaxPlayers)
-                        .OrderByDescending(r => r.Value.CreatedAt)
+                        .OrderByDescending(r => r.Value.CreatedAtDateTime)
                         .ToList();
 
                     // Kiểm tra phòng mới
                     foreach (var room in availableRooms)
                     {
-                        currentRooms[room.Key] = room.Value.CreatedAt;
+                        currentRooms[room.Key] = room.Value.CreatedAtDateTime;
                         if (!lastRoomUpdate.ContainsKey(room.Key))
                         {
                             newRooms.Add(room.Key);
@@ -338,7 +338,7 @@ namespace MonopolyWinForms.Room
                     room.Value.RoomName,
                     room.Value.HostIP,
                     $"{room.Value.CurrentPlayers}/{room.Value.MaxPlayers}",
-                    room.Value.CreatedAt.ToString("HH:mm:ss dd/MM/yyyy")
+                    room.Value.CreatedAtDateTime.ToLocalTime().ToString("HH:mm:ss dd/MM/yyyy")
                 );
 
                 // Đánh dấu phòng mới
