@@ -8,248 +8,132 @@ using MonopolyWinForms.Services;
 using Firebase.Database;
 using MonopolyWinForms.GameLogic;
 using System.Numerics;
+using System;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Net.Http.Headers;
 
-public class FirebaseService
+public sealed class FirebaseService
 {
-    private readonly HttpClient _client;
-    private readonly string baseUrl = "https://doanmang-8f5af-default-rtdb.asia-southeast1.firebasedatabase.app";
-    private Action<string> _logAction;
-
-    public FirebaseService(Action<string> logAction = null)
+    private static readonly HttpClient _client = new HttpClient
     {
-        _client = new HttpClient();
-        _client.DefaultRequestHeaders.Add("Accept", "application/json");
-        _client.Timeout = TimeSpan.FromSeconds(30);
-        _logAction = logAction;
-    }
-
-    private void Log(string message)
+        Timeout = TimeSpan.FromSeconds(25)
+    };
+    private const string BaseUrl = "https://doanmang-8f5af-default-rtdb.asia-southeast1.firebasedatabase.app";
+    private readonly Action<string>? _log;
+    public FirebaseService(Action<string>? logAction = null)
     {
-        _logAction?.Invoke(message);
+        if (!_client.DefaultRequestHeaders.Accept.Any())
+        {
+            _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        }
+        _log = logAction;
     }
-
-    public async Task<RoomInfo> GetRoomAsync(string roomId)
+    private static readonly object _logLock = new();
+    private void Log(string msg)
     {
-        string url = $"{baseUrl}/rooms/{roomId}.json";
-        var response = await _client.GetAsync(url);
-        if (!response.IsSuccessStatusCode)
-            return null;
-
-        string json = await response.Content.ReadAsStringAsync();
-        if (string.IsNullOrEmpty(json) || json == "null")
-            return null;
-
-        var room = JsonConvert.DeserializeObject<RoomInfo>(json);
-        return room;
+        string line = $"[{DateTime.UtcNow:O}] {msg}";
+        _log?.Invoke(line);
+        lock (_logLock)
+        {
+            File.AppendAllText("log.txt", line + Environment.NewLine);
+        }
     }
-
-    public async Task<Dictionary<string, RoomInfo>> GetAllRoomsAsync()
+    public async Task<RoomInfo?> GetRoomAsync(string roomId)
     {
-        string url = $"{baseUrl}/rooms.json";
-        var response = await _client.GetAsync(url);
-        if (!response.IsSuccessStatusCode)
-            return null;
-
-        string json = await response.Content.ReadAsStringAsync();
-        if (string.IsNullOrEmpty(json) || json == "null")
-            return null;
-
-        return JsonConvert.DeserializeObject<Dictionary<string, RoomInfo>>(json);
+        string url = $"{BaseUrl}/rooms/{Uri.EscapeDataString(roomId)}.json";
+        var json = await SafeGetStringAsync(url);
+        return json is null ? null : JsonConvert.DeserializeObject<RoomInfo>(json);
     }
-    public async Task CreateRoomAsync(string roomId, RoomInfo room)
+    public async Task<Dictionary<string, RoomInfo>?> GetAllRoomsAsync()
     {
-        string url = $"{baseUrl}/rooms/{roomId}.json";
-        string json = JsonConvert.SerializeObject(room);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
-        var response = await _client.PutAsync(url, content);
-        response.EnsureSuccessStatusCode();
+        string url = $"{BaseUrl}/rooms.json";
+        var json = await SafeGetStringAsync(url);
+        return json is null ? null : JsonConvert.DeserializeObject<Dictionary<string, RoomInfo>>(json);
     }
-
-    public async Task DeleteRoomAsync(string roomId)
-    {
-        string url = $"{baseUrl}/rooms/{roomId}.json";
-        var response = await _client.DeleteAsync(url);
-        response.EnsureSuccessStatusCode();
-    }
-
-    public async Task<GameState> GetGameStateAsync(string roomId)
+    public Task CreateRoomAsync(string roomId, RoomInfo room) =>
+            PutAsync($"{BaseUrl}/rooms/{Uri.EscapeDataString(roomId)}.json", room);
+    public Task DeleteRoomAsync(string roomId) =>
+        _client.DeleteAsync($"{BaseUrl}/rooms/{Uri.EscapeDataString(roomId)}.json");
+    public async Task<GameState?> GetGameStateAsync(string roomId)
     {
         try
         {
-            // 1. Lấy thông tin cơ bản
-            string infoUrl = $"{baseUrl}/gameStates/{roomId}/info.json";
-            var infoResponse = await _client.GetAsync(infoUrl);
-            if (!infoResponse.IsSuccessStatusCode)
-            {
-                string errorContent = await infoResponse.Content.ReadAsStringAsync();
-                File.AppendAllText("log.txt", $"Error getting info: {errorContent}\n");
-                return null;
-            }
-            string infoJson = await infoResponse.Content.ReadAsStringAsync();
-            var info = JsonConvert.DeserializeObject<dynamic>(infoJson);
+            string url = $"{BaseUrl}/gameStates/{Uri.EscapeDataString(roomId)}.json";
+            var json = await SafeGetStringAsync(url);
+            if (json is null) return null;
 
-            // Kiểm tra xem có cần cập nhật không
-            if (info == null || info.lastUpdateTime == null)
-            {
-                return null;
-            }
+            var dto = JsonConvert.DeserializeObject<FullGameStateDto>(json);
+            if (dto?.info?.lastUpdateTime is null) return null;
 
-            // Tạo GameState mới với thông tin cơ bản
-            var gameState = new GameState
+            return new GameState
             {
                 RoomId = roomId,
-                CurrentPlayerIndex = info.currentPlayerIndex,
-                IsGameStarted = info.isGameStarted,
-                PlayTime = info.PlayTime,
-                LastUpdateTime = info.lastUpdateTime
+                CurrentPlayerIndex = dto.info.currentPlayerIndex,
+                IsGameStarted = dto.info.isGameStarted,
+                PlayTime = dto.info.playTime,
+                LastUpdateTime = DateTime.Parse(dto.info.lastUpdateTime, null, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal),
+                Players = dto.players ?? new List<Player>(),
+                Tiles = dto.tiles ?? new List<Tile>()
             };
-
-            // 2. Lấy thông tin players
-            string playersUrl = $"{baseUrl}/gameStates/{roomId}/players.json";
-            var playersResponse = await _client.GetAsync(playersUrl);
-            if (!playersResponse.IsSuccessStatusCode)
-            {
-                string errorContent = await playersResponse.Content.ReadAsStringAsync();
-                File.AppendAllText("log.txt", $"Error getting players: {errorContent}\n");
-                return null;
-            }
-            string playersJson = await playersResponse.Content.ReadAsStringAsync();
-            var players = JsonConvert.DeserializeObject<List<Player>>(playersJson);
-            gameState.Players = players;
-
-            // 3. Lấy thông tin tiles
-            string tilesUrl = $"{baseUrl}/gameStates/{roomId}/tiles.json";
-            var tilesResponse = await _client.GetAsync(tilesUrl);
-            if (!tilesResponse.IsSuccessStatusCode)
-            {
-                string errorContent = await tilesResponse.Content.ReadAsStringAsync();
-                File.AppendAllText("log.txt", $"Error getting tiles: {errorContent}\n");
-                return null;
-            }
-            string tilesJson = await tilesResponse.Content.ReadAsStringAsync();
-            var tiles = JsonConvert.DeserializeObject<List<Tile>>(tilesJson);
-            gameState.Tiles = tiles;
-
-            return gameState;
         }
         catch (Exception ex)
         {
-            File.AppendAllText("log.txt", $"Exception in GetGameStateAsync: {ex.Message}\n");
-            throw;
-        }
-    }
-
-    public async Task UpdateGameStateAsync(GameState gameState)
-    {
-        try
-        {
-            // Chỉ cập nhật khi có thay đổi
-            var currentState = await GetGameStateAsync(gameState.RoomId);
-            if (currentState != null && 
-                currentState.LastUpdateTime == gameState.LastUpdateTime)
-            {
-                return; // Không có thay đổi, không cần cập nhật
-            }
-
-            var roomInfo = new
-            {
-                currentPlayerIndex = gameState.CurrentPlayerIndex,
-                isGameStarted = gameState.IsGameStarted,
-                PlayTime = gameState.PlayTime,
-                lastUpdateTime = DateTime.UtcNow
-            };
-
-            // Gửi thông tin phòng
-            string roomUrl = $"{baseUrl}/gameStates/{gameState.RoomId}/info.json";
-            var response0 = await _client.PutAsync(roomUrl, new StringContent(JsonConvert.SerializeObject(roomInfo)));
-
-            // Gửi thông tin người chơi dưới dạng mảng
-            string playersUrl = $"{baseUrl}/gameStates/{gameState.RoomId}/players.json";
-            var response1 = await _client.PutAsync(playersUrl, new StringContent(JsonConvert.SerializeObject(gameState.Players)));
-
-            // Gửi thông tin ô đất dưới dạng mảng
-            string tilesUrl = $"{baseUrl}/gameStates/{gameState.RoomId}/tiles.json";
-            var response2 = await _client.PutAsync(tilesUrl, new StringContent(JsonConvert.SerializeObject(gameState.Tiles)));
-
-            if (!response0.IsSuccessStatusCode || !response1.IsSuccessStatusCode || !response2.IsSuccessStatusCode)
-            {
-                string errorContent = await response0.Content.ReadAsStringAsync();
-                File.AppendAllText("log.txt", $"Error updating game state: {errorContent}\n");
-            }
-        }
-        catch (Exception ex)
-        {
-            File.AppendAllText("log.txt", $"Error in FirebaseService.UpdateGameStateAsync: {ex.Message}\n");
-        }
-    }
-
-    // Thêm phương thức gửi tin nhắn chat
-    public async Task SendChatMessageAsync(string roomId, object chatMessage)
-    {
-        try
-        {
-            string url = $"{baseUrl}/chat/{roomId}.json";
-            var content = new StringContent(JsonConvert.SerializeObject(chatMessage), Encoding.UTF8, "application/json");
-            var response = await _client.PostAsync(url, content);
-            response.EnsureSuccessStatusCode();
-        }
-        catch (Exception ex)
-        {
-            File.AppendAllText("log.txt", $"Error sending chat message: {ex.Message}\n");
-            throw;
-        }
-    }
-
-    // Thêm phương thức lấy tin nhắn chat
-    public async Task<Dictionary<string, dynamic>> GetChatMessagesAsync(string roomId)
-    {
-        try
-        {
-            string url = $"{baseUrl}/chat/{roomId}.json";
-            var response = await _client.GetAsync(url);
-            if (!response.IsSuccessStatusCode)
-                return null;
-
-            string json = await response.Content.ReadAsStringAsync();
-            if (string.IsNullOrEmpty(json) || json == "null")
-                return null;
-
-            // Thêm timestamp nếu chưa có
-            var messages = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(json);
-            if (messages != null)
-            {
-                foreach (var message in messages)
-                {
-                    if (message.Value.Timestamp == null)
-                    {
-                        message.Value.Timestamp = DateTime.UtcNow;
-                    }
-                }
-            }
-
-            return messages;
-        }
-        catch (Exception ex)
-        {
-            File.AppendAllText("log.txt", $"Error getting chat messages: {ex.Message}\n");
+            Log($"GetGameStateAsync error: {ex.Message}");
             return null;
         }
     }
-
+    public async Task UpdateGameStateAsync(GameState gs)
+    {
+        try
+        {
+            var body = new
+            {
+                info = new
+                {
+                    currentPlayerIndex = gs.CurrentPlayerIndex,
+                    isGameStarted = gs.IsGameStarted,
+                    playTime = gs.PlayTime,
+                    lastUpdateTime = DateTime.UtcNow.ToString("O")
+                },
+                players = gs.Players,
+                tiles = gs.Tiles
+            };
+            string url = $"{BaseUrl}/gameStates/{Uri.EscapeDataString(gs.RoomId)}.json";
+            await PutAsync(url, body);
+        }
+        catch (Exception ex)
+        {
+            Log($"UpdateGameStateAsync error: {ex.Message}");
+        }
+    }
+    // Thêm phương thức gửi tin nhắn chat
+    public Task SendChatMessageAsync(string roomId, ChatMessage chat) =>
+            PostAsync($"{BaseUrl}/chat/{Uri.EscapeDataString(roomId)}.json", chat);
+    // Thêm phương thức lấy tin nhắn chat
+    public async Task<List<ChatMessage>?> GetChatMessagesAsync(string roomId)
+    {
+        string url = $"{BaseUrl}/chat/{Uri.EscapeDataString(roomId)}.json";
+        var json = await SafeGetStringAsync(url);
+        if (json is null) return null;
+        var dict = JsonConvert.DeserializeObject<Dictionary<string, ChatMessage>>(json);
+        return dict?.Values.OrderBy(c => c.Timestamp).ToList();
+    }
     public async Task CleanupGameDataAsync(string roomId)
     {
         try
         {
             // Xóa game state
-            string gameStateUrl = $"{baseUrl}/gameStates/{roomId}.json";
+            string gameStateUrl = $"{BaseUrl}/gameStates/{roomId}.json";
             await _client.DeleteAsync(gameStateUrl);
 
             // Xóa chat
-            string chatUrl = $"{baseUrl}/chat/{roomId}.json";
+            string chatUrl = $"{BaseUrl}/chat/{roomId}.json";
             await _client.DeleteAsync(chatUrl);
 
             // Xóa phòng
-            string roomUrl = $"{baseUrl}/rooms/{roomId}.json";
+            string roomUrl = $"{BaseUrl}/rooms/{roomId}.json";
             await _client.DeleteAsync(roomUrl);
         }
         catch (Exception ex)
@@ -264,7 +148,7 @@ public class FirebaseService
     {
         try
         {
-            string url = $"{baseUrl}/sessions/{userId}.json";
+            string url = $"{BaseUrl}/sessions/{userId}.json";
             var response = await _client.GetAsync(url);
             if (!response.IsSuccessStatusCode)
                 return null;
@@ -287,7 +171,7 @@ public class FirebaseService
     {
         try
         {
-            string url = $"{baseUrl}/sessions/{userId}.json";
+            string url = $"{BaseUrl}/sessions/{userId}.json";
             var content = new StringContent(
                 JsonConvert.SerializeObject(sessionData),
                 Encoding.UTF8,
@@ -308,7 +192,7 @@ public class FirebaseService
     {
         try
         {
-            string url = $"{baseUrl}/sessions/{userId}.json";
+            string url = $"{BaseUrl}/sessions/{userId}.json";
             var content = new StringContent(
                 JsonConvert.SerializeObject(sessionData),
                 Encoding.UTF8,
@@ -323,13 +207,12 @@ public class FirebaseService
             throw;
         }
     }
-
     // Xóa session
     public async Task DeleteSessionAsync(string userId)
     {
         try
         {
-            string url = $"{baseUrl}/sessions/{userId}.json";
+            string url = $"{BaseUrl}/sessions/{userId}.json";
             var response = await _client.DeleteAsync(url);
             response.EnsureSuccessStatusCode();
         }
@@ -339,13 +222,12 @@ public class FirebaseService
             throw;
         }
     }
-
     // Lấy tất cả session đang active
     public async Task<Dictionary<string, dynamic>> GetActiveSessionsAsync()
     {
         try
         {
-            string url = $"{baseUrl}/sessions.json";
+            string url = $"{BaseUrl}/sessions.json";
             var response = await _client.GetAsync(url);
             if (!response.IsSuccessStatusCode)
                 return null;
@@ -355,7 +237,7 @@ public class FirebaseService
                 return null;
 
             var allSessions = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(json);
-            
+
             // Lọc chỉ lấy các session đang active
             return allSessions?.Where(s => s.Value.isActive == true)
                              .ToDictionary(k => k.Key, v => v.Value);
@@ -366,7 +248,6 @@ public class FirebaseService
             return null;
         }
     }
-
     // Kiểm tra session có hợp lệ không
     public async Task<bool> ValidateSessionAsync(string userId)
     {
@@ -400,5 +281,38 @@ public class FirebaseService
             Log($"Error validating session: {ex.Message}");
             return false;
         }
+    }
+    private async Task<string?> SafeGetStringAsync(string url)
+    {
+        var resp = await _client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+        if (!resp.IsSuccessStatusCode) return null;
+        var json = await resp.Content.ReadAsStringAsync();
+        return string.IsNullOrWhiteSpace(json) || json == "null" ? null : json;
+    }
+    private static Task PutAsync(string url, object obj) =>
+        _client.PutAsync(url, ToJsonContent(obj));
+    private static Task PostAsync(string url, object obj) =>
+        _client.PostAsync(url, ToJsonContent(obj));
+    private static HttpContent ToJsonContent(object o) =>
+        new StringContent(JsonConvert.SerializeObject(o), Encoding.UTF8, "application/json");
+    // For frameworks lacking PatchAsync
+    private sealed class FullGameStateDto
+    {
+        public InfoDto info { get; set; } = default!;
+        public List<Player>? players { get; set; }
+        public List<Tile>? tiles { get; set; }
+    }
+    private sealed class InfoDto
+    {
+        public int currentPlayerIndex { get; set; }
+        public bool isGameStarted { get; set; }
+        public int playTime { get; set; }
+        public string lastUpdateTime { get; set; } = string.Empty;
+    }
+    public sealed class ChatMessage
+    {
+        public string SenderName { get; set; } = string.Empty;
+        public string Message { get; set; } = string.Empty;
+        public string Timestamp { get; set; } = DateTime.UtcNow.ToString("O");
     }
 }

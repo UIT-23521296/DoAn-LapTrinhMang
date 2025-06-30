@@ -158,13 +158,11 @@ namespace MonopolyWinForms.GameLogic
             // Gửi thông tin thẻ lên Firebase để tất cả người chơi nhận được
             try 
             {
-                var chatMessage = new
-                {
-                    SenderName = "Hệ thống",
-                    Message = $"{player.Name} rút được thẻ {deckType}: {card}",
-                    Timestamp = DateTime.UtcNow
-                };
-                await GameManager.SendChatMessage(GameManager.CurrentRoomId, chatMessage);
+                await GameManager.SendChatMessage(
+                    GameManager.CurrentRoomId!,
+                    "Hệ thống",
+                    $"{player.Name} rút được thẻ {deckType}: {card}"
+                );
             }
             catch (Exception ex)
             {
@@ -179,12 +177,11 @@ namespace MonopolyWinForms.GameLogic
                     HandleGoToJail(player);
                     try 
                     {
-                        await GameManager.SendChatMessage(GameManager.CurrentRoomId, new
-                        {
-                            SenderName = "Hệ thống",
-                            Message = $"{player.Name} bị vào tù do rút thẻ",
-                            Timestamp = DateTime.UtcNow
-                        });
+                        await GameManager.SendChatMessage(
+                            GameManager.CurrentRoomId!,
+                            "Hệ thống",
+                            $"{player.Name} bị vào tù do rút thẻ"
+                        );
                     }
                     catch (Exception ex)
                     {
@@ -195,12 +192,11 @@ namespace MonopolyWinForms.GameLogic
                     player.AddOutPrisonCard();
                     try 
                     {
-                        await GameManager.SendChatMessage(GameManager.CurrentRoomId, new
-                        {
-                            SenderName = "Hệ thống",
-                            Message = $"{player.Name} nhận được thẻ thoát tù",
-                            Timestamp = DateTime.UtcNow
-                        });
+                        await GameManager.SendChatMessage(
+                            GameManager.CurrentRoomId!,
+                            "Hệ thống",
+                            $"{player.Name} nhận được thẻ thoát tù"
+                        );
                     }
                     catch (Exception ex)
                     {
@@ -211,12 +207,11 @@ namespace MonopolyWinForms.GameLogic
                     player.DoubleMoney++;
                     try 
                     {
-                        await GameManager.SendChatMessage(GameManager.CurrentRoomId, new
-                        {
-                            SenderName = "Hệ thống",
-                            Message = $"{player.Name} sẽ trả gấp đôi tiền thuê cho ô tiếp theo",
-                            Timestamp = DateTime.UtcNow
-                        });
+                        await GameManager.SendChatMessage(
+                            GameManager.CurrentRoomId!,
+                            "Hệ thống",
+                            $"{player.Name} sẽ trả gấp đôi tiền thuê cho ô tiếp theo"
+                        );
                     }
                     catch (Exception ex)
                     {
@@ -227,12 +222,11 @@ namespace MonopolyWinForms.GameLogic
                     player.ReduceHalfMoney++;
                     try 
                     {
-                        await GameManager.SendChatMessage(GameManager.CurrentRoomId, new
-                        {
-                            SenderName = "Hệ thống",
-                            Message = $"{player.Name} sẽ giảm 50% tiền thuê cho ô tiếp theo",
-                            Timestamp = DateTime.UtcNow
-                        });
+                        await GameManager.SendChatMessage(
+                            GameManager.CurrentRoomId!,
+                            "Hệ thống",
+                            $"{player.Name} sẽ giảm 50% tiền thuê cho ô tiếp theo"
+                        );
                     }
                     catch (Exception ex)
                     {
@@ -244,12 +238,11 @@ namespace MonopolyWinForms.GameLogic
                     movePlayer = true;
                     try 
                     {
-                        await GameManager.SendChatMessage(GameManager.CurrentRoomId, new
-                        {
-                            SenderName = "Hệ thống",
-                            Message = $"{player.Name} được di chuyển đến ô bắt đầu",
-                            Timestamp = DateTime.UtcNow
-                        });
+                        await GameManager.SendChatMessage(
+                            GameManager.CurrentRoomId!,
+                            "Hệ thống",
+                            $"{player.Name} được di chuyển đến ô bắt đầu"
+                        );
                     }
                     catch (Exception ex)
                     {
@@ -265,12 +258,11 @@ namespace MonopolyWinForms.GameLogic
                     }
                     try 
                     {
-                        await GameManager.SendChatMessage(GameManager.CurrentRoomId, new
-                        {
-                            SenderName = "Hệ thống",
-                            Message = $"{player.Name} phải bán 1 căn nhà",
-                            Timestamp = DateTime.UtcNow
-                        });
+                        await GameManager.SendChatMessage(
+                            GameManager.CurrentRoomId!,
+                            "Hệ thống",
+                            $"{player.Name} phải bán 1 căn nhà"
+                        );
                     }
                     catch (Exception ex)
                     {
@@ -286,12 +278,11 @@ namespace MonopolyWinForms.GameLogic
                     }
                     try 
                     {
-                        await GameManager.SendChatMessage(GameManager.CurrentRoomId, new
-                        {
-                            SenderName = "Hệ thống",
-                            Message = $"{player.Name} phải phá 1 căn nhà",
-                            Timestamp = DateTime.UtcNow
-                        });
+                        await GameManager.SendChatMessage(
+                            GameManager.CurrentRoomId!,
+                            "Hệ thống",
+                            $"{player.Name} phải phá 1 căn nhà"
+                        );
                     }
                     catch (Exception ex)
                     {
@@ -304,12 +295,11 @@ namespace MonopolyWinForms.GameLogic
                     movePlayer = true;
                     try 
                     {
-                        await GameManager.SendChatMessage(GameManager.CurrentRoomId, new
-                        {
-                            SenderName = "Hệ thống",
-                            Message = $"{player.Name} được di chuyển đến bến xe tiếp theo và sẽ trả gấp đôi tiền thuê",
-                            Timestamp = DateTime.UtcNow
-                        });
+                        await GameManager.SendChatMessage(
+                            GameManager.CurrentRoomId!,
+                            "Hệ thống",
+                            $"{player.Name} được di chuyển đến bến xe tiếp theo và sẽ trả gấp đôi tiền thuê"
+                        );
                     }
                     catch (Exception ex)
                     {
@@ -321,12 +311,11 @@ namespace MonopolyWinForms.GameLogic
                     movePlayer = true;
                     try 
                     {
-                        await GameManager.SendChatMessage(GameManager.CurrentRoomId, new
-                        {
-                            SenderName = "Hệ thống",
-                            Message = $"{player.Name} được di chuyển đến công ty tiếp theo",
-                            Timestamp = DateTime.UtcNow
-                        });
+                        await GameManager.SendChatMessage(
+                            GameManager.CurrentRoomId!,
+                            "Hệ thống",
+                            $"{player.Name} được di chuyển đến công ty tiếp theo"
+                        );
                     }
                     catch (Exception ex)
                     {

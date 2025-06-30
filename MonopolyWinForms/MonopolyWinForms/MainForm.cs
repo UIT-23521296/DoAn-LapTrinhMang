@@ -6,6 +6,7 @@ using MonopolyWinForms.Login_Signup;
 using MonopolyWinForms.Room;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 namespace MonopolyWinForms
 {
     public partial class MainForm : Form
@@ -65,15 +66,11 @@ namespace MonopolyWinForms
             try
             {
                 // Tạo đối tượng chat message
-                var chatMessage = new
-                {
-                    SenderName = senderName,
-                    Message = message,
-                    Timestamp = DateTime.UtcNow
-                };
-
-                // Gửi tin nhắn lên Firebase
-                await GameManager.SendChatMessage(GameManager.CurrentRoomId, chatMessage);
+                await GameManager.SendChatMessage(
+                    GameManager.CurrentRoomId!,
+                    senderName,
+                    message
+                );
             }
             catch (Exception ex)
             {
@@ -90,13 +87,11 @@ namespace MonopolyWinForms
                 var resultForm = new GameResultForm(players, tiles);
                 resultForm.ShowDialog();
 
-                // Gửi thông báo kết thúc game cho tất cả người chơi
-                await GameManager.SendChatMessage(GameManager.CurrentRoomId, new
-                {
-                    SenderName = "Hệ thống",
-                    Message = "Trò chơi đã kết thúc!",
-                    Timestamp = DateTime.UtcNow
-                });
+                await GameManager.SendChatMessage(
+                    GameManager.CurrentRoomId!,
+                    "Hệ thống",
+                    "Trò chơi đã kết thúc!"
+                );
 
                 // Dọn dẹp dữ liệu game
                 await GameManager.CleanupGameData(GameManager.CurrentRoomId);
