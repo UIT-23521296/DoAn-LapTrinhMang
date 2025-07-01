@@ -25,7 +25,7 @@ namespace MonopolyWinForms.Room
             // Gán user ID khi mở form (ví dụ lấy username Windows)
             SessionManager.CurrentUserId = Environment.UserName;
         }
-
+      
         private void InitializeForm()
         {
             this.Text = "Tạo phòng chơi";

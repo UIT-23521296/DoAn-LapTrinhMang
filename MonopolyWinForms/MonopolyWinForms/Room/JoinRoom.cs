@@ -42,10 +42,31 @@ namespace MonopolyWinForms.Room
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
+            // Dừng & xả timer
             refreshTimer?.Stop();
             refreshTimer?.Dispose();
+
             base.OnFormClosing(e);
+
+            // ==== Hiển thị lại Main_home ====
+            var home = Application.OpenForms
+                                   .OfType<MonopolyWinForms.Home.Main_home>()
+                                   .FirstOrDefault();
+
+            if (home == null || home.IsDisposed)
+            {
+                home = new MonopolyWinForms.Home.Main_home();
+                home.StartPosition = FormStartPosition.CenterScreen;
+                home.Show();
+            }
+            else
+            {
+                home.WindowState = FormWindowState.Normal;
+                home.BringToFront();
+                home.Show();        // trong trường hợp nó đang Hidden
+            }
         }
+
 
         private void SetupUI()
         {
@@ -203,7 +224,6 @@ namespace MonopolyWinForms.Room
         {
             Create_Room createRoomForm = new Create_Room();
             createRoomForm.Show();
-            this.Hide();
         }
 
         private async void BtnJoinRoom_Click(object sender, EventArgs e)
