@@ -223,7 +223,12 @@ namespace MonopolyWinForms.Room
         private void BtnCreateRoom_Click(object sender, EventArgs e)
         {
             Create_Room createRoomForm = new Create_Room();
+            createRoomForm.FormClosed += (s, args) =>
+            {
+                this.Show();
+            };
             createRoomForm.Show();
+            this.Hide();
         }
 
         private async void BtnJoinRoom_Click(object sender, EventArgs e)

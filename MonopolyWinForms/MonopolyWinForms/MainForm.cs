@@ -29,6 +29,9 @@ namespace MonopolyWinForms
         private UpdatePlayerPanel UpdatePlayer;
         private static bool _globalPlayerLeftHandled = false;
         private static JoinRoom? _joinRoomInstance = null;
+        private Panel pnlCurrentTurn;
+        private Label lblTurnStatic;   // "Lượt chơi:"
+        private Label lblTurnName;     // Tên người chơi
 
 
         public Random random = new Random();
@@ -47,23 +50,51 @@ namespace MonopolyWinForms
         //Chatbox
         private void InitializeChatBox(){
             chatbox = new Chatbox(players[currentPlayerIndex]);
-            chatbox.Location = new Point(1230, 670);
+            chatbox.Location = new Point(984, 548);
             chatbox.OnSendMessage += HandleChatMessage;
             this.Controls.Add(chatbox);
         }
-
         private void InitializeTurnLabel()
         {
-            lblCurrentTurn = new Label
+            pnlCurrentTurn = new Panel
             {
-                Name = "lblCurrentTurn",
-                AutoSize = true,
-                Font = new Font("Arial", 14, FontStyle.Bold),
-                Location = new Point(1230, 100), 
-                Text = "Lượt chơi: "
+                Location = new Point(965, 11),
+                Size = new Size(330, 42),
+                BackColor = Color.White,
+                BorderStyle = BorderStyle.FixedSingle,
+                Padding = new Padding(6, 8, 6, 8)  // trên-dưới = 8px
             };
-            this.Controls.Add(lblCurrentTurn);
+
+            // Label cố định
+            lblTurnStatic = new Label
+            {
+                AutoSize = true,
+                Font = new Font("Segoe UI", 13F, FontStyle.Bold),
+                ForeColor = Color.Black,
+                Text = "Lượt chơi:"
+            };
+
+            // Label tên người chơi
+            lblTurnName = new Label
+            {
+                AutoSize = true,
+                Font = new Font("Segoe UI", 13F, FontStyle.Bold),
+                ForeColor = Color.DarkGreen,   // sẽ đổi động
+                Text = " ..."
+            };
+
+            // Sắp xếp 2 label nằm ngang
+            lblTurnName.Left = lblTurnStatic.Width + 10;   // cách 10px
+            lblTurnName.Top = 0;
+
+            pnlCurrentTurn.Controls.Add(lblTurnStatic);
+            pnlCurrentTurn.Controls.Add(lblTurnName);
+
+            // THÊM PANEL vào form (không thêm label đơn lẻ)
+            this.Controls.Add(pnlCurrentTurn);
         }
+
+
         private async void HandleChatMessage(string senderName, string message)
         {
             try
@@ -258,6 +289,7 @@ namespace MonopolyWinForms
         private async void MainForm_Load(object sender, EventArgs e)
         {
             InitializeTurnLabel();
+            this.BackColor = ColorTranslator.FromHtml("#FBF8F4");
             countdown = new CountdownClock(panelTimer, GameOver);
             int indexPanel = 0;
             int indexPlayer = 1;
@@ -322,27 +354,21 @@ namespace MonopolyWinForms
 
         private void UpdateTurnDisplay()
         {
-            if (lblCurrentTurn != null)
-            {
-                Player currentPlayer = players[currentPlayerIndex];
-                lblCurrentTurn.Text = $"Lượt chơi: {currentPlayer.Name}";
-                
-                // Có thể thêm hiệu ứng hoặc màu sắc để làm nổi bật
-                lblCurrentTurn.ForeColor = GetPlayerColor(currentPlayerIndex);
+            Player currentPlayer = players[currentPlayerIndex];
 
-                button1.Enabled = (Session.PlayerInGameId == currentPlayer.ID);
+            // cập nhật tên & màu
+            lblTurnName.Text = " " + currentPlayer.Name;  // thêm cách ở đầu
+            lblTurnName.ForeColor = GetPlayerColor(currentPlayerIndex);
 
-                //Thông báo lượt chơi
-                if (Session.PlayerInGameId == currentPlayer.ID)
-                {
-                    AddToGameLog($"Đến lượt của bạn!", LogType.Notification);
-                }
-                else
-                {
-                    AddToGameLog($"Đến lượt của {currentPlayer.Name}", LogType.System);
-                }
-            }
+            button1.Enabled = (Session.PlayerInGameId == currentPlayer.ID);
+
+            // log
+            if (Session.PlayerInGameId == currentPlayer.ID)
+                AddToGameLog("Đến lượt của bạn!", LogType.Notification);
+            else
+                AddToGameLog($"Đến lượt của {currentPlayer.Name}", LogType.System);
         }
+
 
         private Color GetPlayerColor(int playerIndex)
         {
@@ -515,20 +541,34 @@ namespace MonopolyWinForms
                 case "9": // Bến xe
                     if (tile.PlayerId.HasValue && tile.PlayerId.Value > 0)
                     {
-                        var owner = players.FirstOrDefault(p => p.ID == tile.PlayerId.Value);
-                        if (owner != null)
+                        if (tile.PlayerId.Value == player.ID)
                         {
-                            return $"{player.Name} phải trả tiền thuê {tile.RentPrice}$ cho {owner.Name} tại bến xe {tile.Name}";
+                            return $"{player.Name} đã sở hữu {tile.Name}";
+                        }
+                        else
+                        {
+                            var owner = players.FirstOrDefault(p => p.ID == tile.PlayerId.Value);
+                            if (owner != null)
+                            {
+                                return $"{player.Name} phải trả tiền thuê {tile.RentPrice}$ cho {owner.Name} tại bến xe {tile.Name}";
+                            }
                         }
                     }
                     return $"{player.Name} đã đến bến xe {tile.Name}";
                 case "10": // Công ty
                     if (tile.PlayerId.HasValue && tile.PlayerId.Value > 0)
                     {
-                        var owner = players.FirstOrDefault(p => p.ID == tile.PlayerId.Value);
-                        if (owner != null)
+                        if (tile.PlayerId.Value == player.ID)
                         {
-                            return $"{player.Name} phải trả tiền thuê {tile.RentPrice}$ cho {owner.Name} tại công ty {tile.Name}";
+                            return $"{player.Name} đã sở hữu {tile.Name}";
+                        }
+                        else
+                        {
+                            var owner = players.FirstOrDefault(p => p.ID == tile.PlayerId.Value);
+                            if (owner != null)
+                            {
+                                return $"{player.Name} phải trả tiền thuê {tile.RentPrice}$ cho {owner.Name} tại công ty {tile.Name}";
+                            }
                         }
                     }
                     return $"{player.Name} đã đến công ty {tile.Name}";
@@ -539,7 +579,7 @@ namespace MonopolyWinForms
                         {
                             return $"{player.Name} đã sở hữu {tile.Name}";
                         }
-                        else if (tile.PlayerId.Value > 0)
+                        else if (tile.PlayerId.Value > 0 && tile.PlayerId.Value != player.ID)
                         {
                             var owner = players.FirstOrDefault(p => p.ID == tile.PlayerId.Value);
                             if (owner != null)

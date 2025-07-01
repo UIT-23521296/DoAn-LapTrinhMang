@@ -74,6 +74,9 @@
             panel44 = new Panel();
             button1 = new Button();
             panelTimer = new Panel();
+            pictureBox1 = new PictureBox();
+            groupBox1 = new GroupBox();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // panel1
@@ -438,7 +441,7 @@
             // 
             // panel41
             // 
-            panel41.Location = new Point(984, 10);
+            panel41.Location = new Point(1339, 50);
             panel41.Margin = new Padding(2);
             panel41.Name = "panel41";
             panel41.Size = new Size(144, 80);
@@ -446,7 +449,7 @@
             // 
             // panel42
             // 
-            panel42.Location = new Point(984, 130);
+            panel42.Location = new Point(1339, 170);
             panel42.Margin = new Padding(2);
             panel42.Name = "panel42";
             panel42.Size = new Size(144, 80);
@@ -454,7 +457,7 @@
             // 
             // panel43
             // 
-            panel43.Location = new Point(984, 250);
+            panel43.Location = new Point(1339, 290);
             panel43.Margin = new Padding(2);
             panel43.Name = "panel43";
             panel43.Size = new Size(144, 80);
@@ -462,7 +465,7 @@
             // 
             // panel44
             // 
-            panel44.Location = new Point(984, 370);
+            panel44.Location = new Point(1339, 410);
             panel44.Margin = new Padding(2);
             panel44.Name = "panel44";
             panel44.Size = new Size(144, 80);
@@ -470,31 +473,61 @@
             // 
             // button1
             // 
-            button1.Location = new Point(429, 388);
+            button1.BackColor = Color.FromArgb(245, 235, 221);
+            button1.FlatAppearance.BorderColor = Color.Black;
+            button1.FlatAppearance.BorderSize = 2;
+            button1.FlatStyle = FlatStyle.Flat;
+            button1.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
+            button1.ForeColor = Color.Black;
+            button1.Location = new Point(970, 270);
             button1.Margin = new Padding(2);
             button1.Name = "button1";
-            button1.Size = new Size(106, 68);
+            button1.Size = new Size(226, 80);
             button1.TabIndex = 44;
-            button1.Text = "Lắc xúc xắc";
-            button1.UseVisualStyleBackColor = true;
+            button1.Text = "🎲 Lắc xúc xắc";
+            button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
             // 
             // panelTimer
             // 
             panelTimer.BorderStyle = BorderStyle.FixedSingle;
-            panelTimer.Location = new Point(365, 235);
+            panelTimer.Location = new Point(970, 134);
             panelTimer.Margin = new Padding(2);
             panelTimer.Name = "panelTimer";
             panelTimer.Size = new Size(226, 80);
             panelTimer.TabIndex = 45;
             // 
+            // pictureBox1
+            // 
+            pictureBox1.Image = Properties.Resources.login_img;
+            pictureBox1.Location = new Point(134, 134);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(687, 687);
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox1.TabIndex = 46;
+            pictureBox1.TabStop = false;
+            // 
+            // groupBox1
+            // 
+            groupBox1.BackColor = ColorTranslator.FromHtml("#FBF8F4");
+            groupBox1.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            groupBox1.ForeColor = Color.Black;
+            groupBox1.Location = new Point(1317, -3);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(347, 517);
+            groupBox1.TabIndex = 47;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "📦 Tài sản";
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1582, 853);
-            Controls.Add(panelTimer);
+            BackColor = Color.Cornsilk;
+            ClientSize = new Size(1676, 953);
             Controls.Add(button1);
+            Controls.Add(pictureBox1);
+            Controls.Add(panelTimer);
             Controls.Add(panel44);
             Controls.Add(panel43);
             Controls.Add(panel42);
@@ -539,11 +572,13 @@
             Controls.Add(panel3);
             Controls.Add(panel2);
             Controls.Add(panel1);
+            Controls.Add(groupBox1);
             Margin = new Padding(2);
             Name = "MainForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";
-            WindowState = FormWindowState.Maximized;
             Load += MainForm_Load;
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }
 
@@ -595,5 +630,7 @@
         private Panel panel44;
         private Button button1;
         private Panel panelTimer;
+        private PictureBox pictureBox1;
+        private GroupBox groupBox1;
     }
 }
