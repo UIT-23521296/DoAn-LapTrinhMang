@@ -27,6 +27,9 @@ namespace MonopolyWinForms
         public List<Tile> tiles;
         private UpdateTileDisplay UpdateTile;
         private UpdatePlayerPanel UpdatePlayer;
+        private static bool _globalPlayerLeftHandled = false;
+        private static JoinRoom? _joinRoomInstance = null;
+
 
         public Random random = new Random();
         public Dictionary<int, Panel> playerMarkers = new Dictionary<int, Panel>();
@@ -82,7 +85,7 @@ namespace MonopolyWinForms
             try
             {
                 MessageBox.Show("⏰ Hết thời gian! Trò chơi kết thúc!", "Thông báo");
-                
+
                 // Hiển thị kết quả game
                 var resultForm = new GameResultForm(players, tiles);
                 resultForm.ShowDialog();
@@ -95,16 +98,18 @@ namespace MonopolyWinForms
 
                 // Dọn dẹp dữ liệu game
                 await GameManager.CleanupGameData(GameManager.CurrentRoomId);
-                
-                // Đóng form
-                Application.Exit();
+
+                this.Hide();
+                var jr = Application.OpenForms.OfType<JoinRoom>().FirstOrDefault();
+                if (jr == null) new JoinRoom().Show();
+                else jr.Activate();
             }
             catch (Exception ex)
             {
                 File.AppendAllText("log.txt", $"Error in GameOver: {ex.Message}\n");
-                Application.Exit();
             }
         }
+
         public MainForm()
         {
             InitializeComponent(); 
@@ -470,8 +475,18 @@ namespace MonopolyWinForms
                 return;
             }
 
+            // Nếu nhận được thông báo người chơi thoát
+            if (senderName == "SYSTEM" && message.StartsWith("LEFT:"))
+            {
+                string leaverName = message.Substring(5);
+                HandlePlayerLeft(leaverName);
+                return;
+            }
+
+            // Còn lại là tin nhắn bình thường
             chatbox?.ReceiveMessage(senderName, message);
         }
+
 
         //Xử lý ghi log cho người chơi khác liên quan đến ô đất
         private string GetTileActionMessage(Tile tile, Player player)
@@ -546,88 +561,77 @@ namespace MonopolyWinForms
 
         private async void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            try
+            if (!GameManager.IsGameStarted) return;
+
+            var ask = MessageBox.Show(
+                "Bạn có chắc muốn thoát game? Điều này sẽ kết thúc game cho tất cả người chơi.",
+                "Xác nhận thoát",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+
+            if (ask == DialogResult.No)
             {
-                // Nếu game đang diễn ra
-                if (GameManager.IsGameStarted)
-                {
-                    // Hiển thị xác nhận
-                    var result = MessageBox.Show(
-                        "Bạn có chắc muốn thoát game? Điều này sẽ kết thúc game cho tất cả người chơi.",
-                        "Xác nhận thoát",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Warning
-                    );
-
-                    if (result == DialogResult.No)
-                    {
-                        e.Cancel = true;
-                        return;
-                    }
-
-                    // Thông báo cho tất cả người chơi và đợi một chút để đảm bảo thông báo được gửi
-                    await GameManager.NotifyPlayerLeft(GameManager.CurrentRoomId, Session.UserName);
-                    await Task.Delay(500); // Đợi 500ms để đảm bảo thông báo được gửi
-
-                    // Đóng form và quay về màn hình danh sách phòng
-                    this.Hide();
-            
-                    // Không tạo form JoinRoom ở đây, để HandlePlayerLeft xử lý
-                    // Điều này sẽ tránh việc tạo nhiều form JoinRoom
-                    this.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                File.AppendAllText("log.txt", $"Error in MainForm_FormClosing: {ex.Message}\n");
-            }
-        }
-
-        private void HandlePlayerLeft(string playerName)
-        {
-            if (InvokeRequired)
-            {
-                Invoke(new Action(() => HandlePlayerLeft(playerName)));
+                e.Cancel = true;
                 return;
             }
 
-            // Kiểm tra xem form đã đóng chưa
-            if (this.IsDisposed || !this.IsHandleCreated)
-                return;
+            countdown?.Stop();
+            GameManager.OnPlayerLeft -= HandlePlayerLeft;
 
-            // Hiển thị thông báo
-            MessageBox.Show(
-                $"{playerName} đã thoát game. Trò chơi kết thúc!",
-                "Thông báo",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-            );
+            await GameManager.NotifyPlayerLeft(GameManager.CurrentRoomId, Session.UserName);
+            Session.LeaveRoom();
 
-            // Dừng tất cả timer và event
-            if (countdown != null)
-            {
-                countdown.Stop();
-            }
-
-            // Đóng form và quay về màn hình danh sách phòng
             this.Hide();
-            
-            // Kiểm tra xem đã có form JoinRoom nào đang mở chưa
-            var existingJoinRoom = Application.OpenForms.OfType<JoinRoom>().FirstOrDefault();
-            if (existingJoinRoom == null)
+            if (_joinRoomInstance == null || _joinRoomInstance.IsDisposed)
             {
-                // Nếu chưa có form nào, tạo form mới
-                var joinRoomForm = new JoinRoom();
-                joinRoomForm.Show();
+                _joinRoomInstance = new JoinRoom();
+                _joinRoomInstance.StartPosition = FormStartPosition.CenterScreen;
+                _joinRoomInstance.Show();
             }
             else
             {
-                // Nếu đã có form, kích hoạt form đó
-                existingJoinRoom.Activate();
+                _joinRoomInstance.WindowState = FormWindowState.Normal;
+                _joinRoomInstance.BringToFront();
+                _joinRoomInstance.Activate();
             }
-            
-            this.Close();
+
+            e.Cancel = true;
         }
+
+        private bool _playerLeftHandled = false;
+
+        private void HandlePlayerLeft(string playerName)
+        {
+            if (GlobalFlags.PlayerLeftHandled) return;
+            GlobalFlags.PlayerLeftHandled = true;
+
+            if (InvokeRequired)
+            {
+                Invoke(() => HandlePlayerLeft(playerName));
+                return;
+            }
+
+            countdown?.Stop();
+            GameManager.OnPlayerLeft -= HandlePlayerLeft;
+
+            MessageBox.Show($"{playerName} đã thoát khỏi trò chơi. Trò chơi kết thúc!", "Thông báo");
+
+            this.Hide();
+
+            if (_joinRoomInstance == null || _joinRoomInstance.IsDisposed)
+            {
+                _joinRoomInstance = new JoinRoom();
+                _joinRoomInstance.StartPosition = FormStartPosition.CenterScreen;
+                _joinRoomInstance.Show();
+            }
+            else
+            {
+                _joinRoomInstance.WindowState = FormWindowState.Normal;
+                _joinRoomInstance.BringToFront();
+                _joinRoomInstance.Activate();
+            }
+        }
+
 
         protected override void OnFormClosed(FormClosedEventArgs e)
         {

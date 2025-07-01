@@ -30,6 +30,7 @@ namespace MonopolyWinForms.Services
         public static event Action<GameState>? OnGameStateUpdated;
         public static event Action<string, string>? OnChatMessageReceived;
         public static event Action<string>? OnPlayerLeft;
+        public const string SYSTEM = "SYSTEM";
 
         public static void StartGame(string roomId, List<string> players, int playtime)
         {
@@ -86,18 +87,31 @@ namespace MonopolyWinForms.Services
         private static async Task SyncChat()
         {
             if (!IsGameStarted || string.IsNullOrEmpty(CurrentRoomId)) return;
+
             var msgs = await _firebase.GetChatMessagesAsync(CurrentRoomId);
             if (msgs == null) return;
+
             foreach (var m in msgs)
             {
-                var t = DateTime.Parse(m.Timestamp, null, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal);
+                var t = DateTime.Parse(m.Timestamp,
+                                       null,
+                                       DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal);
+
                 if (t > _lastChatTime)
                 {
                     OnChatMessageReceived?.Invoke(m.SenderName, m.Message);
                     _lastChatTime = t;
+
+                    // Nếu là gói “LEFT:…”, gọi OnPlayerLeft cho *mọi* client
+                    if (m.SenderName == SYSTEM && m.Message.StartsWith("LEFT:"))
+                    {
+                        string leaver = m.Message.Substring(5);   // cắt "LEFT:"
+                        OnPlayerLeft?.Invoke(leaver);
+                    }
                 }
             }
         }
+
         public static Task UpdateGameState(GameState gs) => _firebase.UpdateGameStateAsync(gs);
         public static Task<GameState?> GetLatestGameState() => _firebase.GetGameStateAsync(CurrentRoomId!);
         public static Task SendChatMessage(string roomId, string sender, string message) =>
@@ -120,12 +134,19 @@ namespace MonopolyWinForms.Services
         public static async Task NotifyPlayerLeft(string roomId, string playerName)
         {
             if (!IsGameStarted) return;
-            IsGameStarted = false;
-            await SendChatMessage(roomId, "Hệ thống", $"{playerName} đã thoát game. Trò chơi kết thúc!");
-            OnPlayerLeft?.Invoke(playerName);
-            await Task.Delay(500);
-            await _firebase.CleanupGameDataAsync(roomId);
+
+            // 1) Gửi “LEFT:playerName” thay vì câu tiếng Việt
+            await SendChatMessage(roomId, SYSTEM, $"LEFT:{playerName}");
+
+            // 2) Ngắt local
+            OnPlayerLeft?.Invoke(playerName);          // cho chính client vừa thoát
+            await Task.Delay(300);                     // chờ đồng bộ
+
+            try { await _firebase.CleanupGameDataAsync(roomId); }
+            catch { /* ghi log nếu muốn */ }
+
             EndGame();
         }
+
     }
 }

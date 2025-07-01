@@ -50,6 +50,7 @@ namespace MonopolyWinForms.Login_Signup
             }
 
             // Mở form chính
+            this.Close();
             mainPage.Show();
 
             // Khi form chính đóng, thoát app
