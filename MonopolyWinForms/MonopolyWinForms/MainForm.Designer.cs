@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             panel1 = new Panel();
             panel2 = new Panel();
             panel3 = new Panel();
@@ -144,6 +145,8 @@
             // 
             // panel8
             // 
+            panel8.BackgroundImage = Properties.Resources.co_hoi_doc;
+            panel8.BackgroundImageLayout = ImageLayout.Stretch;
             panel8.BorderStyle = BorderStyle.FixedSingle;
             panel8.Location = new Point(595, 10);
             panel8.Margin = new Padding(2);
@@ -279,6 +282,8 @@
             // 
             // panel23
             // 
+            panel23.BackgroundImage = Properties.Resources.co_hoi_doc;
+            panel23.BackgroundImageLayout = ImageLayout.Stretch;
             panel23.BorderStyle = BorderStyle.FixedSingle;
             panel23.Location = new Point(672, 826);
             panel23.Margin = new Padding(2);
@@ -405,6 +410,8 @@
             // 
             // panel37
             // 
+            panel37.BackgroundImage = Properties.Resources.co_hoi_ngang;
+            panel37.BackgroundImageLayout = ImageLayout.Stretch;
             panel37.BorderStyle = BorderStyle.FixedSingle;
             panel37.Location = new Point(10, 365);
             panel37.Margin = new Padding(2);
@@ -509,7 +516,7 @@
             // 
             // groupBox1
             // 
-            groupBox1.BackColor = ColorTranslator.FromHtml("#FBF8F4");
+            groupBox1.BackColor = Color.FromArgb(251, 248, 244);
             groupBox1.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             groupBox1.ForeColor = Color.Black;
             groupBox1.Location = new Point(1317, -3);
@@ -573,10 +580,15 @@
             Controls.Add(panel2);
             Controls.Add(panel1);
             Controls.Add(groupBox1);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(2);
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "MainForm";
+            SizeGripStyle = SizeGripStyle.Hide;
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Form1";
+            Text = "Cờ Tỷ Phú";
             Load += MainForm_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);

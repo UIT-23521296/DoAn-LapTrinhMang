@@ -51,7 +51,7 @@ namespace MonopolyWinForms
         //Chatbox
         private void InitializeChatBox(){
             chatbox = new Chatbox(players[currentPlayerIndex]);
-            chatbox.Location = new Point(1200, 675);
+            chatbox.Location = new Point(970, 548);
             chatbox.OnSendMessage += HandleChatMessage;
             this.Controls.Add(chatbox);
         }
@@ -61,7 +61,7 @@ namespace MonopolyWinForms
             {
                 Location = new Point(965, 11),
                 Size = new Size(330, 42),
-                BackColor = Color.White,
+                BackColor = ColorTranslator.FromHtml("#EEF7FA"),
                 BorderStyle = BorderStyle.FixedSingle,
                 Padding = new Padding(6, 8, 6, 8)  // trên-dưới = 8px
             };
@@ -94,7 +94,6 @@ namespace MonopolyWinForms
             // THÊM PANEL vào form (không thêm label đơn lẻ)
             this.Controls.Add(pnlCurrentTurn);
         }
-
 
         private async void HandleChatMessage(string senderName, string message)
         {
