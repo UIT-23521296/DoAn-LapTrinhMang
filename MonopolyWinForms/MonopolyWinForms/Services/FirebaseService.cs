@@ -284,11 +284,26 @@ public sealed class FirebaseService
     }
     private async Task<string?> SafeGetStringAsync(string url)
     {
-        var resp = await _client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
-        if (!resp.IsSuccessStatusCode) return null;
-        var json = await resp.Content.ReadAsStringAsync();
-        return string.IsNullOrWhiteSpace(json) || json == "null" ? null : json;
+        try
+        {
+            var resp = await _client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+            if (!resp.IsSuccessStatusCode) return null;
+
+            var json = await resp.Content.ReadAsStringAsync();
+            return string.IsNullOrWhiteSpace(json) || json == "null" ? null : json;
+        }
+        catch (TaskCanceledException ex) when (ex.InnerException is TimeoutException)
+        {
+            Log($"❌ Timeout khi gọi: {url}");
+            return null;
+        }
+        catch (Exception ex)
+        {
+            Log($"❌ SafeGetStringAsync error: {ex.Message}");
+            return null;
+        }
     }
+
     private static Task PutAsync(string url, object obj) =>
         _client.PutAsync(url, ToJsonContent(obj));
     private static Task PostAsync(string url, object obj) =>

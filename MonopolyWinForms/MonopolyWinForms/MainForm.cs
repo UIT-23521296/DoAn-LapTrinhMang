@@ -443,11 +443,11 @@ namespace MonopolyWinForms
                 {
                     Action.ShowTileActionForm(tile, currentPlayer);
                 }
-                else
-                {
-                    string actionMessage = GetTileActionMessage(tile, currentPlayer);
-                    AddToGameLog(actionMessage, LogType.System);
-                }
+                //else
+                //{
+                //    string actionMessage = GetTileActionMessage(tile, currentPlayer);
+                //    AddToGameLog(actionMessage, LogType.System);
+                //}
             }
         }
         public void UpdatePlayerMarkerPosition(Player player, int newIndex){ Initialize.UpdatePlayerMarkerPosition(player,newIndex); }
@@ -458,7 +458,7 @@ namespace MonopolyWinForms
         public Image GetHouseImage(int level, Player player, Tile tile, List<Player> players){return UpdateTile.GetHouseImage(level, player, players, tile);
         }
 
-        public void AddToGameLog(string message, LogType type = LogType.System)
+        public async void AddToGameLog(string message, LogType type = LogType.System)
         {
             if (InvokeRequired)
             {
@@ -466,22 +466,29 @@ namespace MonopolyWinForms
                 return;
             }
 
-            switch (type)
+            //switch (type)
+            //{
+            //    case LogType.System:
+            //        chatbox?.AddSystemMessage(message);
+            //        break;
+            //    case LogType.Notification:
+            //        chatbox?.AddNotificationMessage(message);
+            //        break;
+            //    case LogType.Warning:
+            //        chatbox?.AddWarningMessage(message);
+            //        break;
+            //    case LogType.Error:
+            //        chatbox?.AddErrorMessage(message);
+            //        break;
+            //}
+
+            // Đẩy log lên Firebase (nếu là SYSTEM và đang trong game)
+            if (type == LogType.System && GameManager.IsGameStarted && !string.IsNullOrEmpty(GameManager.CurrentRoomId))
             {
-                case LogType.System:
-                    chatbox?.AddSystemMessage(message);
-                    break;
-                case LogType.Notification:
-                    chatbox?.AddNotificationMessage(message);
-                    break;
-                case LogType.Warning:
-                    chatbox?.AddWarningMessage(message);
-                    break;
-                case LogType.Error:
-                    chatbox?.AddErrorMessage(message);
-                    break;
+                await GameManager.SendChatMessage(GameManager.CurrentRoomId, "Hệ thống", message);
             }
         }
+
 
         // Enum để phân loại log
         public enum LogType
@@ -527,14 +534,12 @@ namespace MonopolyWinForms
                         case "Thuế đặc biệt":
                             return $"{player.Name} phải đóng thuế {tile.LandPrice}$";
                         case "Nhà tù":
-                            return $"{player.Name} đang ở trong tù";
+                            return $"{player.Name} đã đến {tile.Name}";
                         case "Ô bắt đầu":
-                            return $"{player.Name} đi qua ô Start và nhận 200$";
-                        case "Khí vận":
-                        case "Cơ hội":
-                            return "";
-                        case "Đi thẳng vào tù":
-                            return $"{player.Name} bị vào tù";
+                            return $"{player.Name} đã đi qua {tile.Name}";
+                        //case "Khí vận":
+                        //case "Cơ hội":
+                        //    return "";
                         default:
                             return $"{player.Name} đã đến {tile.Name}";
                     }
