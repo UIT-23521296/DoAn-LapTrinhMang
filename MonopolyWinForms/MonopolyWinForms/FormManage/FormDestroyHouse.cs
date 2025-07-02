@@ -53,6 +53,7 @@ namespace MonopolyWinForms.FormManage
                 msg += "\nĐã mất quyền sở hữu ô này.";
             }
             mainForm.UpdateTileDisplay(selectedTile.Id - 1, player);
+            mainForm.UpdateTile.UpdateAllRents();
             listBoxTiles.Items[listBoxTiles.SelectedIndex] = $"{selectedTile.Name} (Cấp nhà: {selectedTile.Level})";
             MessageBox.Show(msg, "Kết quả");
             this.Close();

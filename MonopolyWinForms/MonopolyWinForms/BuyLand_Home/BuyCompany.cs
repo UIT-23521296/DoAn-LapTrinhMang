@@ -73,9 +73,9 @@ namespace MonopolyWinForms.BuyLand_Home
                 UpdateRentDisplay();
                 mainform.UpdateCompanyRent(playerID);
 
-                //Cập nhật game state 
-                var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
-                await GameManager.UpdateGameState(gameState);
+                //Bỏ cập nhật game state ở đây để tránh race condition
+                // var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
+                // await GameManager.UpdateGameState(gameState);
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
@@ -95,8 +95,8 @@ namespace MonopolyWinForms.BuyLand_Home
             }
             label2.Text = $"Rent rate: ${rent} * {"number of dices"}";
             label3.Text = $"The price: ${Price}";
-            var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
-            await GameManager.UpdateGameState(gameState);
-        }
+            //var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
+            //await GameManager.UpdateGameState(gameState);
+        }   
     }
 }

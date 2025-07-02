@@ -1,5 +1,6 @@
 ﻿using MonopolyWinForms.GameLogic;
 using System.Data;
+using MonopolyWinForms.Services;
 
 namespace MonopolyWinForms.FormManage
 {
@@ -38,18 +39,29 @@ namespace MonopolyWinForms.FormManage
         }
         private async void BtnSell_Click(object? sender, EventArgs e)
         {
-            if (listBoxTiles.SelectedIndex == -1)
+            try
             {
-                MessageBox.Show("Vui lòng chọn một ô đất!");
-                return;
+                btnSell.Enabled = false;
+                if (listBoxTiles.SelectedIndex == -1)
+                {
+                    MessageBox.Show("Vui lòng chọn một ô đất!");
+                    btnSell.Enabled = true;
+                    return;
+                }
+                var selectedTile = ownedTiles[listBoxTiles.SelectedIndex];
+                int refund = selectedTile.SellLandAndHousesLocal();
+                mainForm.AddMoney(refund, player);
+                mainForm.UpdateTileDisplay(selectedTile.Id - 1, player);
+                var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, GameStateTiles);
+                await GameManager.UpdateGameState(gameState);
+                MessageBox.Show($"Bạn đã bán {selectedTile.Name} và nhận ${refund}", "Đã bán");
+                this.Close();
             }
-            var selectedTile = ownedTiles[listBoxTiles.SelectedIndex];
-            int refund = await selectedTile.SellLandAndHouses(currentPlayerIndex, players, GameStateTiles);
-            mainForm.AddMoney(refund,player);
-            selectedTile.PlayerId = null;
-            mainForm.UpdateTileDisplay(selectedTile.Id - 1, player);
-            MessageBox.Show($"Bạn đã bán {selectedTile.Name} và nhận ${refund}", "Đã bán");
-            this.Close();
+            catch (Exception ex)
+            {
+                MessageBox.Show("Có lỗi xảy ra khi bán nhà: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                btnSell.Enabled = true;
+            }
         }
     }
 }

@@ -49,9 +49,9 @@ namespace MonopolyWinForms.BuyLand_Home
                 UpdateRentDisplay();
                 mainform.UpdateBusStationRent(playerID);
 
-                //Cập nhật game state
-                var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
-                await GameManager.UpdateGameState(gameState);
+                //Bỏ cập nhật game state ở đây để tránh race condition
+                // var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
+                // await GameManager.UpdateGameState(gameState);
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
@@ -63,8 +63,8 @@ namespace MonopolyWinForms.BuyLand_Home
             int rent = 50 + 50 * playerBuses;
             label2.Text = $"Rent rate: ${rent}";
             label3.Text = $"The price: ${Price}";
-            var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
-            await GameManager.UpdateGameState(gameState);
+            //var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
+            //await GameManager.UpdateGameState(gameState);
         }
     }
 }
