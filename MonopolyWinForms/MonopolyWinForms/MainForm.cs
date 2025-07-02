@@ -25,7 +25,7 @@ namespace MonopolyWinForms
         private RentCalculator rentCalculator;
         private TileActionHandler? Action;
         public List<Tile> tiles;
-        private UpdateTileDisplay UpdateTile;
+        public UpdateTileDisplay UpdateTile;
         private UpdatePlayerPanel UpdatePlayer;
         private static bool _globalPlayerLeftHandled = false;
         private static JoinRoom? _joinRoomInstance = null;
@@ -33,7 +33,7 @@ namespace MonopolyWinForms
         private Label lblTurnStatic;   // "Lượt chơi:"
         private Label lblTurnName;     // Tên người chơi
 
-
+        public static bool GameEnded { get; private set; } = false;
         public Random random = new Random();
         public Dictionary<int, Panel> playerMarkers = new Dictionary<int, Panel>();
         public readonly Dictionary<string, Color> monopolyColors = new()
@@ -47,10 +47,11 @@ namespace MonopolyWinForms
            ["7"] = Color.Purple,
            ["8"] = Color.Gray
         };
+        private Dictionary<int, bool> isMoving = new Dictionary<int, bool>();
         //Chatbox
         private void InitializeChatBox(){
             chatbox = new Chatbox(players[currentPlayerIndex]);
-            chatbox.Location = new Point(984, 548);
+            chatbox.Location = new Point(1200, 675);
             chatbox.OnSendMessage += HandleChatMessage;
             this.Controls.Add(chatbox);
         }
@@ -235,18 +236,37 @@ namespace MonopolyWinForms
                     // Cập nhật vị trí người chơi nếu có thay đổi
                     if (localPlayer.TileIndex != remotePlayer.TileIndex)
                     {
-                        // Tính số bước cần di chuyển
-                        int steps = (remotePlayer.TileIndex - localPlayer.TileIndex + 40) % 40;
-                        if (steps > 0)
+                        // Nếu đang chạy hiệu ứng thì bỏ qua cập nhật vị trí
+                        if (isMoving.ContainsKey(localPlayer.ID) && isMoving[localPlayer.ID]) continue;
+
+                        if (remotePlayer.LastMoveType == MoveType.Teleport)
                         {
-                            // Di chuyển từng bước cho tất cả người chơi
-                            _ = MovePlayerStepByStep(localPlayer, steps, 40).ContinueWith(_ => {
-                                // Chỉ cập nhật TileIndex sau khi hoàn thành animation
-                                localPlayer.TileIndex = remotePlayer.TileIndex;
-                                UpdatePlayerMarkerPosition(localPlayer, remotePlayer.TileIndex);
-                            });
-                            
+                            UpdatePlayerMarkerPosition(localPlayer, remotePlayer.TileIndex);
+                            localPlayer.TileIndex = remotePlayer.TileIndex;
                         }
+                        else
+                        {
+                            int steps = (remotePlayer.TileIndex - localPlayer.TileIndex + 40) % 40;
+                            if (steps > 0)
+                            {
+                                isMoving[localPlayer.ID] = true;
+                                _ = MovePlayerStepByStep(localPlayer, steps, 40).ContinueWith(_ => {
+                                    localPlayer.TileIndex = remotePlayer.TileIndex;
+                                    UpdatePlayerMarkerPosition(localPlayer, remotePlayer.TileIndex);
+                                    isMoving[localPlayer.ID] = false;
+                                });
+                            }
+                        }
+                    }
+                }
+                if (GameEnded) return;
+
+                foreach (var localPlayer in players)
+                {
+                    if (monopoly.CheckWin(localPlayer.ID))
+                    {
+                        await DeclareWinner(localPlayer);
+                        return;
                     }
                 }
 
@@ -278,6 +298,9 @@ namespace MonopolyWinForms
                         UpdateTile.UpdateTileDisplayUI(i, players[currentPlayerIndex]);
                     }
                 }
+
+                // Cập nhật giá thuê bến xe và công ty cho tất cả người chơi
+                UpdateTile.UpdateAllRents();
             }
             catch (Exception ex)
             {
@@ -341,7 +364,7 @@ namespace MonopolyWinForms
             await handler.RollDiceAndMoveAsync();
         }
         // VÙNG GỌI HÀM
-        public void NextTurn(){
+        public async Task NextTurn(){
             currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
             UpdateTurnDisplay();
             chatbox!.UpdatePlayer(players[currentPlayerIndex]);
@@ -349,7 +372,18 @@ namespace MonopolyWinForms
             //button1.Enabled = true;
 
             var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
-            GameManager.UpdateGameState(gameState);
+            try
+            {
+                await GameManager.UpdateGameState(gameState);
+            }
+            catch (Exception ex)
+            {
+                // ghi log & (nếu muốn) retry nhẹ
+                AddToGameLog($"Lỗi cập nhật lượt: {ex.Message}", LogType.Error);
+                // Có thể bật lại nút lắc cho chính mình để thử lại
+                if (Session.PlayerInGameId == players[currentPlayerIndex].ID)
+                    button1.Enabled = true;
+            }
         }
 
         private void UpdateTurnDisplay()
@@ -435,13 +469,13 @@ namespace MonopolyWinForms
                 AddToGameLog($"{player.Name} đã nhận {money}$", LogType.System);
             }
         }
-        public void ShowTileActionForm(Tile tile, Player currentPlayer)
+        public async Task ShowTileActionForm(Tile tile, Player currentPlayer)
         { 
             if (Action != null)
             {
                 if (Session.PlayerInGameId == currentPlayer.ID)
                 {
-                    Action.ShowTileActionForm(tile, currentPlayer);
+                    await Action.ShowTileActionForm(tile, currentPlayer);
                 }
                 else
                 {
@@ -688,6 +722,30 @@ namespace MonopolyWinForms
                 
             // Reset session
             Session.LeaveRoom();
+        }
+        public async Task DeclareWinner(Player winner)
+        {
+            if (GameEnded) return;          // tránh gọi lặp
+            GameEnded = true;
+
+            countdown?.Stop();
+            button1.Enabled = false;
+
+            MessageBox.Show($"{winner.Name} đã chiến thắng trò chơi!", "Chiến thắng");
+
+            await GameManager.SendChatMessage(
+                GameManager.CurrentRoomId!,
+                "Hệ thống",
+                $"{winner.Name} đã chiến thắng trò chơi!"
+            );
+
+            await GameManager.CleanupGameData(GameManager.CurrentRoomId);
+
+            var resultForm = new GameResultForm(players, tiles);
+            resultForm.ShowDialog();
+
+            this.Hide();
+            (new JoinRoom()).Show();
         }
     }
 }

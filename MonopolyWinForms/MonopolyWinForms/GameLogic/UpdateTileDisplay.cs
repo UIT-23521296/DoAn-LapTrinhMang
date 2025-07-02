@@ -55,14 +55,31 @@ namespace MonopolyWinForms.GameLogic
             int rentPrice = 0;
             if (tile.Monopoly == "9" && monopoly != null)
             {
-                rentPrice = 50 * monopoly.CountBusesOwned(playerID);
+                if(tile.PlayerId.HasValue)
+                {
+                    int busCount = monopoly.CountBusesOwned(tile.PlayerId.Value);
+                    rentPrice = busCount switch
+                    {
+                        1 => 50,
+                        2 => 100,
+                        3 => 150,
+                        4 => 200,
+                        _ => 0
+                    };
+                }
             }
             else if (tile.Monopoly == "10" && monopoly != null)
             {
-                if (monopoly.CountCompaniesOwned(playerID) == 1)
-                    rentPrice = 25;
-                else
-                    rentPrice = 100;
+                if(tile.PlayerId.HasValue)
+                {
+                    int companyCount = monopoly.CountCompaniesOwned(tile.PlayerId.Value);
+                    rentPrice = companyCount switch
+                    {
+                        1 => 20,
+                        2 => 50,
+                        _ => 0
+                    };
+                }
             }
             else if (tile.Monopoly != "9" && tile.Monopoly != "10")
             {
@@ -203,6 +220,18 @@ namespace MonopolyWinForms.GameLogic
             // Bến xe
             else if (tile.Monopoly == "9")
             {
+                string labelText;
+                if (tile.PlayerId == null)
+                {
+                    labelText = $"{tile.Name}\n${tile.LandPrice}";
+                }
+                else
+                {
+                    var owner = this.players.FirstOrDefault(p => p.ID == tile.PlayerId.Value);
+                    string ownerName = owner?.Name ?? $"ID: {tile.PlayerId.Value}";
+                    labelText = $"{tile.Name}\n{ownerName}\n${rentPrice}";
+                }
+
                 if (panels[index].Width > panels[index].Height)
                 {
                     if (panels[index].Location.X < 500)
@@ -211,9 +240,7 @@ namespace MonopolyWinForms.GameLogic
                         label.Size = new Size(panels[index].Width / 2, panels[index].Height);
                         label.Location = new Point(panels[index].Width - panels[index].Width / 2, 0);
                         label.BackColor = Color.Transparent;
-                        label.Text = tile.PlayerId == null
-                            ? $"{tile.Name}\n${tile.LandPrice}"
-                            : $"{tile.Name}\n{currentPlayer.Name}\n${rentPrice}";
+                        label.Text = labelText;
                         SetTileBackgroundImage(index, "ben_xe.png", tile);
                     }
                     else
@@ -222,9 +249,7 @@ namespace MonopolyWinForms.GameLogic
                         label.Size = new Size(panels[index].Width / 2, panels[index].Height);
                         label.Location = new Point(panels[index].Width - panels[index].Width, 0);
                         label.BackColor = Color.Transparent;
-                        label.Text = tile.PlayerId == null
-                            ? $"{tile.Name}\n${tile.LandPrice}"
-                            : $"{tile.Name}\n{currentPlayer.Name}\n${rentPrice}";
+                        label.Text = labelText;
                         SetTileBackgroundImage(index, "ben_xe.png", tile);
                     }
                 }
@@ -234,15 +259,25 @@ namespace MonopolyWinForms.GameLogic
                     label.Size = new Size(panels[index].Width, panels[index].Height * 3 / 7);
                     label.Location = new Point(0, 0);
                     label.BackColor = Color.Transparent;
-                    label.Text = tile.PlayerId == null
-                        ? $"{tile.Name}\n${tile.LandPrice}"
-                        : $"{tile.Name}\n{currentPlayer.Name}\n${rentPrice}";
+                    label.Text = labelText;
                     SetTileBackgroundImage(index, "ben_xe.png", tile);
                 }
             }
             //Công ty
             else if (tile.Monopoly == "10")
             {
+                string labelText;
+                if (tile.PlayerId == null)
+                {
+                    labelText = $"{tile.Name}\n${tile.LandPrice}";
+                }
+                else
+                {
+                    var owner = this.players.FirstOrDefault(p => p.ID == tile.PlayerId.Value);
+                    string ownerName = owner?.Name ?? $"ID: {tile.PlayerId.Value}";
+                    labelText = $"{tile.Name}\n{ownerName}\n${rentPrice}";
+                }
+
                 if (panels[index].Width > panels[index].Height)
                 {
                     if (panels[index].Location.X < 500)
@@ -251,9 +286,7 @@ namespace MonopolyWinForms.GameLogic
                         label.Size = new Size(panels[index].Width / 2, panels[index].Height);
                         label.Location = new Point(panels[index].Width - panels[index].Width / 2, 0);
                         label.BackColor = Color.Transparent;
-                        label.Text = tile.PlayerId == null
-                            ? $"{tile.Name}\n${tile.LandPrice}"
-                            : $"{tile.Name}\n{currentPlayer.Name}\n${rentPrice}";
+                        label.Text = labelText;
                         if (tile.Name == "Công ty Cấp nước")
                             SetTileBackgroundImage(index, "cty_nuoc.png", tile);
                         else if (tile.Name == "Công ty Điện lực")
@@ -265,9 +298,7 @@ namespace MonopolyWinForms.GameLogic
                         label.Size = new Size(panels[index].Width / 2, panels[index].Height);
                         label.Location = new Point(panels[index].Width - panels[index].Width, 0);
                         label.BackColor = Color.Transparent;
-                        label.Text = tile.PlayerId == null
-                            ? $"{tile.Name}\n${tile.LandPrice}"
-                            : $"{tile.Name}\n{currentPlayer.Name}\n${rentPrice}";
+                        label.Text = labelText;
                         if (tile.Name == "Công ty Cấp nước")
                             SetTileBackgroundImage(index, "cty_nuoc.png", tile);
                         else if (tile.Name == "Công ty Điện lực")
@@ -280,9 +311,7 @@ namespace MonopolyWinForms.GameLogic
                     label.Size = new Size(panels[index].Width, panels[index].Height * 3 / 7);
                     label.Location = new Point(0, 0);
                     label.BackColor = Color.Transparent;
-                    label.Text = tile.PlayerId == null
-                        ? $"{tile.Name}\n${tile.LandPrice}"
-                        : $"{tile.Name}\n{currentPlayer.Name}\n${rentPrice}";
+                    label.Text = labelText;
                     if (tile.Name == "Công ty Cấp nước")
                         SetTileBackgroundImage(index, "cty_nuoc.png", tile);
                     else if (tile.Name == "Công ty Điện lực")
@@ -494,7 +523,9 @@ namespace MonopolyWinForms.GameLogic
                         var rentLabel = panel.Controls.OfType<Label>().FirstOrDefault(l => l.Name == "labelrent");
                         if (rentLabel != null)
                         {
-                            rentLabel.Text = $"{tile.Name}\nPlayer {tile.PlayerId}\n${rent}";
+                            var owner = this.players.FirstOrDefault(p => p.ID == tile.PlayerId.Value);
+                            string ownerName = owner?.Name ?? $"ID: {tile.PlayerId.Value}";
+                            rentLabel.Text = $"{tile.Name}\n{ownerName}\n${rent}";
                         }
                     }
                 }
@@ -506,8 +537,8 @@ namespace MonopolyWinForms.GameLogic
             int count = ownedCompany.Count;
             int rent = count switch
             {
-                1 => 25,
-                2 => 100,
+                1 => 20,
+                2 => 50,
                 _ => 0
             };
             foreach (var tile in ownedCompany)
@@ -520,8 +551,48 @@ namespace MonopolyWinForms.GameLogic
                         var rentLabel = panel.Controls.OfType<Label>().FirstOrDefault(l => l.Name == "labelrent");
                         if (rentLabel != null)
                         {
-                            rentLabel.Text = $"{tile.Name}\nPlayer {tile.PlayerId}\n${rent}";
+                            var owner = this.players.FirstOrDefault(p => p.ID == tile.PlayerId.Value);
+                            string ownerName = owner?.Name ?? $"ID: {tile.PlayerId.Value}";
+                            rentLabel.Text = $"{tile.Name}\n{ownerName}\n${rent}";
                         }
+                    }
+                }
+            }
+        }
+        // Thêm hàm mới: Cập nhật giá thuê cho tất cả bến xe và công ty
+        public void UpdateAllRents()
+        {
+            // Cập nhật giá thuê bến xe cho tất cả người chơi
+            var allPlayers = players.Select(p => p.ID).Distinct();
+            foreach (int playerId in allPlayers)
+            {
+                UpdateBusStationRent(playerId);
+                UpdateCompanyRent(playerId);
+            }
+            foreach (var tile in tiles)
+            {
+                if (tile.Monopoly != "0" && tile.Monopoly != "9" && tile.Monopoly != "10") // bỏ qua các ô đặc biệt, bến xe, công ty
+                {
+                    switch (tile.Level)
+                    {
+                        case 1:
+                            tile.RentPrice = tile.LandPrice / 2;
+                            break;
+                        case 2:
+                            tile.RentPrice = tile.LandPrice / 2 + tile.HousePrice / 2;
+                            break;
+                        case 3:
+                            tile.RentPrice = tile.LandPrice / 2 + tile.HousePrice;
+                            break;
+                        case 4:
+                            tile.RentPrice = tile.LandPrice / 2 + tile.HousePrice * 2;
+                            break;
+                        case 5:
+                            tile.RentPrice = tile.LandPrice / 2 + tile.HousePrice * 2 + tile.HotelPrice / 2;
+                            break;
+                        default:
+                            tile.RentPrice = 0;
+                            break;
                     }
                 }
             }

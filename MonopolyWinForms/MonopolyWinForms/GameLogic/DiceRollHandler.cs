@@ -83,7 +83,7 @@ namespace MonopolyWinForms.GameLogic
                     }
                     else
                     {
-                        mainForm.NextTurn();
+                        await mainForm.NextTurn();
                         return;
                     }
                 }
@@ -91,19 +91,26 @@ namespace MonopolyWinForms.GameLogic
             int totalTiles = panels.Length;
             bool passStart = (player.TileIndex + totalSteps) > totalTiles;
 
+            player.LastMoveType = MoveType.Step;
             await mainForm.MovePlayerStepByStep(player, totalSteps, totalTiles);
 
-            if (passStart)
+            // Nếu sau khi di chuyển, player bị vào tù (do tile hoặc card), thì kết thúc lượt luôn, không xử lý lắc đôi
+            if (player.IsInJail)
             {
-                mainForm.HandleStart(player);
+                player.ResetDoubleDice();
+                var jailState = new GameState(GameManager.CurrentRoomId,
+                                  currentPlayerIndex, players, tiles);
+                await GameManager.UpdateGameState(jailState);
+                await mainForm.NextTurn();
+                return;
             }
 
             if (isDouble)
             {
-                if (player.DoubleDices == 2 || player.IsInJail)
+                if (player.DoubleDices == 2)
                 {
                     player.ResetDoubleDice();
-                    mainForm.NextTurn();
+                    await mainForm.NextTurn();
 
                     if (Session.PlayerInGameId == player.ID)
                     {
@@ -135,7 +142,7 @@ namespace MonopolyWinForms.GameLogic
             else
             {
                 player.ResetDoubleDice();
-                mainForm.NextTurn();
+                await mainForm.NextTurn();
             }
         }
     }

@@ -59,7 +59,12 @@ namespace MonopolyWinForms.GameLogic
             {
                 int nextIndex = (player.TileIndex + 1) % totalTiles;
                 bool isLastStep = (i == steps);
-                MovePlayerToTile(player, nextIndex, isLastStep); // chỉ hiện form ở bước cuối
+                if (nextIndex == 1 && !isLastStep)
+                {
+                    // chỉ cộng khi “đi ngang”, không phải điểm dừng cuối
+                    MainForm.HandleStart(player);
+                }
+                await MovePlayerToTile(player, nextIndex, isLastStep); // chỉ hiện form ở bước cuối
                 await Task.Delay(200);
             }
         }
@@ -91,7 +96,7 @@ namespace MonopolyWinForms.GameLogic
             int centerY = (tilePanel.Height - markerSize) / 2 + offsetY;
             return new Point(centerX, centerY);
         }
-        private void MovePlayerToTile(Player player, int tileIndex, bool showAction)
+        private async Task MovePlayerToTile(Player player, int tileIndex, bool showAction)
         {
             if (playerMarkers.TryGetValue(player.ID, out var marker))
             {
@@ -110,7 +115,7 @@ namespace MonopolyWinForms.GameLogic
                     newTilePanel.Controls.Add(marker);
                     marker.Location = newPosition;
                     marker.BringToFront();
-                    if (tile != null && showAction) MainForm.ShowTileActionForm(tile, player);
+                    if (tile != null && showAction) await MainForm.ShowTileActionForm(tile, player);
                 }
             }
         }

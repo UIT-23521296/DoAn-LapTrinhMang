@@ -5,6 +5,7 @@ using System.Windows.Forms;
 
 namespace MonopolyWinForms.GameLogic
 {
+    public enum MoveType { Step, Teleport }
     public class Player
     {
         public int ID { get; set; }
@@ -19,6 +20,7 @@ namespace MonopolyWinForms.GameLogic
         public Color Color { get; set; }
         public bool IsInJail { get; set; }
         public int JailTurnCount { get; set; }
+        public MoveType LastMoveType { get; set; } = MoveType.Step;
         public Player(int id, int initialMoney, string name)
         {
             ID = id;
