@@ -600,6 +600,22 @@ namespace MonopolyWinForms.GameLogic
                 {
                     return;
                 }
+                if (tile.Level >= 1 && tile.Level <= 3)
+                {
+                    if (currentPlayer.Money < tile.HousePrice)
+                    {
+                        MessageBox.Show("Không đủ tiền mua nhà!", "Thông báo");
+                        return;
+                    }
+                }
+                else if (tile.Level == 4)
+                {
+                    if (currentPlayer.Money < tile.HotelPrice)
+                    {
+                        MessageBox.Show("Không đủ tiền mua khách sạn!", "Thông báo");
+                        return;
+                    }
+                }
                 using (var upgradeForm = new BuyHome_Land(currentPlayer, tile, monopoly, mainForm, players, currentPlayerIndex, tiles)){
                     if (upgradeForm.ShowDialog() == DialogResult.OK){
                         int totalPrice = upgradeForm.TotalPrice;
