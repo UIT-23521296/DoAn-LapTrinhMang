@@ -742,6 +742,14 @@ namespace MonopolyWinForms.GameLogic
                             return;
                         }
                         currentPlayer.Money -= totalPrice;
+                        string levelDesc = tile.Level switch
+                        {
+                            2 => "nhà cấp 1",
+                            3 => "nhà cấp 2",
+                            4 => "nhà cấp 3",
+                            5 => "khách sạn",
+                            _ => $"level {tile.Level}"  // phòng hờ
+                        };
                         mainForm.UpdatePlayerPanel(currentPlayer);
                         mainForm.UpdateTileDisplay(Array.IndexOf(panels, panels.First(p => p.Tag == tile)), currentPlayer);
                         try
@@ -749,7 +757,7 @@ namespace MonopolyWinForms.GameLogic
                             await GameManager.SendChatMessage(
                                 GameManager.CurrentRoomId!,
                                 "Hệ thống",
-                                $"{currentPlayer.Name} đã nâng cấp {tile.Name} lên {tile.Level} với chi phí ${totalPrice:N0}"
+                                $"{currentPlayer.Name} đã nâng cấp {tile.Name} lên {levelDesc} với chi phí ${totalPrice:N0}"
                             );
                         }
                         catch (Exception ex)

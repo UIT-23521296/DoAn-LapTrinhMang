@@ -327,7 +327,7 @@
                     SetTileBackgroundImage(index, "khi_van.png", tile);
                 }
                 //Cơ hội
-                else if (tile.Name == "Cơ hội" && (panel == panels[8] || panel == panels[23]))
+                else if (tile.Name == "Cơ hội" && (panel == panels[7] || panel == panels[22]))
                 {
                     label.Size = panel.Size;
                     label.Location = new Point(0, 0);
@@ -335,7 +335,7 @@
                     SetTileBackgroundImage(index, "co_hoi_doc.png", tile); // file ảnh dọc đã có
                 }
                 //Cơ hội
-                else if (tile.Name == "Cơ hội" && panel == panels[37])
+                else if (tile.Name == "Cơ hội" && panel == panels[36])
                 {
                     label.Size = panel.Size;
                     label.Location = new Point(0, 0);
@@ -345,19 +345,39 @@
                 // Thuế
                 else if (tile.Name == "Thuế thu nhập")
                 {
-                    label.Size = panels[index].Size;
-                    label.TextAlign = ContentAlignment.MiddleCenter;
+                    //label.Size = panels[index].Size;
+                    //label.TextAlign = ContentAlignment.MiddleCenter;
+                    //label.Location = new Point(0, 0);
+                    //label.BackColor = Color.Lavender;
+                    //label.Text = $"{tile.Name}\n\n$200 hoặc 10% tổng tài sản";
+                    label.Size = panel.Size;
                     label.Location = new Point(0, 0);
-                    label.BackColor = Color.Lavender;
-                    label.Text = $"{tile.Name}\n\n$200 hoặc 10% tổng tài sản";
+                    label.BackColor = Color.Transparent;
+                    SetTileBackgroundImage(index, "thue_thu_nhap.png", tile); 
                 }
                 else if (tile.Name == "Thuế đặc biệt")
                 {
-                    label.Size = panels[index].Size;
-                    label.TextAlign = ContentAlignment.MiddleCenter;
+                    //label.Size = panels[index].Size;
+                    //label.TextAlign = ContentAlignment.MiddleCenter;
+                    //label.Location = new Point(0, 0);
+                    //label.BackColor = Color.Lavender;
+                    //label.Text = $"{tile.Name}\n\n15% tổng tài sản";
+                    label.Size = panel.Size;
                     label.Location = new Point(0, 0);
-                    label.BackColor = Color.Lavender;
-                    label.Text = $"{tile.Name}\n\n15% tổng tài sản";
+                    label.BackColor = Color.Transparent;
+                    SetTileBackgroundImage(index, "thue_dac_biet.png", tile); 
+                }
+                else if (tile.Name == "Ô bắt đầu")
+                {
+                    //label.Size = panels[index].Size;
+                    //label.TextAlign = ContentAlignment.MiddleCenter;
+                    //label.Location = new Point(0, 0);
+                    //label.BackColor = Color.Lavender;
+                    //label.Text = $"{tile.Name}\n\n15% tổng tài sản";
+                    label.Size = panel.Size;
+                    label.Location = new Point(0, 0);
+                    label.BackColor = Color.Transparent;
+                    SetTileBackgroundImage(index, "o_bat_dau.png", tile); 
                 }
                 // 4 góc
                 else
@@ -381,10 +401,10 @@
                             SetTileBackgroundImage(index, "police.png", tile);
                             label.TextAlign = ContentAlignment.BottomCenter;
                             break;
-                        case "Ô bắt đầu":
-                            label.Text = $"{tile.Name}\n\nNhận $200 khi đi qua";
-                            label.BackColor = Color.Lavender;
-                            break;
+                        //case "Ô bắt đầu":
+                        //    label.Text = $"{tile.Name}\n\nNhận $200 khi đi qua";
+                        //    label.BackColor = Color.Lavender;
+                        //    break;
                         default:
                             label.BackColor = Color.Lavender;
                             break;
@@ -434,7 +454,7 @@
                     panels[index].BackgroundImage = resizedImage;
                     panels[index].BackgroundImageLayout = ImageLayout.None;
                 }
-                else if (tile.Name == "Khí vận")
+                else if (tile.Name == "Khí vận" || tile.Name == "Cơ hội" || tile.Name == "Thuế thu nhập" || tile.Name == "Thuế đặc biệt" || tile.Name == "Ô bắt đầu")
                 {
                     panels[index].BackgroundImage = img;
                     panels[index].BackgroundImageLayout = ImageLayout.Stretch;
