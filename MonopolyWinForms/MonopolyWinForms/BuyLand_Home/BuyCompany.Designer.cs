@@ -48,10 +48,10 @@
             // 
             label1.Font = new Font("Palatino Linotype", 18F, FontStyle.Bold);
             label1.ForeColor = Color.DarkSlateBlue;
-            label1.Location = new Point(0, 12);
+            label1.Location = new Point(0, -2);
             label1.Margin = new Padding(2, 0, 2, 0);
             label1.Name = "label1";
-            label1.Size = new Size(802, 36);
+            label1.Size = new Size(802, 64);
             label1.TabIndex = 0;
             label1.Text = "🏭 CÔNG TY";
             label1.TextAlign = ContentAlignment.MiddleCenter;
@@ -140,7 +140,7 @@
             label7.Location = new Point(12, 8);
             label7.Margin = new Padding(2, 0, 2, 0);
             label7.Name = "label7";
-            label7.Size = new Size(200, 20);
+            label7.Size = new Size(200, 28);
             label7.TabIndex = 0;
             label7.Text = "📋 Thông tin thuê:";
             // 
@@ -191,7 +191,9 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(2);
             MaximizeBox = false;
+            MinimizeBox = false;
             Name = "BuyCompany";
+            SizeGripStyle = SizeGripStyle.Hide;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Mua Công Ty";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();

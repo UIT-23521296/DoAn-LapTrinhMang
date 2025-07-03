@@ -62,9 +62,13 @@
             ClientSize = new Size(422, 250);
             Controls.Add(btnDestroy);
             Controls.Add(listBoxTiles);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(2);
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "FormDestroyHouse";
+            SizeGripStyle = SizeGripStyle.Hide;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Phá huỷ nhà";
             ResumeLayout(false);

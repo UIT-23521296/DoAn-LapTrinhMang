@@ -24,11 +24,10 @@ namespace MonopolyWinForms.Login_Signup
         {
             InitializeComponent();
             tb_password.UseSystemPasswordChar = true;
-            this.BackColor = ColorTranslator.FromHtml("#D9D9D9");
-            btn_login.BackColor = ColorTranslator.FromHtml("#FED626");  // Đổi màu nền của nút login
-            btn_signup.BackColor = ColorTranslator.FromHtml("#33B68F");  // Đổi màu nền của nút login
-            tb_login.BackColor = ColorTranslator.FromHtml("#ACACAC");
-            tb_password.BackColor = ColorTranslator.FromHtml("#ACACAC");
+            //btn_login.BackColor = ColorTranslator.FromHtml("#FED626");  // Đổi màu nền của nút login
+            //btn_signup.BackColor = ColorTranslator.FromHtml("#33B68F");  // Đổi màu nền của nút login
+            //tb_login.BackColor = ColorTranslator.FromHtml("#ACACAC");
+            //tb_password.BackColor = ColorTranslator.FromHtml("#ACACAC");
         }
 
         private void tb_password_TextChanged(object sender, EventArgs e)

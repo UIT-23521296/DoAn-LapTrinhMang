@@ -47,5 +47,10 @@ namespace MonopolyWinForms.FormManage
 
             Controls.Add(listView);
         }
+
+        private void InitializeComponent()
+        {
+
+        }
     }
 }

@@ -137,7 +137,9 @@ namespace MonopolyWinForms.BuyLand_Home
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
+            MinimizeBox = false;
             Name = "BuyBus";
+            SizeGripStyle = SizeGripStyle.Hide;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Mua Bến Xe";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Forgot));
             label3 = new Label();
             btn_send = new Button();
             tb_email = new TextBox();
@@ -83,9 +84,14 @@
             Controls.Add(btn_send);
             Controls.Add(tb_email);
             Controls.Add(label1);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "Forgot";
+            SizeGripStyle = SizeGripStyle.Hide;
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Forgot";
+            Text = "Quên mật khẩu";
             ResumeLayout(false);
             PerformLayout();
         }

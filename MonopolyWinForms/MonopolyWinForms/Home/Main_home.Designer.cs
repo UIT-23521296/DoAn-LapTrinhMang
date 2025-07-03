@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main_home));
             login_img = new PictureBox();
             btn_quit = new Button();
             btn_setting = new Button();
@@ -104,9 +105,14 @@
             Controls.Add(btn_quit);
             Controls.Add(btn_setting);
             Controls.Add(btn_play);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "Main_home";
+            SizeGripStyle = SizeGripStyle.Hide;
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Main_home";
+            Text = "Cờ tỷ phú";
             ((System.ComponentModel.ISupportInitialize)login_img).EndInit();
             ResumeLayout(false);
         }

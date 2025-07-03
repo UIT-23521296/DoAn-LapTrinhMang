@@ -62,9 +62,13 @@
             ClientSize = new Size(422, 250);
             Controls.Add(btnSell);
             Controls.Add(listBoxTiles);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(2);
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "FormSellProperty";
+            SizeGripStyle = SizeGripStyle.Hide;
             Text = "Bán tài sản";
             ResumeLayout(false);
         }

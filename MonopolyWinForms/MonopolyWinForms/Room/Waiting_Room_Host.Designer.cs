@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Waiting_Room_Host));
             txb_RoomName = new TextBox();
             txb_player1 = new TextBox();
             txb_player2 = new TextBox();
@@ -60,9 +61,9 @@
             txb_player1.Location = new Point(20, 170);
             txb_player1.Name = "txb_player1";
             txb_player1.ReadOnly = true;
-            txb_player1.TabStop = false;
             txb_player1.Size = new Size(200, 27);
             txb_player1.TabIndex = 1;
+            txb_player1.TabStop = false;
             // 
             // txb_player2
             // 
@@ -70,9 +71,9 @@
             txb_player2.Location = new Point(320, 170);
             txb_player2.Name = "txb_player2";
             txb_player2.ReadOnly = true;
-            txb_player2.TabStop = false;
             txb_player2.Size = new Size(200, 27);
             txb_player2.TabIndex = 2;
+            txb_player2.TabStop = false;
             // 
             // txb_player3
             // 
@@ -80,9 +81,9 @@
             txb_player3.Location = new Point(620, 170);
             txb_player3.Name = "txb_player3";
             txb_player3.ReadOnly = true;
-            txb_player3.TabStop = false;
             txb_player3.Size = new Size(200, 27);
             txb_player3.TabIndex = 3;
+            txb_player3.TabStop = false;
             // 
             // txb_player4
             // 
@@ -90,9 +91,9 @@
             txb_player4.Location = new Point(920, 170);
             txb_player4.Name = "txb_player4";
             txb_player4.ReadOnly = true;
-            txb_player4.TabStop = false;
             txb_player4.Size = new Size(200, 27);
             txb_player4.TabIndex = 4;
+            txb_player4.TabStop = false;
             // 
             // pictureBox1
             // 
@@ -142,7 +143,7 @@
             btn_Out.TabIndex = 9;
             btn_Out.Text = "Thoát";
             btn_Out.UseVisualStyleBackColor = true;
-            btn_Out.Click += this.btn_Out_Click;
+            btn_Out.Click += btn_Out_Click;
             // 
             // btn_Play
             // 
@@ -152,7 +153,7 @@
             btn_Play.TabIndex = 10;
             btn_Play.Text = "Chơi";
             btn_Play.UseVisualStyleBackColor = true;
-            btn_Play.Click += this.btn_Play_Click;
+            btn_Play.Click += btn_Play_Click;
             // 
             // Waiting_Room_Host
             // 
@@ -170,8 +171,9 @@
             Controls.Add(txb_player2);
             Controls.Add(txb_player1);
             Controls.Add(txb_RoomName);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Waiting_Room_Host";
-            Text = "Waiting_Room";
+            Text = "Phòng chờ";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();

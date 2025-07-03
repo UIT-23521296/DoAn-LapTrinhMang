@@ -301,9 +301,13 @@
             Controls.Add(label2);
             Controls.Add(panel1);
             Controls.Add(label1);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(2);
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "BuyHome_Land";
+            SizeGripStyle = SizeGripStyle.Hide;
             Text = "Mua đất";
             Load += BuyLand_Home_Load;
             panel1.ResumeLayout(false);
