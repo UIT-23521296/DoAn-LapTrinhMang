@@ -84,14 +84,14 @@ namespace MonopolyWinForms.BuyLand_Home
         {
             int playerCompanies = monopoly.CountCompaniesOwned(playerID);
             int Price = tile.LandPrice;
-            int rent = 25; // mặc định là 25
+            int rent = 20; // mặc định là 20
             if (playerCompanies == 1)
             {
-                rent = 25 * 4;
+                rent = 50;
             }
             else if (playerCompanies >= 2)
             {
-                rent = 25 * 10;
+                rent = 100;
             }
             label2.Text = $"Rent rate: ${rent} * {"number of dices"}";
             label3.Text = $"The price: ${Price}";

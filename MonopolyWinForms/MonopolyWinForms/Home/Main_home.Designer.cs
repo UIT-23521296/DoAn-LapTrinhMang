@@ -28,10 +28,10 @@
             // login_img
             // 
             login_img.Image = Properties.Resources.login_img;
-            login_img.Location = new Point(71, 56);
-            login_img.Margin = new Padding(5);
+            login_img.Location = new Point(89, 70);
+            login_img.Margin = new Padding(6, 6, 6, 6);
             login_img.Name = "login_img";
-            login_img.Size = new Size(624, 493);
+            login_img.Size = new Size(780, 616);
             login_img.SizeMode = PictureBoxSizeMode.StretchImage;
             login_img.TabIndex = 8;
             login_img.TabStop = false;
@@ -43,10 +43,10 @@
             btn_quit.FlatStyle = FlatStyle.Flat;
             btn_quit.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
             btn_quit.ForeColor = Color.White;
-            btn_quit.Location = new Point(765, 439);
-            btn_quit.Margin = new Padding(5);
+            btn_quit.Location = new Point(956, 549);
+            btn_quit.Margin = new Padding(6, 6, 6, 6);
             btn_quit.Name = "btn_quit";
-            btn_quit.Size = new Size(380, 103);
+            btn_quit.Size = new Size(475, 129);
             btn_quit.TabIndex = 7;
             btn_quit.Text = "THOÁT GAME";
             btn_quit.UseVisualStyleBackColor = false;
@@ -59,10 +59,10 @@
             btn_play.FlatStyle = FlatStyle.Flat;
             btn_play.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
             btn_play.ForeColor = Color.Black;
-            btn_play.Location = new Point(765, 71);
-            btn_play.Margin = new Padding(5);
+            btn_play.Location = new Point(956, 89);
+            btn_play.Margin = new Padding(6, 6, 6, 6);
             btn_play.Name = "btn_play";
-            btn_play.Size = new Size(380, 103);
+            btn_play.Size = new Size(475, 129);
             btn_play.TabIndex = 5;
             btn_play.Text = "CHƠI NGAY";
             btn_play.UseVisualStyleBackColor = false;
@@ -75,25 +75,27 @@
             btn_rule.FlatStyle = FlatStyle.Flat;
             btn_rule.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
             btn_rule.ForeColor = Color.White;
-            btn_rule.Location = new Point(765, 249);
-            btn_rule.Margin = new Padding(5);
+            btn_rule.Location = new Point(956, 311);
+            btn_rule.Margin = new Padding(6, 6, 6, 6);
             btn_rule.Name = "btn_rule";
-            btn_rule.Size = new Size(380, 103);
+            btn_rule.Size = new Size(475, 129);
             btn_rule.TabIndex = 9;
             btn_rule.Text = "LUẬT CHƠI";
             btn_rule.UseVisualStyleBackColor = false;
+            btn_rule.Click += btn_rule_Click;
             // 
             // Main_home
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1288, 602);
+            ClientSize = new Size(1610, 752);
             Controls.Add(btn_rule);
             Controls.Add(login_img);
             Controls.Add(btn_quit);
             Controls.Add(btn_play);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
+            Margin = new Padding(4, 4, 4, 4);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "Main_home";

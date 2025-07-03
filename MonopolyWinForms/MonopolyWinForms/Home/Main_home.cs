@@ -41,5 +41,13 @@ namespace MonopolyWinForms.Home
 
             joinRoomForm.Show(); // Hiện JoinRoom
         }
+
+        private void btn_rule_Click(object sender, EventArgs e)
+        {
+            using (var ruleForm = new Rule())
+            {
+                ruleForm.ShowDialog();
+            }
+        }
     }
 }
