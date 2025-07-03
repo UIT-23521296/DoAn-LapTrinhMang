@@ -557,7 +557,8 @@
             // 
             // MainForm
             // 
-            AutoScaleMode = AutoScaleMode.None;
+            AutoScaleDimensions = new SizeF(120F, 120F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             BackColor = Color.Cornsilk;
             ClientSize = new Size(1676, 953);
             Controls.Add(panel45);
