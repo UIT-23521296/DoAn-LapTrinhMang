@@ -56,61 +56,6 @@ namespace MonopolyWinForms
             panelChatbox.Controls.Add(chatbox);
             chatbox.OnSendMessage += HandleChatMessage;
         }
-        //private void InitializeTurnLabel()
-        //{
-        //    //pnlCurrentTurn = new Panel
-        //    //{
-        //    //    //Location = new Point(965, 11),
-        //    //    Anchor = AnchorStyles.Top | AnchorStyles.Right,
-        //    //    Location = new Point(this.ClientSize.Width - 701 - 10, 11),
-        //    //    Size = new Size(330, 42),
-        //    //    BackColor = ColorTranslator.FromHtml("#EEF7FA"),
-        //    //    BorderStyle = BorderStyle.FixedSingle,
-        //    //    Padding = new Padding(6, 8, 6, 8)  // trên-dưới = 8px
-        //    //};
-
-        //    // Label cố định
-        //    lblTurnStatic = new Label
-        //    {
-        //        AutoSize = true,
-        //        Font = new Font("Segoe UI", 13F, FontStyle.Bold),
-        //        ForeColor = Color.Black,
-        //        Text = "Lượt chơi:"
-        //    };
-
-        //    // Label tên người chơi
-        //    lblTurnName = new Label
-        //    {
-        //        AutoSize = true,
-        //        Font = new Font("Segoe UI", 13F, FontStyle.Bold),
-        //        ForeColor = Color.DarkGreen,   // sẽ đổi động
-        //        Text = " ..."
-        //    };
-
-        //    // Sắp xếp 2 label nằm ngang
-        //    lblTurnName.Left = lblTurnStatic.Width + 10;   // cách 10px
-        //    lblTurnName.Top = 0;
-
-        //    pnlCurrentTurn.Controls.Add(lblTurnStatic);
-        //    pnlCurrentTurn.Controls.Add(lblTurnName);
-
-        //    // THÊM PANEL vào form (không thêm label đơn lẻ)
-        //    this.Controls.Add(pnlCurrentTurn);
-        //}
-        //private void MainForm_Resize(object sender, EventArgs e)
-        //{
-        //    if (chatbox != null)
-        //    {
-        //        chatbox.Location = new Point(this.ClientSize.Width - chatbox.Width - 10, this.ClientSize.Height - chatbox.Height - 10);
-        //    }
-
-        //    if (pnlCurrentTurn != null)
-        //    {
-        //        pnlCurrentTurn.Location = new Point(this.ClientSize.Width - pnlCurrentTurn.Width - 10, 11);
-        //    }
-        //}
-
-
         private async void HandleChatMessage(string senderName, string message)
         {
             try

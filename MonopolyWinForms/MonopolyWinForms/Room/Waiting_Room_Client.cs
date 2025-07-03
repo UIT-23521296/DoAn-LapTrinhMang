@@ -156,7 +156,7 @@ namespace MonopolyWinForms.Room
                 {
                     isReady = !isReady;
                     btn_Ready.Text = isReady ? "Hủy sẵn sàng" : "Sẵn sàng";
-                    btn_Ready.BackColor = isReady ? Color.Green : Color.SkyBlue;
+                    btn_Ready.BackColor = isReady ? Color.Green : Color.FromArgb(255, 213, 128);
 
                     // Cập nhật trạng thái sẵn sàng lên Firebase
                     if (isReady)

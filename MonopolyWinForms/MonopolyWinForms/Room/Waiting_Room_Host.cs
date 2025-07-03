@@ -122,16 +122,16 @@ namespace MonopolyWinForms.Room
 
                     this.Hide();
 
-                    var existing = Application.OpenForms.OfType<JoinRoom>().FirstOrDefault();
+                    var existing = Application.OpenForms
+                                               .OfType<JoinRoom>()
+                                               .FirstOrDefault(frm => !frm.IsDisposed);
+
                     if (existing == null)
                     {
-                        var joinRoom = new JoinRoom();
-                        joinRoom.Show(); // Không dùng BeginInvoke
+                        existing = new JoinRoom();
                     }
-                    else
-                    {
-                        existing.Show();
-                    }
+                    existing.Show();         
+
                 }
                 catch (Exception ex)
                 {
@@ -213,8 +213,12 @@ namespace MonopolyWinForms.Room
 
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
-            base.OnFormClosed(e);
+            _cts?.Cancel();
+            _cts?.Dispose();
+
             GameManager.OnPlayerLeft -= HandlePlayerLeft;
+            base.OnFormClosed(e);
         }
+
     }
 }

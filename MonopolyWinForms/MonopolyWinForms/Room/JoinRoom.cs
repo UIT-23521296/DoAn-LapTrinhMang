@@ -359,9 +359,10 @@ namespace MonopolyWinForms.Room
 
             foreach (var room in rooms)
             {
+                string hostName = room.Value.PlayerDisplayNames?.FirstOrDefault() ?? "";
                 int rowIndex = dgvRooms.Rows.Add(
                     room.Value.RoomName,
-                    room.Value.HostIP,
+                    hostName,
                     $"{room.Value.CurrentPlayers}/{room.Value.MaxPlayers}",
                     room.Value.CreatedAtDateTime.ToLocalTime().ToString("HH:mm:ss dd/MM/yyyy")
                 );

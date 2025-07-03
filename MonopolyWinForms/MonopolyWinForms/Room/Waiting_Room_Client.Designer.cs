@@ -40,6 +40,7 @@
             pictureBox4 = new PictureBox();
             btn_Out = new Button();
             btn_Ready = new Button();
+            label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
@@ -49,50 +50,66 @@
             // txb_RoomName
             // 
             txb_RoomName.BackColor = SystemColors.Menu;
-            txb_RoomName.Location = new Point(420, 40);
+            txb_RoomName.BorderStyle = BorderStyle.None;
+            txb_RoomName.Enabled = false;
+            txb_RoomName.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
+            txb_RoomName.Location = new Point(183, 19);
             txb_RoomName.Name = "txb_RoomName";
             txb_RoomName.ReadOnly = true;
-            txb_RoomName.Size = new Size(300, 27);
+            txb_RoomName.Size = new Size(286, 36);
             txb_RoomName.TabIndex = 0;
             txb_RoomName.TabStop = false;
             // 
             // txb_player1
             // 
-            txb_player1.BackColor = SystemColors.Menu;
+            txb_player1.BackColor = Color.FromArgb(250, 250, 250);
+            txb_player1.BorderStyle = BorderStyle.FixedSingle;
+            txb_player1.Enabled = false;
+            txb_player1.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            txb_player1.ForeColor = Color.Black;
             txb_player1.Location = new Point(20, 170);
             txb_player1.Name = "txb_player1";
             txb_player1.ReadOnly = true;
-            txb_player1.Size = new Size(200, 27);
+            txb_player1.Size = new Size(200, 32);
             txb_player1.TabIndex = 1;
             txb_player1.TabStop = false;
             // 
             // txb_player2
             // 
-            txb_player2.BackColor = SystemColors.Menu;
+            txb_player2.BackColor = Color.FromArgb(250, 250, 250);
+            txb_player2.BorderStyle = BorderStyle.FixedSingle;
+            txb_player2.Enabled = false;
+            txb_player2.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             txb_player2.Location = new Point(320, 170);
             txb_player2.Name = "txb_player2";
             txb_player2.ReadOnly = true;
-            txb_player2.Size = new Size(200, 27);
+            txb_player2.Size = new Size(200, 32);
             txb_player2.TabIndex = 2;
             txb_player2.TabStop = false;
             // 
             // txb_player3
             // 
-            txb_player3.BackColor = SystemColors.Menu;
+            txb_player3.BackColor = Color.FromArgb(250, 250, 250);
+            txb_player3.BorderStyle = BorderStyle.FixedSingle;
+            txb_player3.Enabled = false;
+            txb_player3.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             txb_player3.Location = new Point(620, 170);
             txb_player3.Name = "txb_player3";
             txb_player3.ReadOnly = true;
-            txb_player3.Size = new Size(200, 27);
+            txb_player3.Size = new Size(200, 32);
             txb_player3.TabIndex = 3;
             txb_player3.TabStop = false;
             // 
             // txb_player4
             // 
-            txb_player4.BackColor = SystemColors.Menu;
+            txb_player4.BackColor = Color.FromArgb(250, 250, 250);
+            txb_player4.BorderStyle = BorderStyle.FixedSingle;
+            txb_player4.Enabled = false;
+            txb_player4.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             txb_player4.Location = new Point(920, 170);
             txb_player4.Name = "txb_player4";
             txb_player4.ReadOnly = true;
-            txb_player4.Size = new Size(200, 27);
+            txb_player4.Size = new Size(200, 32);
             txb_player4.TabIndex = 4;
             txb_player4.TabStop = false;
             // 
@@ -138,17 +155,25 @@
             // 
             // btn_Out
             // 
+            btn_Out.BackColor = Color.FromArgb(255, 105, 97); // #FF6961 (Coral Soft Red)
+            btn_Out.FlatStyle = FlatStyle.Flat;
+            btn_Out.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btn_Out.ForeColor = Color.Black;
             btn_Out.Location = new Point(160, 640);
             btn_Out.Name = "btn_Out";
             btn_Out.Size = new Size(200, 50);
             btn_Out.TabIndex = 9;
             btn_Out.Text = "Thoát";
-            btn_Out.UseVisualStyleBackColor = true;
+            btn_Out.UseVisualStyleBackColor = false;
             btn_Out.Click += btn_Out_Click;
             // 
             // btn_Ready
             // 
+            btn_Ready.BackColor = Color.FromArgb(255, 213, 128);
             btn_Ready.Location = new Point(760, 640);
+            btn_Ready.FlatStyle = FlatStyle.Flat;
+            btn_Ready.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btn_Ready.ForeColor = Color.Black;
             btn_Ready.Name = "btn_Ready";
             btn_Ready.Size = new Size(200, 50);
             btn_Ready.TabIndex = 10;
@@ -156,11 +181,22 @@
             btn_Ready.UseVisualStyleBackColor = true;
             btn_Ready.Click += btn_Ready_Click;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
+            label1.Location = new Point(20, 18);
+            label1.Name = "label1";
+            label1.Size = new Size(143, 37);
+            label1.TabIndex = 11;
+            label1.Text = "ID phòng:";
+            // 
             // Waiting_Room_Client
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1136, 753);
+            Controls.Add(label1);
             Controls.Add(btn_Ready);
             Controls.Add(btn_Out);
             Controls.Add(pictureBox4);
@@ -172,8 +208,12 @@
             Controls.Add(txb_player2);
             Controls.Add(txb_player1);
             Controls.Add(txb_RoomName);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "Waiting_Room_Client";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Phòng chờ";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
@@ -196,5 +236,6 @@
         private PictureBox pictureBox4;
         private Button btn_Out;
         private Button btn_Ready;
+        private Label label1;
     }
 }

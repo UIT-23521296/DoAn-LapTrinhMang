@@ -109,7 +109,7 @@
             // 
             label2.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             label2.ForeColor = Color.Teal;
-            label2.Location = new Point(298, 259);
+            label2.Location = new Point(306, 259);
             label2.Name = "label2";
             label2.Size = new Size(208, 38);
             label2.TabIndex = 18;
@@ -147,7 +147,7 @@
             // 
             label3.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             label3.ForeColor = Color.SaddleBrown;
-            label3.Location = new Point(298, 297);
+            label3.Location = new Point(306, 297);
             label3.Name = "label3";
             label3.Size = new Size(208, 33);
             label3.TabIndex = 15;
