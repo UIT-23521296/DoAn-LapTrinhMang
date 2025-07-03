@@ -43,11 +43,11 @@ namespace MonopolyWinForms.Services
         }
         private static void InitTimers()
         {
-            _syncTimer = new System.Windows.Forms.Timer { Interval = 500 };
+            _syncTimer = new System.Windows.Forms.Timer { Interval = 1000 };
             _syncTimer.Tick += async (_, __) => await SyncGameState();
             _syncTimer.Start();
 
-            _chatTimer = new System.Windows.Forms.Timer { Interval = 500 };
+            _chatTimer = new System.Windows.Forms.Timer { Interval = 1000 };
             _chatTimer.Tick += async (_, __) => await SyncChat();
             _chatTimer.Start();
 
@@ -66,14 +66,22 @@ namespace MonopolyWinForms.Services
         private static async Task SyncGameState()
         {
             if (!IsGameStarted || string.IsNullOrEmpty(CurrentRoomId)) return;
-            var state = await _firebase.GetGameStateAsync(CurrentRoomId);
-            if (state == null) return;
-            if (state.LastUpdateTime > _lastStateTime)
+            try
             {
-                _lastStateTime = state.LastUpdateTime;
-                OnGameStateUpdated?.Invoke(state);
+                var state = await _firebase.GetGameStateAsync(CurrentRoomId);
+                if (state == null) return;
+                if (state.LastUpdateTime > _lastStateTime)
+                {
+                    _lastStateTime = state.LastUpdateTime;
+                    OnGameStateUpdated?.Invoke(state);
+                }
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText("log.txt", $"❌ SyncGameState error: {ex.Message}\n");
             }
         }
+
         private static async Task LoadInitialChat()
         {
             if (string.IsNullOrEmpty(CurrentRoomId)) return;
@@ -87,30 +95,35 @@ namespace MonopolyWinForms.Services
         private static async Task SyncChat()
         {
             if (!IsGameStarted || string.IsNullOrEmpty(CurrentRoomId)) return;
-
-            var msgs = await _firebase.GetChatMessagesAsync(CurrentRoomId);
-            if (msgs == null) return;
-
-            foreach (var m in msgs)
+            try
             {
-                var t = DateTime.Parse(m.Timestamp,
-                                       null,
-                                       DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal);
+                var msgs = await _firebase.GetChatMessagesAsync(CurrentRoomId);
+                if (msgs == null) return;
 
-                if (t > _lastChatTime)
+                foreach (var m in msgs)
                 {
-                    OnChatMessageReceived?.Invoke(m.SenderName, m.Message);
-                    _lastChatTime = t;
-
-                    // Nếu là gói “LEFT:…”, gọi OnPlayerLeft cho *mọi* client
-                    if (m.SenderName == SYSTEM && m.Message.StartsWith("LEFT:"))
+                    var t = DateTime.Parse(m.Timestamp,
+                                           null,
+                                           DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal);
+                    if (t > _lastChatTime)
                     {
-                        string leaver = m.Message.Substring(5);   // cắt "LEFT:"
-                        OnPlayerLeft?.Invoke(leaver);
+                        OnChatMessageReceived?.Invoke(m.SenderName, m.Message);
+                        _lastChatTime = t;
+
+                        if (m.SenderName == SYSTEM && m.Message.StartsWith("LEFT:"))
+                        {
+                            string leaver = m.Message.Substring(5);
+                            OnPlayerLeft?.Invoke(leaver);
+                        }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                File.AppendAllText("log.txt", $"❌ SyncChat error: {ex.Message}\n");
+            }
         }
+
 
         public static Task UpdateGameState(GameState gs) => _firebase.UpdateGameStateAsync(gs);
         public static Task<GameState?> GetLatestGameState() => _firebase.GetGameStateAsync(CurrentRoomId!);

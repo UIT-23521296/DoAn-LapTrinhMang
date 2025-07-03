@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormDestroyHouse));
             listBoxTiles = new ListBox();
             btnDestroy = new Button();
             SuspendLayout();
@@ -35,30 +36,37 @@
             // listBoxTiles
             // 
             listBoxTiles.FormattingEnabled = true;
-            listBoxTiles.ItemHeight = 25;
-            listBoxTiles.Location = new Point(39, 39);
+            listBoxTiles.Location = new Point(31, 31);
+            listBoxTiles.Margin = new Padding(2);
             listBoxTiles.Name = "listBoxTiles";
-            listBoxTiles.Size = new Size(410, 179);
+            listBoxTiles.Size = new Size(329, 144);
             listBoxTiles.TabIndex = 0;
             // 
             // btnDestroy
             // 
-            btnDestroy.Location = new Point(39, 236);
+            btnDestroy.BackColor = Color.IndianRed;
+            btnDestroy.FlatStyle = FlatStyle.Flat;
+            btnDestroy.Location = new Point(31, 189);
+            btnDestroy.Margin = new Padding(2);
             btnDestroy.Name = "btnDestroy";
-            btnDestroy.Size = new Size(410, 50);
+            btnDestroy.Size = new Size(328, 40);
             btnDestroy.TabIndex = 1;
             btnDestroy.Text = ".";
             btnDestroy.UseVisualStyleBackColor = true;
             // 
             // FormDestroyHouse
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(528, 313);
+            BackColor = Color.FromArgb(245, 235, 221);
+            ClientSize = new Size(422, 250);
             Controls.Add(btnDestroy);
             Controls.Add(listBoxTiles);
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            Margin = new Padding(2);
             Name = "FormDestroyHouse";
-            Text = "FormDestroyHouse";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Phá huỷ nhà";
             ResumeLayout(false);
         }
 

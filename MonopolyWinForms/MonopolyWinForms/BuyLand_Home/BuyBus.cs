@@ -24,6 +24,7 @@ namespace MonopolyWinForms.BuyLand_Home
         public BuyBus(int playerID, Tile tile, Monopoly monopoly, MainForm mainform, List<Tile> tiles, List<Player> players, int currentPlayerIndex)
         {
             InitializeComponent();
+            AddRentLabels();
             this.StartPosition = FormStartPosition.CenterScreen;
             this.playerID = playerID;
             this.tile = tile;

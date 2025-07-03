@@ -51,7 +51,7 @@ namespace MonopolyWinForms
         //Chatbox
         private void InitializeChatBox(){
             chatbox = new Chatbox(players[currentPlayerIndex]);
-            chatbox.Location = new Point(1200, 675);
+            chatbox.Location = new Point(970, 548);
             chatbox.OnSendMessage += HandleChatMessage;
             this.Controls.Add(chatbox);
         }
@@ -61,7 +61,7 @@ namespace MonopolyWinForms
             {
                 Location = new Point(965, 11),
                 Size = new Size(330, 42),
-                BackColor = Color.White,
+                BackColor = ColorTranslator.FromHtml("#EEF7FA"),
                 BorderStyle = BorderStyle.FixedSingle,
                 Padding = new Padding(6, 8, 6, 8)  // trên-dưới = 8px
             };
@@ -94,7 +94,6 @@ namespace MonopolyWinForms
             // THÊM PANEL vào form (không thêm label đơn lẻ)
             this.Controls.Add(pnlCurrentTurn);
         }
-
 
         private async void HandleChatMessage(string senderName, string message)
         {
@@ -477,11 +476,11 @@ namespace MonopolyWinForms
                 {
                     await Action.ShowTileActionForm(tile, currentPlayer);
                 }
-                else
-                {
-                    string actionMessage = GetTileActionMessage(tile, currentPlayer);
-                    AddToGameLog(actionMessage, LogType.System);
-                }
+                //else
+                //{
+                //    string actionMessage = GetTileActionMessage(tile, currentPlayer);
+                //    AddToGameLog(actionMessage, LogType.System);
+                //}
             }
         }
         public void UpdatePlayerMarkerPosition(Player player, int newIndex){ Initialize.UpdatePlayerMarkerPosition(player,newIndex); }
@@ -492,7 +491,7 @@ namespace MonopolyWinForms
         public Image GetHouseImage(int level, Player player, Tile tile, List<Player> players){return UpdateTile.GetHouseImage(level, player, players, tile);
         }
 
-        public void AddToGameLog(string message, LogType type = LogType.System)
+        public async void AddToGameLog(string message, LogType type = LogType.System)
         {
             if (InvokeRequired)
             {
@@ -500,22 +499,45 @@ namespace MonopolyWinForms
                 return;
             }
 
-            switch (type)
+            //switch (type)
+            //{
+            //    case LogType.System:
+            //        chatbox?.AddSystemMessage(message);
+            //        break;
+            //    case LogType.Notification:
+            //        chatbox?.AddNotificationMessage(message);
+            //        break;
+            //    case LogType.Warning:
+            //        chatbox?.AddWarningMessage(message);
+            //        break;
+            //    case LogType.Error:
+            //        chatbox?.AddErrorMessage(message);
+            //        break;
+            //}
+
+            // Đẩy log lên Firebase (nếu là SYSTEM và đang trong game)
+            if (type == LogType.System && GameManager.IsGameStarted && !string.IsNullOrEmpty(GameManager.CurrentRoomId))
             {
-                case LogType.System:
-                    chatbox?.AddSystemMessage(message);
-                    break;
-                case LogType.Notification:
-                    chatbox?.AddNotificationMessage(message);
-                    break;
-                case LogType.Warning:
-                    chatbox?.AddWarningMessage(message);
-                    break;
-                case LogType.Error:
-                    chatbox?.AddErrorMessage(message);
-                    break;
+                await GameManager.SendChatMessage(GameManager.CurrentRoomId, "Hệ thống", message);
             }
         }
+
+        public void AddDiceLog(string msg)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => AddDiceLog(msg)));
+                return;
+            }
+
+            richTextBox1.Clear();
+
+            richTextBox1.SelectionStart = richTextBox1.TextLength;
+            richTextBox1.SelectionLength = 0;
+            richTextBox1.AppendText($"[{DateTime.Now:HH:mm:ss}] {msg}{Environment.NewLine}");
+            richTextBox1.ScrollToCaret();
+        }
+
 
         // Enum để phân loại log
         public enum LogType
@@ -543,96 +565,15 @@ namespace MonopolyWinForms
                 return;
             }
 
+            if (senderName == "Xúc sắc")
+            {
+                AddDiceLog(message);
+                return;
+            }
+
             // Còn lại là tin nhắn bình thường
             chatbox?.ReceiveMessage(senderName, message);
         }
-
-
-        //Xử lý ghi log cho người chơi khác liên quan đến ô đất
-        private string GetTileActionMessage(Tile tile, Player player)
-        {
-            // Kiểm tra loại ô đất dựa vào Monopoly
-            switch (tile.Monopoly)
-            {
-                case "0": // Ô đặc biệt
-                    switch (tile.Name)
-                    {
-                        case "Thuế thu nhập":
-                        case "Thuế đặc biệt":
-                            return $"{player.Name} phải đóng thuế {tile.LandPrice}$";
-                        case "Nhà tù":
-                            return $"{player.Name} đang ở trong tù";
-                        case "Ô bắt đầu":
-                            return $"{player.Name} đi qua ô Start và nhận 200$";
-                        case "Khí vận":
-                        case "Cơ hội":
-                            return "";
-                        case "Đi thẳng vào tù":
-                            return $"{player.Name} bị vào tù";
-                        default:
-                            return $"{player.Name} đã đến {tile.Name}";
-                    }
-                case "9": // Bến xe
-                    if (tile.PlayerId.HasValue && tile.PlayerId.Value > 0)
-                    {
-                        if (tile.PlayerId.Value == player.ID)
-                        {
-                            return $"{player.Name} đã sở hữu {tile.Name}";
-                        }
-                        else
-                        {
-                            var owner = players.FirstOrDefault(p => p.ID == tile.PlayerId.Value);
-                            if (owner != null)
-                            {
-                                return $"{player.Name} phải trả tiền thuê {tile.RentPrice}$ cho {owner.Name} tại bến xe {tile.Name}";
-                            }
-                        }
-                    }
-                    return $"{player.Name} đã đến bến xe {tile.Name}";
-                case "10": // Công ty
-                    if (tile.PlayerId.HasValue && tile.PlayerId.Value > 0)
-                    {
-                        if (tile.PlayerId.Value == player.ID)
-                        {
-                            return $"{player.Name} đã sở hữu {tile.Name}";
-                        }
-                        else
-                        {
-                            var owner = players.FirstOrDefault(p => p.ID == tile.PlayerId.Value);
-                            if (owner != null)
-                            {
-                                return $"{player.Name} phải trả tiền thuê {tile.RentPrice}$ cho {owner.Name} tại công ty {tile.Name}";
-                            }
-                        }
-                    }
-                    return $"{player.Name} đã đến công ty {tile.Name}";
-                default: // Ô đất thường
-                    if (tile.PlayerId.HasValue)
-                    {
-                        if (tile.PlayerId.Value == player.ID)
-                        {
-                            return $"{player.Name} đã sở hữu {tile.Name}";
-                        }
-                        else if (tile.PlayerId.Value > 0 && tile.PlayerId.Value != player.ID)
-                        {
-                            var owner = players.FirstOrDefault(p => p.ID == tile.PlayerId.Value);
-                            if (owner != null)
-                            {
-                                string buildingInfo = tile.Level > 0 
-                                    ? $" (có {tile.Level} {(tile.Level == 5 ? "khách sạn" : "nhà")})" 
-                                    : "";
-                                return $"{player.Name} phải trả tiền thuê {tile.RentPrice}$ cho {owner.Name} tại {tile.Name}{buildingInfo}";
-                            }
-                        }
-                    }
-                    else if (tile.LandPrice > 0)
-                    {
-                        return $"{player.Name} có thể mua {tile.Name} với giá {tile.LandPrice}$";
-                    }
-                    return $"{player.Name} đã đến {tile.Name}";
-            }
-        }
-
         private async void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!GameManager.IsGameStarted) return;

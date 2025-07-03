@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             panel1 = new Panel();
             panel2 = new Panel();
             panel3 = new Panel();
@@ -76,7 +77,10 @@
             panelTimer = new Panel();
             pictureBox1 = new PictureBox();
             groupBox1 = new GroupBox();
+            richTextBox1 = new RichTextBox();
+            panel45 = new Panel();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            panel45.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -144,6 +148,8 @@
             // 
             // panel8
             // 
+            panel8.BackgroundImage = Properties.Resources.co_hoi_doc;
+            panel8.BackgroundImageLayout = ImageLayout.Stretch;
             panel8.BorderStyle = BorderStyle.FixedSingle;
             panel8.Location = new Point(595, 10);
             panel8.Margin = new Padding(2);
@@ -279,6 +285,8 @@
             // 
             // panel23
             // 
+            panel23.BackgroundImage = Properties.Resources.co_hoi_doc;
+            panel23.BackgroundImageLayout = ImageLayout.Stretch;
             panel23.BorderStyle = BorderStyle.FixedSingle;
             panel23.Location = new Point(672, 826);
             panel23.Margin = new Padding(2);
@@ -405,6 +413,8 @@
             // 
             // panel37
             // 
+            panel37.BackgroundImage = Properties.Resources.co_hoi_ngang;
+            panel37.BackgroundImageLayout = ImageLayout.Stretch;
             panel37.BorderStyle = BorderStyle.FixedSingle;
             panel37.Location = new Point(10, 365);
             panel37.Margin = new Padding(2);
@@ -509,7 +519,7 @@
             // 
             // groupBox1
             // 
-            groupBox1.BackColor = ColorTranslator.FromHtml("#FBF8F4");
+            groupBox1.BackColor = Color.FromArgb(251, 248, 244);
             groupBox1.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             groupBox1.ForeColor = Color.Black;
             groupBox1.Location = new Point(1317, -3);
@@ -519,12 +529,39 @@
             groupBox1.TabStop = false;
             groupBox1.Text = "📦 Tài sản";
             // 
+            // richTextBox1
+            // 
+            richTextBox1.BorderStyle = BorderStyle.None;
+            richTextBox1.Dock = DockStyle.Fill;
+            richTextBox1.Enabled = false;
+            richTextBox1.Font = new Font("Palatino Linotype", 11.25F, FontStyle.Bold);
+            richTextBox1.Location = new Point(2, 2);
+            richTextBox1.Name = "richTextBox1";
+            richTextBox1.ReadOnly = true;
+            richTextBox1.ScrollBars = RichTextBoxScrollBars.None;
+            richTextBox1.Size = new Size(319, 119);
+            richTextBox1.TabIndex = 0;
+            richTextBox1.TabStop = false;
+            richTextBox1.Text = "";
+            // 
+            // panel45
+            // 
+            panel45.BackColor = Color.Black;
+            panel45.BorderStyle = BorderStyle.FixedSingle;
+            panel45.Controls.Add(richTextBox1);
+            panel45.Location = new Point(970, 399);
+            panel45.Name = "panel45";
+            panel45.Padding = new Padding(2);
+            panel45.Size = new Size(325, 125);
+            panel45.TabIndex = 49;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Cornsilk;
             ClientSize = new Size(1676, 953);
+            Controls.Add(panel45);
             Controls.Add(button1);
             Controls.Add(pictureBox1);
             Controls.Add(panelTimer);
@@ -573,12 +610,18 @@
             Controls.Add(panel2);
             Controls.Add(panel1);
             Controls.Add(groupBox1);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(2);
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "MainForm";
+            SizeGripStyle = SizeGripStyle.Hide;
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Form1";
+            Text = "Cờ Tỷ Phú";
             Load += MainForm_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            panel45.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -632,5 +675,7 @@
         private Panel panelTimer;
         private PictureBox pictureBox1;
         private GroupBox groupBox1;
+        private RichTextBox richTextBox1;
+        private Panel panel45;
     }
 }

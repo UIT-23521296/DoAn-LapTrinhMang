@@ -8,6 +8,8 @@ using MonopolyWinForms;
 using System.Security.Policy;
 using static MonopolyWinForms.MainForm;
 using System.Threading.Tasks;
+using System.Data.SqlTypes;
+using System.Numerics;
 
 namespace MonopolyWinForms.GameLogic
 {
@@ -135,6 +137,23 @@ namespace MonopolyWinForms.GameLogic
                     HandleStart(currentPlayer);
                     break;
                 case "Đi thẳng vào tù":
+                    if (Session.PlayerInGameId == currentPlayer.ID)
+                    {
+                        MessageBox.Show($"Bạn bước vào ô vào tù, đi tù!", "Đi tù");
+
+                        try
+                        {
+                            await GameManager.SendChatMessage(
+                                GameManager.CurrentRoomId!,
+                                "Hệ thống",
+                                $"{currentPlayer.Name} bước vào ô vào tù, đi tù!"
+                            );
+                        }
+                        catch (Exception ex)
+                        {
+                            mainForm.AddToGameLog($"Lỗi gửi thông tin thẻ: {ex.Message}", MainForm.LogType.Error);
+                        }
+                    }
                     await HandleGoToJail(currentPlayer);
                     break;
             }
@@ -179,7 +198,7 @@ namespace MonopolyWinForms.GameLogic
             {
                 await GameManager.SendChatMessage(
                     GameManager.CurrentRoomId!,
-                    "Hệ thống",
+                    "Cơ hội",
                     $"{player.Name} rút được thẻ {deckType}: {card}"
                 );
             }
@@ -198,7 +217,7 @@ namespace MonopolyWinForms.GameLogic
                     {
                         await GameManager.SendChatMessage(
                             GameManager.CurrentRoomId!,
-                            "Hệ thống",
+                            "Cơ hội",
                             $"{player.Name} bị vào tù do rút thẻ"
                         );
                     }
@@ -213,7 +232,7 @@ namespace MonopolyWinForms.GameLogic
                     {
                         await GameManager.SendChatMessage(
                             GameManager.CurrentRoomId!,
-                            "Hệ thống",
+                            "Cơ hội",
                             $"{player.Name} nhận được thẻ thoát tù"
                         );
                     }
@@ -228,7 +247,7 @@ namespace MonopolyWinForms.GameLogic
                     {
                         await GameManager.SendChatMessage(
                             GameManager.CurrentRoomId!,
-                            "Hệ thống",
+                            "Cơ hội",
                             $"{player.Name} sẽ trả gấp đôi tiền thuê cho ô tiếp theo"
                         );
                     }
@@ -243,7 +262,7 @@ namespace MonopolyWinForms.GameLogic
                     {
                         await GameManager.SendChatMessage(
                             GameManager.CurrentRoomId!,
-                            "Hệ thống",
+                            "Cơ hội",
                             $"{player.Name} sẽ giảm 50% tiền thuê cho ô tiếp theo"
                         );
                     }
@@ -260,7 +279,7 @@ namespace MonopolyWinForms.GameLogic
                     {
                         await GameManager.SendChatMessage(
                             GameManager.CurrentRoomId!,
-                            "Hệ thống",
+                            "Cơ hội",
                             $"{player.Name} được di chuyển đến ô bắt đầu"
                         );
                     }
@@ -280,7 +299,7 @@ namespace MonopolyWinForms.GameLogic
                     {
                         await GameManager.SendChatMessage(
                             GameManager.CurrentRoomId!,
-                            "Hệ thống",
+                            "Cơ hội",
                             $"{player.Name} phải bán 1 căn nhà"
                         );
                     }
@@ -300,7 +319,7 @@ namespace MonopolyWinForms.GameLogic
                     {
                         await GameManager.SendChatMessage(
                             GameManager.CurrentRoomId!,
-                            "Hệ thống",
+                            "Cơ hội",
                             $"{player.Name} phải phá 1 căn nhà"
                         );
                     }
@@ -324,7 +343,7 @@ namespace MonopolyWinForms.GameLogic
                     {
                         await GameManager.SendChatMessage(
                             GameManager.CurrentRoomId!,
-                            "Hệ thống",
+                            "Cơ hội",
                             $"{player.Name} được di chuyển đến bến xe tiếp theo và sẽ trả gấp đôi tiền thuê"
                         );
                     }
@@ -341,7 +360,7 @@ namespace MonopolyWinForms.GameLogic
                     {
                         await GameManager.SendChatMessage(
                             GameManager.CurrentRoomId!,
-                            "Hệ thống",
+                            "Cơ hội",
                             $"{player.Name} được di chuyển đến công ty tiếp theo"
                         );
                     }
@@ -421,7 +440,7 @@ namespace MonopolyWinForms.GameLogic
                     {
                         await GameManager.SendChatMessage(
                             GameManager.CurrentRoomId!,
-                            "Hệ thống",
+                            "Khí vận",
                             $"{player.Name} bị vào tù do rút thẻ"
                         );
                     }
@@ -436,7 +455,7 @@ namespace MonopolyWinForms.GameLogic
                     {
                         await GameManager.SendChatMessage(
                             GameManager.CurrentRoomId!,
-                            "Hệ thống",
+                            "Khí vận",
                             $"{player.Name} nhận được thẻ thoát tù"
                         );
                     }
@@ -452,7 +471,7 @@ namespace MonopolyWinForms.GameLogic
                     {
                         await GameManager.SendChatMessage(
                             GameManager.CurrentRoomId!,
-                            "Hệ thống",
+                            "Khí vận",
                             $"{player.Name} được di chuyển đến ô bắt đầu"
                         );
                     }
@@ -468,43 +487,110 @@ namespace MonopolyWinForms.GameLogic
                     {
                         mainForm.AddMoney(addMoney, player);
                         if (Session.PlayerInGameId == player.ID)
+                        {
                             MessageBox.Show($"Bạn nhận được ${addMoney}", "Khí vận");
+
+                            try
+                            {
+                                await GameManager.SendChatMessage(
+                                    GameManager.CurrentRoomId!,
+                                    "Khí vận",
+                                    $"{player.Name} nhận được {addMoney} từ thẻ khí vận"
+                                );
+                            }
+                            catch (Exception ex)
+                            {
+                                mainForm.AddToGameLog($"Lỗi gửi thông tin thẻ: {ex.Message}", MainForm.LogType.Error);
+                            }
+                        }
                     }
                     if (subMoney > 0)
                     {
                         mainForm.SubtractMoney(subMoney, player);
                         mainForm.CheckPlayerBankruptcy(player);
                         if (Session.PlayerInGameId == player.ID)
+                        {
                             MessageBox.Show($"Bạn phải trả ${subMoney}", "Khí vận");
+
+                            try
+                            {
+                                await GameManager.SendChatMessage(
+                                    GameManager.CurrentRoomId!,
+                                    "Khí vận",
+                                    $"{player.Name} phải trả {subMoney} từ thẻ khí vận"
+                                );
+                            }
+                            catch (Exception ex)
+                            {
+                                mainForm.AddToGameLog($"Lỗi gửi thông tin thẻ: {ex.Message}", MainForm.LogType.Error);
+                            }
+                        }
                     }
                     break;
             }
             mainForm.UpdatePlayerPanel(player);
         }
-        public void HandleStart(Player player)
+        public async Task HandleStart(Player player)
         {
             mainForm.AddMoney(200,player);
             if (Session.PlayerInGameId == player.ID)
             {
                 MessageBox.Show("Bạn đi qua ô bắt đầu, nhận $200!", "Nhận tiền");
+
+                try
+                {
+                    await GameManager.SendChatMessage(
+                        GameManager.CurrentRoomId!,
+                        "Ô bắt đầu",
+                        $"{player.Name} đi qua ô bắt đầu, nhận $200!"
+                    );
+                }
+                catch (Exception ex)
+                {
+                    mainForm.AddToGameLog($"Lỗi gửi thông tin thẻ: {ex.Message}", MainForm.LogType.Error);
+                }
             }
             mainForm.UpdatePlayerPanel(player);
         }
-        private void HandleIncomeTax(Player player)
+        private async Task HandleIncomeTax(Player player)
         {
             int money = mainForm.CalculatePlayerAssets(player);
             int tax = Math.Min(200, (money + player.Money) / 10);
             mainForm.SubtractMoney(tax, player);
             mainForm.CheckPlayerBankruptcy(player);
             MessageBox.Show($"Thuế thu nhập: Bạn phải trả ${tax}", "Thuế");
+            try
+            {
+                await GameManager.SendChatMessage(
+                    GameManager.CurrentRoomId!,
+                    "Thuế thu nhập",
+                    $"{player.Name} phải trả ${tax} tiền thuế thu nhập"
+                );
+            }
+            catch (Exception ex)
+            {
+                mainForm.AddToGameLog($"Lỗi gửi thông tin thẻ: {ex.Message}", MainForm.LogType.Error);
+            }
         }
-        private void HandleSpecialTax(Player player)
+        private async Task HandleSpecialTax(Player player)
         {
             int money = mainForm.CalculatePlayerAssets(player);
             int tax = (int)((money + player.Money) * 15 / 100);
             mainForm.SubtractMoney(tax, player);
             mainForm.CheckPlayerBankruptcy(player);
             MessageBox.Show($"Thuế đặc biệt: trả 15% tổng tài sản", "Thuế");
+            try
+            {
+                await GameManager.SendChatMessage(
+                    GameManager.CurrentRoomId!,
+                    "Thuế đặc biệt",
+                    $"{player.Name} phải trả 15% tổng tài sản"
+                );
+            }
+            catch (Exception ex)
+            {
+                mainForm.AddToGameLog($"Lỗi gửi thông tin thẻ: {ex.Message}", MainForm.LogType.Error);
+            }
         }
         public async Task HandleGoToJail(Player player)
         {
@@ -512,6 +598,18 @@ namespace MonopolyWinForms.GameLogic
             if (player.OutPrison > 0){
                 player.OutPrison--;
                 MessageBox.Show("Sử dụng thẻ thoát tù, bạn không phải vào tù", "Thoát Tù");
+                try
+                {
+                    await GameManager.SendChatMessage(
+                        GameManager.CurrentRoomId!,
+                        "Vào tù",
+                        $"{player.Name} sử dụng thẻ thoát tù, không phải vào tù!"
+                    );
+                }
+                catch (Exception ex)
+                {
+                    mainForm.AddToGameLog($"Lỗi gửi thông tin thẻ: {ex.Message}", MainForm.LogType.Error);
+                }
                 return;
             }
             int jailIndex = tiles.FindIndex(t => t.Name == "Nhà tù");
@@ -533,6 +631,18 @@ namespace MonopolyWinForms.GameLogic
                         mainForm.UpdatePlayerPanel(currentPlayer);
                         mainForm.UpdateBusStationRent(currentPlayer.ID);
                         mainForm.UpdateTileDisplay(Array.IndexOf(panels, panels.First(p => p.Tag == tile)), currentPlayer);
+                        try
+                        {
+                            await GameManager.SendChatMessage(
+                                GameManager.CurrentRoomId!,
+                                "Bến xe",
+                                $"{currentPlayer.Name} đã mua {tile.Name} với giá ${tile.LandPrice:N0}"
+                            );
+                        }
+                        catch (Exception ex)
+                        {
+                            mainForm.AddToGameLog($"Lỗi gửi thông tin thẻ: {ex.Message}", MainForm.LogType.Error);
+                        }
                         // Cập nhật giá thuê cho tất cả bến xe và công ty
                         mainForm.UpdateTile.UpdateAllRents();
                         var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
@@ -560,6 +670,18 @@ namespace MonopolyWinForms.GameLogic
                         mainForm.UpdatePlayerPanel(currentPlayer);
                         mainForm.UpdateCompanyRent(currentPlayer.ID);
                         mainForm.UpdateTileDisplay(Array.IndexOf(panels, panels.First(p => p.Tag == tile)), currentPlayer);
+                        try
+                        {
+                            await GameManager.SendChatMessage(
+                                GameManager.CurrentRoomId!,
+                                "Công ty",
+                                $"{currentPlayer.Name} đã mua {tile.Name} với giá ${tile.LandPrice:N0}"
+                            );
+                        }
+                        catch (Exception ex)
+                        {
+                            mainForm.AddToGameLog($"Lỗi gửi thông tin thẻ: {ex.Message}", MainForm.LogType.Error);
+                        }
                         // Cập nhật giá thuê cho tất cả bến xe và công ty
                         mainForm.UpdateTile.UpdateAllRents();
                         var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
@@ -584,6 +706,18 @@ namespace MonopolyWinForms.GameLogic
                         currentPlayer.Money -= tile.LandPrice;
                         mainForm.UpdatePlayerPanel(currentPlayer);
                         mainForm.UpdateTileDisplay(Array.IndexOf(panels, panels.First(p => p.Tag == tile)), currentPlayer);
+                        try
+                        {
+                            await GameManager.SendChatMessage(
+                                GameManager.CurrentRoomId!,
+                                "Ô đất",
+                                $"{currentPlayer.Name} đã mua {tile.Name} với giá ${tile.LandPrice:N0}"
+                            );
+                        }
+                        catch (Exception ex)
+                        {
+                            mainForm.AddToGameLog($"Lỗi gửi thông tin thẻ: {ex.Message}", MainForm.LogType.Error);
+                        }
                         mainForm.UpdateTile.UpdateAllRents();
                         var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
                         await GameManager.UpdateGameState(gameState);
@@ -624,8 +758,28 @@ namespace MonopolyWinForms.GameLogic
                             return;
                         }
                         currentPlayer.Money -= totalPrice;
+                        string levelDesc = tile.Level switch
+                        {
+                            2 => "nhà cấp 1",
+                            3 => "nhà cấp 2",
+                            4 => "nhà cấp 3",
+                            5 => "khách sạn",
+                            _ => $"level {tile.Level}"  // phòng hờ
+                        };
                         mainForm.UpdatePlayerPanel(currentPlayer);
                         mainForm.UpdateTileDisplay(Array.IndexOf(panels, panels.First(p => p.Tag == tile)), currentPlayer);
+                        try
+                        {
+                            await GameManager.SendChatMessage(
+                                GameManager.CurrentRoomId!,
+                                "Ô đất",
+                                $"{currentPlayer.Name} đã nâng cấp {tile.Name} lên {levelDesc} với chi phí ${totalPrice:N0}"
+                            );
+                        }
+                        catch (Exception ex)
+                        {
+                            mainForm.AddToGameLog($"Lỗi gửi thông tin thẻ: {ex.Message}", MainForm.LogType.Error);
+                        }
                         mainForm.UpdateTile.UpdateAllRents();
                         var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
                         await GameManager.UpdateGameState(gameState);

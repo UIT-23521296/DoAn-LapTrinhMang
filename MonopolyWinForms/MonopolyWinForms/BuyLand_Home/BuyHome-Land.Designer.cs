@@ -63,29 +63,32 @@
             // 
             // label1
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 16F);
-            label1.Location = new Point(390, 18);
+            label1.Font = new Font("Palatino Linotype", 18F, FontStyle.Bold);
+            label1.ForeColor = Color.Indigo;
+            label1.Location = new Point(-105, 9);
             label1.Name = "label1";
-            label1.Size = new Size(231, 45);
-            label1.TabIndex = 0;
+            label1.Size = new Size(1003, 45);
+            label1.TabIndex = 19;
             label1.Text = "Tân Kỳ Tân Quý";
+            label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // panel1
             // 
             panel1.Controls.Add(pictureBox1);
             panel1.Controls.Add(checkBox1);
-            panel1.Location = new Point(54, 86);
+            panel1.Location = new Point(43, 69);
+            panel1.Margin = new Padding(2);
             panel1.Name = "panel1";
-            panel1.Size = new Size(147, 189);
+            panel1.Size = new Size(118, 151);
             panel1.TabIndex = 1;
             // 
             // pictureBox1
             // 
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(17, 28);
+            pictureBox1.Location = new Point(14, 22);
+            pictureBox1.Margin = new Padding(2);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(111, 75);
+            pictureBox1.Size = new Size(89, 60);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 11;
             pictureBox1.TabStop = false;
@@ -93,9 +96,10 @@
             // checkBox1
             // 
             checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(38, 148);
+            checkBox1.Location = new Point(30, 118);
+            checkBox1.Margin = new Padding(2);
             checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(76, 29);
+            checkBox1.Size = new Size(63, 24);
             checkBox1.TabIndex = 0;
             checkBox1.Text = "Land";
             checkBox1.UseVisualStyleBackColor = true;
@@ -103,61 +107,69 @@
             // 
             // label2
             // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 13F);
-            label2.Location = new Point(411, 362);
+            label2.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            label2.ForeColor = Color.Teal;
+            label2.Location = new Point(298, 259);
             label2.Name = "label2";
-            label2.Size = new Size(161, 36);
-            label2.TabIndex = 5;
-            label2.Text = "Rent rate: $0";
+            label2.Size = new Size(208, 38);
+            label2.TabIndex = 18;
+            label2.Text = "📈 Rent rate: $0";
             // 
             // button1
             // 
-            button1.Font = new Font("Segoe UI", 13F);
-            button1.Location = new Point(145, 362);
+            button1.BackColor = Color.MediumSeaGreen;
+            button1.FlatStyle = FlatStyle.Flat;
+            button1.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            button1.ForeColor = Color.White;
+            button1.Location = new Point(116, 280);
             button1.Name = "button1";
-            button1.Size = new Size(153, 61);
-            button1.TabIndex = 6;
-            button1.Text = "Mua";
-            button1.UseVisualStyleBackColor = true;
+            button1.Size = new Size(110, 45);
+            button1.TabIndex = 17;
+            button1.Text = "✅ Mua";
+            button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
             // 
             // button2
             // 
-            button2.Font = new Font("Segoe UI", 13F);
-            button2.Location = new Point(692, 362);
+            button2.BackColor = Color.IndianRed;
+            button2.FlatStyle = FlatStyle.Flat;
+            button2.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            button2.ForeColor = Color.White;
+            button2.Location = new Point(569, 280);
             button2.Name = "button2";
-            button2.Size = new Size(153, 61);
-            button2.TabIndex = 7;
-            button2.Text = "Bỏ qua";
-            button2.UseVisualStyleBackColor = true;
+            button2.Size = new Size(110, 45);
+            button2.TabIndex = 17;
+            button2.Text = "❌ Bỏ qua";
+            button2.UseVisualStyleBackColor = false;
             button2.Click += button2_Click;
             // 
             // label3
             // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 13F);
-            label3.Location = new Point(410, 442);
+            label3.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            label3.ForeColor = Color.SaddleBrown;
+            label3.Location = new Point(298, 297);
             label3.Name = "label3";
-            label3.Size = new Size(162, 36);
-            label3.TabIndex = 9;
-            label3.Text = "The price: $0";
+            label3.Size = new Size(208, 33);
+            label3.TabIndex = 15;
+            label3.Text = "💰 The price: $0";
             // 
             // panel2
             // 
             panel2.Controls.Add(pictureBox2);
             panel2.Controls.Add(checkBox2);
-            panel2.Location = new Point(241, 86);
+            panel2.Location = new Point(193, 69);
+            panel2.Margin = new Padding(2);
             panel2.Name = "panel2";
-            panel2.Size = new Size(147, 189);
+            panel2.Size = new Size(118, 151);
             panel2.TabIndex = 11;
             // 
             // pictureBox2
             // 
             pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
-            pictureBox2.Location = new Point(17, 28);
+            pictureBox2.Location = new Point(14, 22);
+            pictureBox2.Margin = new Padding(2);
             pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(111, 75);
+            pictureBox2.Size = new Size(89, 60);
             pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox2.TabIndex = 11;
             pictureBox2.TabStop = false;
@@ -165,9 +177,10 @@
             // checkBox2
             // 
             checkBox2.AutoSize = true;
-            checkBox2.Location = new Point(21, 148);
+            checkBox2.Location = new Point(17, 118);
+            checkBox2.Margin = new Padding(2);
             checkBox2.Name = "checkBox2";
-            checkBox2.Size = new Size(104, 29);
+            checkBox2.Size = new Size(85, 24);
             checkBox2.TabIndex = 0;
             checkBox2.Text = "House 1";
             checkBox2.UseVisualStyleBackColor = true;
@@ -177,17 +190,19 @@
             // 
             panel3.Controls.Add(pictureBox3);
             panel3.Controls.Add(checkBox3);
-            panel3.Location = new Point(425, 86);
+            panel3.Location = new Point(340, 69);
+            panel3.Margin = new Padding(2);
             panel3.Name = "panel3";
-            panel3.Size = new Size(147, 189);
+            panel3.Size = new Size(118, 151);
             panel3.TabIndex = 12;
             // 
             // pictureBox3
             // 
             pictureBox3.Image = (Image)resources.GetObject("pictureBox3.Image");
-            pictureBox3.Location = new Point(17, 28);
+            pictureBox3.Location = new Point(14, 22);
+            pictureBox3.Margin = new Padding(2);
             pictureBox3.Name = "pictureBox3";
-            pictureBox3.Size = new Size(111, 75);
+            pictureBox3.Size = new Size(89, 60);
             pictureBox3.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox3.TabIndex = 11;
             pictureBox3.TabStop = false;
@@ -195,9 +210,10 @@
             // checkBox3
             // 
             checkBox3.AutoSize = true;
-            checkBox3.Location = new Point(21, 148);
+            checkBox3.Location = new Point(17, 118);
+            checkBox3.Margin = new Padding(2);
             checkBox3.Name = "checkBox3";
-            checkBox3.Size = new Size(104, 29);
+            checkBox3.Size = new Size(85, 24);
             checkBox3.TabIndex = 0;
             checkBox3.Text = "House 2";
             checkBox3.UseVisualStyleBackColor = true;
@@ -207,17 +223,19 @@
             // 
             panel4.Controls.Add(pictureBox4);
             panel4.Controls.Add(checkBox4);
-            panel4.Location = new Point(615, 86);
+            panel4.Location = new Point(492, 69);
+            panel4.Margin = new Padding(2);
             panel4.Name = "panel4";
-            panel4.Size = new Size(147, 189);
+            panel4.Size = new Size(118, 151);
             panel4.TabIndex = 13;
             // 
             // pictureBox4
             // 
             pictureBox4.Image = (Image)resources.GetObject("pictureBox4.Image");
-            pictureBox4.Location = new Point(17, 28);
+            pictureBox4.Location = new Point(14, 22);
+            pictureBox4.Margin = new Padding(2);
             pictureBox4.Name = "pictureBox4";
-            pictureBox4.Size = new Size(111, 75);
+            pictureBox4.Size = new Size(89, 60);
             pictureBox4.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox4.TabIndex = 11;
             pictureBox4.TabStop = false;
@@ -225,9 +243,10 @@
             // checkBox4
             // 
             checkBox4.AutoSize = true;
-            checkBox4.Location = new Point(21, 148);
+            checkBox4.Location = new Point(17, 118);
+            checkBox4.Margin = new Padding(2);
             checkBox4.Name = "checkBox4";
-            checkBox4.Size = new Size(104, 29);
+            checkBox4.Size = new Size(85, 24);
             checkBox4.TabIndex = 0;
             checkBox4.Text = "House 3";
             checkBox4.UseVisualStyleBackColor = true;
@@ -237,17 +256,19 @@
             // 
             panel5.Controls.Add(pictureBox5);
             panel5.Controls.Add(checkBox5);
-            panel5.Location = new Point(801, 86);
+            panel5.Location = new Point(641, 69);
+            panel5.Margin = new Padding(2);
             panel5.Name = "panel5";
-            panel5.Size = new Size(147, 189);
+            panel5.Size = new Size(118, 151);
             panel5.TabIndex = 14;
             // 
             // pictureBox5
             // 
             pictureBox5.Image = (Image)resources.GetObject("pictureBox5.Image");
-            pictureBox5.Location = new Point(17, 28);
+            pictureBox5.Location = new Point(14, 22);
+            pictureBox5.Margin = new Padding(2);
             pictureBox5.Name = "pictureBox5";
-            pictureBox5.Size = new Size(111, 75);
+            pictureBox5.Size = new Size(89, 60);
             pictureBox5.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox5.TabIndex = 11;
             pictureBox5.TabStop = false;
@@ -255,9 +276,10 @@
             // checkBox5
             // 
             checkBox5.AutoSize = true;
-            checkBox5.Location = new Point(32, 148);
+            checkBox5.Location = new Point(26, 118);
+            checkBox5.Margin = new Padding(2);
             checkBox5.Name = "checkBox5";
-            checkBox5.Size = new Size(81, 29);
+            checkBox5.Size = new Size(68, 24);
             checkBox5.TabIndex = 0;
             checkBox5.Text = "Hotel";
             checkBox5.UseVisualStyleBackColor = true;
@@ -265,9 +287,10 @@
             // 
             // BuyHome_Land
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1003, 531);
+            BackColor = Color.FromArgb(245, 235, 221);
+            ClientSize = new Size(802, 357);
             Controls.Add(panel5);
             Controls.Add(panel4);
             Controls.Add(panel3);
@@ -278,8 +301,10 @@
             Controls.Add(label2);
             Controls.Add(panel1);
             Controls.Add(label1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            Margin = new Padding(2);
             Name = "BuyHome_Land";
-            Text = "BuyHome_Land";
+            Text = "Mua đất";
             Load += BuyLand_Home_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
@@ -297,7 +322,6 @@
             panel5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion

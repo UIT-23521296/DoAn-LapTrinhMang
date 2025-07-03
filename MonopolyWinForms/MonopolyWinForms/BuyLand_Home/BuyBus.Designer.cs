@@ -33,159 +33,143 @@ namespace MonopolyWinForms.BuyLand_Home
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BuyBus));
             label1 = new Label();
             pictureBox1 = new PictureBox();
+            panel1 = new Panel();
             label2 = new Label();
+            label3 = new Label();
             button1 = new Button();
             button2 = new Button();
-            label3 = new Label();
-            panel1 = new Panel();
-            label8 = new Label();
-            label7 = new Label();
-            label6 = new Label();
-            label5 = new Label();
-            label4 = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
-            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 16F);
-            label1.Location = new Point(428, 9);
+            label1.Font = new Font("Palatino Linotype", 18F, FontStyle.Bold);
+            label1.ForeColor = Color.DarkSlateBlue;
+            label1.Location = new Point(282, 15);
             label1.Name = "label1";
-            label1.Size = new Size(114, 45);
+            label1.Size = new Size(177, 41);
             label1.TabIndex = 0;
-            label1.Text = "Bến xe";
-            label1.TextAlign = ContentAlignment.MiddleCenter;
+            label1.Text = "🚏 BẾN XE";
             // 
             // pictureBox1
             // 
-            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(101, 73);
+            pictureBox1.BackgroundImage = Properties.Resources.ben_xe;
+            pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
+            pictureBox1.Location = new Point(60, 70);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(262, 253);
+            pictureBox1.Size = new Size(220, 200);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox1.TabIndex = 11;
+            pictureBox1.TabIndex = 1;
             pictureBox1.TabStop = false;
+            // 
+            // panel1
+            // 
+            panel1.BackColor = Color.White;
+            panel1.BorderStyle = BorderStyle.FixedSingle;
+            panel1.Location = new Point(495, 70);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(245, 200);
+            panel1.TabIndex = 2;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 13F);
-            label2.Location = new Point(411, 362);
+            label2.Font = new Font("Palatino Linotype", 12F, FontStyle.Bold);
+            label2.ForeColor = Color.Teal;
+            label2.Location = new Point(300, 300);
             label2.Name = "label2";
-            label2.Size = new Size(161, 36);
-            label2.TabIndex = 5;
-            label2.Text = "Rent rate: $0";
-            // 
-            // button1
-            // 
-            button1.Font = new Font("Segoe UI", 13F);
-            button1.Location = new Point(145, 362);
-            button1.Name = "button1";
-            button1.Size = new Size(153, 61);
-            button1.TabIndex = 6;
-            button1.Text = "Mua";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
-            // 
-            // button2
-            // 
-            button2.Font = new Font("Segoe UI", 13F);
-            button2.Location = new Point(692, 362);
-            button2.Name = "button2";
-            button2.Size = new Size(153, 61);
-            button2.TabIndex = 7;
-            button2.Text = "Bỏ qua";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
+            label2.Size = new Size(158, 27);
+            label2.TabIndex = 3;
+            label2.Text = "📈 Rent rate: $0";
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 13F);
-            label3.Location = new Point(398, 442);
+            label3.Font = new Font("Palatino Linotype", 12F, FontStyle.Bold);
+            label3.ForeColor = Color.SaddleBrown;
+            label3.Location = new Point(300, 335);
             label3.Name = "label3";
-            label3.Size = new Size(190, 36);
-            label3.TabIndex = 9;
-            label3.Text = "The price: $200";
+            label3.Size = new Size(181, 27);
+            label3.TabIndex = 4;
+            label3.Text = "💰 The price: $200";
             // 
-            // panel1
+            // button1
             // 
-            panel1.Controls.Add(label8);
-            panel1.Controls.Add(label7);
-            panel1.Controls.Add(label6);
-            panel1.Controls.Add(label5);
-            panel1.Controls.Add(label4);
-            panel1.Location = new Point(617, 73);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(300, 253);
-            panel1.TabIndex = 12;
+            button1.BackColor = Color.MediumSeaGreen;
+            button1.FlatStyle = FlatStyle.Flat;
+            button1.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            button1.ForeColor = Color.White;
+            button1.Location = new Point(120, 310);
+            button1.Name = "button1";
+            button1.Size = new Size(110, 45);
+            button1.TabIndex = 5;
+            button1.Text = "✅ Mua";
+            button1.UseVisualStyleBackColor = false;
+            button1.Click += button1_Click;
             // 
-            // label8
+            // button2
             // 
-            label8.AutoSize = true;
-            label8.Location = new Point(24, 196);
-            label8.Name = "label8";
-            label8.Size = new Size(104, 25);
-            label8.TabIndex = 13;
-            label8.Text = "4 Bus: $200";
-            // 
-            // label7
-            // 
-            label7.AutoSize = true;
-            label7.Location = new Point(24, 156);
-            label7.Name = "label7";
-            label7.Size = new Size(104, 25);
-            label7.TabIndex = 13;
-            label7.Text = "3 Bus: $150";
-            // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.Location = new Point(24, 117);
-            label6.Name = "label6";
-            label6.Size = new Size(104, 25);
-            label6.TabIndex = 13;
-            label6.Text = "2 Bus: $100";
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Location = new Point(24, 82);
-            label5.Name = "label5";
-            label5.Size = new Size(94, 25);
-            label5.TabIndex = 1;
-            label5.Text = "1 Bus: $50";
-            // 
-            // label4
-            // 
-            label4.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            label4.Location = new Point(24, 15);
-            label4.Name = "label4";
-            label4.Size = new Size(256, 56);
-            label4.TabIndex = 0;
-            label4.Text = "Rent depend on your number of Bus";
+            button2.BackColor = Color.IndianRed;
+            button2.FlatStyle = FlatStyle.Flat;
+            button2.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            button2.ForeColor = Color.White;
+            button2.Location = new Point(570, 310);
+            button2.Name = "button2";
+            button2.Size = new Size(110, 45);
+            button2.TabIndex = 6;
+            button2.Text = "❌ Bỏ qua";
+            button2.UseVisualStyleBackColor = false;
+            button2.Click += button2_Click;
             // 
             // BuyBus
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1003, 531);
-            Controls.Add(panel1);
-            Controls.Add(pictureBox1);
-            Controls.Add(label3);
-            Controls.Add(button2);
-            Controls.Add(button1);
-            Controls.Add(label2);
+            AutoScaleMode = AutoScaleMode.None;
+            BackColor = Color.FromArgb(245, 235, 221);
+            ClientSize = new Size(800, 420);
             Controls.Add(label1);
+            Controls.Add(pictureBox1);
+            Controls.Add(panel1);
+            Controls.Add(label2);
+            Controls.Add(label3);
+            Controls.Add(button1);
+            Controls.Add(button2);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
             Name = "BuyBus";
-            Text = "BuyBus";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Mua Bến Xe";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
-            panel1.ResumeLayout(false);
-            panel1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
+        }
+
+        // === helper local method INSIDE Designer.cs ===
+        // Cho phép gắn thêm label động từ ngoài
+        private void AddRentLabels()
+        {
+            Label titleLabel = new Label
+            {
+                AutoSize = true,
+                Font = new Font("Segoe UI", 11F, FontStyle.Bold),
+                Location = new Point(10, 10),
+                Text = "📋 Thông tin thuê:"
+            };
+            panel1.Controls.Add(titleLabel);
+
+            string[] texts = { "1 Bus: $50", "2 Bus: $100", "3 Bus: $150", "4 Bus: $200" };
+            for (int i = 0; i < texts.Length; i++)
+            {
+                Label lbl = new Label
+                {
+                    AutoSize = true,
+                    Font = new Font("Segoe UI", 10F),
+                    Location = new Point(20, 45 + i * 30),
+                    Text = texts[i]
+                };
+                panel1.Controls.Add(lbl);
+            }
         }
 
         #endregion
