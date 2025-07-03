@@ -45,10 +45,11 @@ namespace MonopolyWinForms.GameLogic
             {
                 await GameManager.SendChatMessage(
                     GameManager.CurrentRoomId!,
-                    "Hệ thống",
+                    "Xúc sắc",
                     $"{players[currentPlayerIndex].Name} lắc được {dice1} và {dice2} (tổng: {totalSteps})" +
                     (isDouble ? " - Được lắc tiếp!" : "")
                 );
+
             }
             catch (Exception ex)
             {

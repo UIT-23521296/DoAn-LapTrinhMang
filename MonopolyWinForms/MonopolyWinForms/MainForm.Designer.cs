@@ -77,7 +77,10 @@
             panelTimer = new Panel();
             pictureBox1 = new PictureBox();
             groupBox1 = new GroupBox();
+            richTextBox1 = new RichTextBox();
+            panel45 = new Panel();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            panel45.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -526,12 +529,39 @@
             groupBox1.TabStop = false;
             groupBox1.Text = "📦 Tài sản";
             // 
+            // richTextBox1
+            // 
+            richTextBox1.BorderStyle = BorderStyle.None;
+            richTextBox1.Dock = DockStyle.Fill;
+            richTextBox1.Enabled = false;
+            richTextBox1.Font = new Font("Palatino Linotype", 11.25F, FontStyle.Bold);
+            richTextBox1.Location = new Point(2, 2);
+            richTextBox1.Name = "richTextBox1";
+            richTextBox1.ReadOnly = true;
+            richTextBox1.ScrollBars = RichTextBoxScrollBars.None;
+            richTextBox1.Size = new Size(319, 119);
+            richTextBox1.TabIndex = 0;
+            richTextBox1.TabStop = false;
+            richTextBox1.Text = "";
+            // 
+            // panel45
+            // 
+            panel45.BackColor = Color.Black;
+            panel45.BorderStyle = BorderStyle.FixedSingle;
+            panel45.Controls.Add(richTextBox1);
+            panel45.Location = new Point(970, 399);
+            panel45.Name = "panel45";
+            panel45.Padding = new Padding(2);
+            panel45.Size = new Size(325, 125);
+            panel45.TabIndex = 49;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Cornsilk;
             ClientSize = new Size(1676, 953);
+            Controls.Add(panel45);
             Controls.Add(button1);
             Controls.Add(pictureBox1);
             Controls.Add(panelTimer);
@@ -591,6 +621,7 @@
             Text = "Cờ Tỷ Phú";
             Load += MainForm_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            panel45.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -644,5 +675,7 @@
         private Panel panelTimer;
         private PictureBox pictureBox1;
         private GroupBox groupBox1;
+        private RichTextBox richTextBox1;
+        private Panel panel45;
     }
 }

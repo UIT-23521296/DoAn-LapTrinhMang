@@ -564,7 +564,7 @@ namespace MonopolyWinForms.GameLogic
                 await GameManager.SendChatMessage(
                     GameManager.CurrentRoomId!,
                     "Hệ thống",
-                    $"{player.Name} phải trả {tax} tiền thuế thu nhập"
+                    $"{player.Name} phải trả ${tax} tiền thuế thu nhập"
                 );
             }
             catch (Exception ex)
