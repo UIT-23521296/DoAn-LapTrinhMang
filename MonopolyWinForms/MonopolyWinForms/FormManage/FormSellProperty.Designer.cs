@@ -28,15 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSellProperty));
             btnSell = new Button();
             listBoxTiles = new ListBox();
             SuspendLayout();
             // 
             // btnSell
             // 
-            btnSell.Location = new Point(39, 236);
+            btnSell.BackColor = Color.IndianRed;
+            btnSell.FlatStyle = FlatStyle.Flat;
+            btnSell.Location = new Point(31, 189);
+            btnSell.Margin = new Padding(2);
             btnSell.Name = "btnSell";
-            btnSell.Size = new Size(410, 50);
+            btnSell.Size = new Size(328, 40);
             btnSell.TabIndex = 3;
             btnSell.Text = ".";
             btnSell.UseVisualStyleBackColor = true;
@@ -44,21 +48,24 @@
             // listBoxTiles
             // 
             listBoxTiles.FormattingEnabled = true;
-            listBoxTiles.ItemHeight = 25;
-            listBoxTiles.Location = new Point(39, 39);
+            listBoxTiles.Location = new Point(31, 31);
+            listBoxTiles.Margin = new Padding(2);
             listBoxTiles.Name = "listBoxTiles";
-            listBoxTiles.Size = new Size(410, 179);
+            listBoxTiles.Size = new Size(329, 144);
             listBoxTiles.TabIndex = 2;
             // 
             // FormSellProperty
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(528, 313);
+            BackColor = Color.FromArgb(245, 235, 221);
+            ClientSize = new Size(422, 250);
             Controls.Add(btnSell);
             Controls.Add(listBoxTiles);
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            Margin = new Padding(2);
             Name = "FormSellProperty";
-            Text = "FormSellProperty";
+            Text = "Bán tài sản";
             ResumeLayout(false);
         }
 

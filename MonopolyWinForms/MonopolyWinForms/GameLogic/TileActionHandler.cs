@@ -198,7 +198,7 @@ namespace MonopolyWinForms.GameLogic
             {
                 await GameManager.SendChatMessage(
                     GameManager.CurrentRoomId!,
-                    "Hệ thống",
+                    "Cơ hội",
                     $"{player.Name} rút được thẻ {deckType}: {card}"
                 );
             }
@@ -217,7 +217,7 @@ namespace MonopolyWinForms.GameLogic
                     {
                         await GameManager.SendChatMessage(
                             GameManager.CurrentRoomId!,
-                            "Hệ thống",
+                            "Cơ hội",
                             $"{player.Name} bị vào tù do rút thẻ"
                         );
                     }
@@ -232,7 +232,7 @@ namespace MonopolyWinForms.GameLogic
                     {
                         await GameManager.SendChatMessage(
                             GameManager.CurrentRoomId!,
-                            "Hệ thống",
+                            "Cơ hội",
                             $"{player.Name} nhận được thẻ thoát tù"
                         );
                     }
@@ -247,7 +247,7 @@ namespace MonopolyWinForms.GameLogic
                     {
                         await GameManager.SendChatMessage(
                             GameManager.CurrentRoomId!,
-                            "Hệ thống",
+                            "Cơ hội",
                             $"{player.Name} sẽ trả gấp đôi tiền thuê cho ô tiếp theo"
                         );
                     }
@@ -262,7 +262,7 @@ namespace MonopolyWinForms.GameLogic
                     {
                         await GameManager.SendChatMessage(
                             GameManager.CurrentRoomId!,
-                            "Hệ thống",
+                            "Cơ hội",
                             $"{player.Name} sẽ giảm 50% tiền thuê cho ô tiếp theo"
                         );
                     }
@@ -279,7 +279,7 @@ namespace MonopolyWinForms.GameLogic
                     {
                         await GameManager.SendChatMessage(
                             GameManager.CurrentRoomId!,
-                            "Hệ thống",
+                            "Cơ hội",
                             $"{player.Name} được di chuyển đến ô bắt đầu"
                         );
                     }
@@ -299,7 +299,7 @@ namespace MonopolyWinForms.GameLogic
                     {
                         await GameManager.SendChatMessage(
                             GameManager.CurrentRoomId!,
-                            "Hệ thống",
+                            "Cơ hội",
                             $"{player.Name} phải bán 1 căn nhà"
                         );
                     }
@@ -319,7 +319,7 @@ namespace MonopolyWinForms.GameLogic
                     {
                         await GameManager.SendChatMessage(
                             GameManager.CurrentRoomId!,
-                            "Hệ thống",
+                            "Cơ hội",
                             $"{player.Name} phải phá 1 căn nhà"
                         );
                     }
@@ -343,7 +343,7 @@ namespace MonopolyWinForms.GameLogic
                     {
                         await GameManager.SendChatMessage(
                             GameManager.CurrentRoomId!,
-                            "Hệ thống",
+                            "Cơ hội",
                             $"{player.Name} được di chuyển đến bến xe tiếp theo và sẽ trả gấp đôi tiền thuê"
                         );
                     }
@@ -360,7 +360,7 @@ namespace MonopolyWinForms.GameLogic
                     {
                         await GameManager.SendChatMessage(
                             GameManager.CurrentRoomId!,
-                            "Hệ thống",
+                            "Cơ hội",
                             $"{player.Name} được di chuyển đến công ty tiếp theo"
                         );
                     }
@@ -440,7 +440,7 @@ namespace MonopolyWinForms.GameLogic
                     {
                         await GameManager.SendChatMessage(
                             GameManager.CurrentRoomId!,
-                            "Hệ thống",
+                            "Khí vận",
                             $"{player.Name} bị vào tù do rút thẻ"
                         );
                     }
@@ -455,7 +455,7 @@ namespace MonopolyWinForms.GameLogic
                     {
                         await GameManager.SendChatMessage(
                             GameManager.CurrentRoomId!,
-                            "Hệ thống",
+                            "Khí vận",
                             $"{player.Name} nhận được thẻ thoát tù"
                         );
                     }
@@ -471,7 +471,7 @@ namespace MonopolyWinForms.GameLogic
                     {
                         await GameManager.SendChatMessage(
                             GameManager.CurrentRoomId!,
-                            "Hệ thống",
+                            "Khí vận",
                             $"{player.Name} được di chuyển đến ô bắt đầu"
                         );
                     }
@@ -494,7 +494,7 @@ namespace MonopolyWinForms.GameLogic
                             {
                                 await GameManager.SendChatMessage(
                                     GameManager.CurrentRoomId!,
-                                    "Hệ thống",
+                                    "Khí vận",
                                     $"{player.Name} nhận được {addMoney} từ thẻ khí vận"
                                 );
                             }
@@ -516,7 +516,7 @@ namespace MonopolyWinForms.GameLogic
                             {
                                 await GameManager.SendChatMessage(
                                     GameManager.CurrentRoomId!,
-                                    "Hệ thống",
+                                    "Khí vận",
                                     $"{player.Name} phải trả {subMoney} từ thẻ khí vận"
                                 );
                             }
@@ -541,7 +541,7 @@ namespace MonopolyWinForms.GameLogic
                 {
                     await GameManager.SendChatMessage(
                         GameManager.CurrentRoomId!,
-                    "Hệ thống",
+                        "Ô bắt đầu",
                         $"{player.Name} đi qua ô bắt đầu, nhận $200!"
                     );
                 }
@@ -563,7 +563,7 @@ namespace MonopolyWinForms.GameLogic
             {
                 await GameManager.SendChatMessage(
                     GameManager.CurrentRoomId!,
-                    "Hệ thống",
+                    "Thuế thu nhập",
                     $"{player.Name} phải trả ${tax} tiền thuế thu nhập"
                 );
             }
@@ -583,7 +583,7 @@ namespace MonopolyWinForms.GameLogic
             {
                 await GameManager.SendChatMessage(
                     GameManager.CurrentRoomId!,
-                    "Hệ thống",
+                    "Thuế đặc biệt",
                     $"{player.Name} phải trả 15% tổng tài sản"
                 );
             }
@@ -602,7 +602,7 @@ namespace MonopolyWinForms.GameLogic
                 {
                     await GameManager.SendChatMessage(
                         GameManager.CurrentRoomId!,
-                        "Hệ thống",
+                        "Vào tù",
                         $"{player.Name} sử dụng thẻ thoát tù, không phải vào tù!"
                     );
                 }
@@ -635,7 +635,7 @@ namespace MonopolyWinForms.GameLogic
                         {
                             await GameManager.SendChatMessage(
                                 GameManager.CurrentRoomId!,
-                                "Hệ thống",
+                                "Bến xe",
                                 $"{currentPlayer.Name} đã mua {tile.Name} với giá ${tile.LandPrice:N0}"
                             );
                         }
@@ -674,7 +674,7 @@ namespace MonopolyWinForms.GameLogic
                         {
                             await GameManager.SendChatMessage(
                                 GameManager.CurrentRoomId!,
-                                "Hệ thống",
+                                "Công ty",
                                 $"{currentPlayer.Name} đã mua {tile.Name} với giá ${tile.LandPrice:N0}"
                             );
                         }
@@ -710,7 +710,7 @@ namespace MonopolyWinForms.GameLogic
                         {
                             await GameManager.SendChatMessage(
                                 GameManager.CurrentRoomId!,
-                                "Hệ thống",
+                                "Ô đất",
                                 $"{currentPlayer.Name} đã mua {tile.Name} với giá ${tile.LandPrice:N0}"
                             );
                         }
@@ -756,7 +756,7 @@ namespace MonopolyWinForms.GameLogic
                         {
                             await GameManager.SendChatMessage(
                                 GameManager.CurrentRoomId!,
-                                "Hệ thống",
+                                "Ô đất",
                                 $"{currentPlayer.Name} đã nâng cấp {tile.Name} lên {levelDesc} với chi phí ${totalPrice:N0}"
                             );
                         }

@@ -130,13 +130,16 @@
   <data name="player3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Assets\Images\player3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="co_hoi_doc" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Assets\Images\co_hoi_doc.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="co_hoi_ngang" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Images\co_hoi_ngang.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="player2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Assets\Images\player2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="co_hoi_ngang" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Assets\Images\co_hoi_ngang.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="co_hoi_doc" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Images\co_hoi_doc.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ben_xe" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Images\ben_xe.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
