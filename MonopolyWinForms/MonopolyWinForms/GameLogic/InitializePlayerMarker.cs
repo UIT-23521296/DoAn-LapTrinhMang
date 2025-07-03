@@ -59,7 +59,7 @@ namespace MonopolyWinForms.GameLogic
             {
                 int nextIndex = (player.TileIndex + 1) % totalTiles;
                 bool isLastStep = (i == steps);
-                if (nextIndex == 1 && !isLastStep)
+                if (nextIndex == 0 && !isLastStep)
                 {
                     // chỉ cộng khi “đi ngang”, không phải điểm dừng cuối
                     MainForm.HandleStart(player);
