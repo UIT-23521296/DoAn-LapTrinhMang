@@ -51,7 +51,9 @@ namespace MonopolyWinForms
         //Chatbox
         private void InitializeChatBox(){
             chatbox = new Chatbox(players[currentPlayerIndex]);
-            chatbox.Location = new Point(970, 548);
+            //chatbox.Location = new Point(970, 548);
+            chatbox.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            chatbox.Location = new Point(this.ClientSize.Width - chatbox.Width - 206, this.ClientSize.Height - chatbox.Height + 95);
             chatbox.OnSendMessage += HandleChatMessage;
             this.Controls.Add(chatbox);
         }
@@ -59,7 +61,9 @@ namespace MonopolyWinForms
         {
             pnlCurrentTurn = new Panel
             {
-                Location = new Point(965, 11),
+                //Location = new Point(965, 11),
+                Anchor = AnchorStyles.Top | AnchorStyles.Right,
+                Location = new Point(this.ClientSize.Width - 701 - 10, 11),
                 Size = new Size(330, 42),
                 BackColor = ColorTranslator.FromHtml("#EEF7FA"),
                 BorderStyle = BorderStyle.FixedSingle,
@@ -94,6 +98,19 @@ namespace MonopolyWinForms
             // THÊM PANEL vào form (không thêm label đơn lẻ)
             this.Controls.Add(pnlCurrentTurn);
         }
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            if (chatbox != null)
+            {
+                chatbox.Location = new Point(this.ClientSize.Width - chatbox.Width - 10, this.ClientSize.Height - chatbox.Height - 10);
+            }
+
+            if (pnlCurrentTurn != null)
+            {
+                pnlCurrentTurn.Location = new Point(this.ClientSize.Width - pnlCurrentTurn.Width - 10, 11);
+            }
+        }
+
 
         private async void HandleChatMessage(string senderName, string message)
         {
@@ -143,7 +160,8 @@ namespace MonopolyWinForms
 
         public MainForm()
         {
-            InitializeComponent(); 
+            InitializeComponent();
+            this.Resize += MainForm_Resize;
             GameManager.OnGameStateUpdated += HandleGameStateUpdate;
             GameManager.OnChatMessageReceived += HandleChatMessageReceived;
             this.StartPosition = FormStartPosition.CenterScreen;
@@ -366,8 +384,11 @@ namespace MonopolyWinForms
         public async Task NextTurn(){
             currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
             UpdateTurnDisplay();
-            chatbox!.UpdatePlayer(players[currentPlayerIndex]);
-            if(Action != null) Action.UpdateCurrentPlayerIndex(currentPlayerIndex);
+            if (chatbox != null)
+            {
+                chatbox.UpdatePlayer(players[currentPlayerIndex]);
+            }
+            if (Action != null) Action.UpdateCurrentPlayerIndex(currentPlayerIndex);
             //button1.Enabled = true;
 
             var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
