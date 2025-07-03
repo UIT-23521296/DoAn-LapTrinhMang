@@ -79,8 +79,13 @@
             groupBox1 = new GroupBox();
             richTextBox1 = new RichTextBox();
             panel45 = new Panel();
+            pnlCurrentTurn = new Panel();
+            lblTurnName = new Label();
+            lblTurnStatic = new Label();
+            panelChatbox = new Panel();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel45.SuspendLayout();
+            pnlCurrentTurn.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -489,7 +494,7 @@
             button1.FlatStyle = FlatStyle.Flat;
             button1.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
             button1.ForeColor = Color.Black;
-            button1.Location = new Point(970, 270);
+            button1.Location = new Point(965, 213);
             button1.Margin = new Padding(2);
             button1.Name = "button1";
             button1.Size = new Size(226, 80);
@@ -501,7 +506,7 @@
             // panelTimer
             // 
             panelTimer.BorderStyle = BorderStyle.FixedSingle;
-            panelTimer.Location = new Point(970, 134);
+            panelTimer.Location = new Point(965, 77);
             panelTimer.Margin = new Padding(2);
             panelTimer.Name = "panelTimer";
             panelTimer.Size = new Size(226, 80);
@@ -549,11 +554,53 @@
             panel45.BackColor = Color.Black;
             panel45.BorderStyle = BorderStyle.FixedSingle;
             panel45.Controls.Add(richTextBox1);
-            panel45.Location = new Point(970, 399);
+            panel45.Location = new Point(965, 342);
             panel45.Name = "panel45";
             panel45.Padding = new Padding(2);
             panel45.Size = new Size(325, 125);
             panel45.TabIndex = 49;
+            // 
+            // pnlCurrentTurn
+            // 
+            pnlCurrentTurn.BackColor = Color.FromArgb(238, 247, 250);
+            pnlCurrentTurn.BorderStyle = BorderStyle.FixedSingle;
+            pnlCurrentTurn.Controls.Add(lblTurnName);
+            pnlCurrentTurn.Controls.Add(lblTurnStatic);
+            pnlCurrentTurn.Location = new Point(965, 11);
+            pnlCurrentTurn.Name = "pnlCurrentTurn";
+            pnlCurrentTurn.Size = new Size(330, 35);
+            pnlCurrentTurn.TabIndex = 50;
+            // 
+            // lblTurnName
+            // 
+            lblTurnName.AutoSize = true;
+            lblTurnName.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
+            lblTurnName.ForeColor = Color.DarkGreen;
+            lblTurnName.Location = new Point(112, 0);
+            lblTurnName.Name = "lblTurnName";
+            lblTurnName.Size = new Size(31, 30);
+            lblTurnName.TabIndex = 52;
+            lblTurnName.Text = "...";
+            // 
+            // lblTurnStatic
+            // 
+            lblTurnStatic.AutoSize = true;
+            lblTurnStatic.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
+            lblTurnStatic.ForeColor = Color.Black;
+            lblTurnStatic.Location = new Point(-1, 0);
+            lblTurnStatic.Name = "lblTurnStatic";
+            lblTurnStatic.Size = new Size(118, 30);
+            lblTurnStatic.TabIndex = 51;
+            lblTurnStatic.Text = "Lượt chơi:";
+            // 
+            // panelChatbox
+            // 
+            panelChatbox.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            panelChatbox.BorderStyle = BorderStyle.FixedSingle;
+            panelChatbox.Location = new Point(973, 537);
+            panelChatbox.Name = "panelChatbox";
+            panelChatbox.Size = new Size(510, 409);
+            panelChatbox.TabIndex = 51;
             // 
             // MainForm
             // 
@@ -561,6 +608,8 @@
             AutoScaleMode = AutoScaleMode.Dpi;
             BackColor = Color.Cornsilk;
             ClientSize = new Size(1676, 953);
+            Controls.Add(panelChatbox);
+            Controls.Add(pnlCurrentTurn);
             Controls.Add(panel45);
             Controls.Add(button1);
             Controls.Add(pictureBox1);
@@ -622,6 +671,8 @@
             Load += MainForm_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel45.ResumeLayout(false);
+            pnlCurrentTurn.ResumeLayout(false);
+            pnlCurrentTurn.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -677,5 +728,9 @@
         private GroupBox groupBox1;
         private RichTextBox richTextBox1;
         private Panel panel45;
+        private Panel pnlCurrentTurn;
+        private Label lblTurnStatic;
+        private Label lblTurnName;
+        private Panel panelChatbox;
     }
 }

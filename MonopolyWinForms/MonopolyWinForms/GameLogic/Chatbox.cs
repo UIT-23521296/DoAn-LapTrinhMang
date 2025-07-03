@@ -26,7 +26,7 @@ namespace MonopolyWinForms.GameLogic
         }
         private void InitializeComponents()
         {
-            this.Size = new Size(500, 400);
+            this.Dock = DockStyle.Fill; 
             this.BorderStyle = BorderStyle.FixedSingle;
             rtbDisplay = new RichTextBox
             {
