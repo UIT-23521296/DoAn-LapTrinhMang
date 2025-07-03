@@ -26,59 +26,55 @@ namespace MonopolyWinForms.GameLogic
         }
         private void InitializeComponents()
         {
-            this.Dock = DockStyle.Fill; 
+            // Chatbox chiếm hết Panel cha (panelChatbox) – bạn đã Dock = Fill từ MainForm
+            this.Dock = DockStyle.Fill;
             this.BorderStyle = BorderStyle.FixedSingle;
+            this.BackColor = Color.White;
+
+            // ----------- VÙNG HIỂN THỊ TIN NHẮN ------------
             rtbDisplay = new RichTextBox
             {
-                Location = new Point(10, 10),
-                Size = new Size(480, 320),
-                BorderStyle = BorderStyle.None,
+                Dock = DockStyle.Fill,       // tự co giãn
                 ReadOnly = true,
+                BorderStyle = BorderStyle.None,
                 BackColor = Color.White,
-                Font = new Font("Arial", 10)
+                Font = new Font("Arial", 10),
+                ScrollBars = RichTextBoxScrollBars.Vertical
             };
+
+            // ----------- VÙNG NHẬP + NÚT GỬI ---------------
+            var bottomPanel = new Panel
+            {
+                Dock = DockStyle.Bottom,
+                Height = 40,
+                Padding = new Padding(10, 5, 10, 5)
+            };
+
             txtInput = new TextBox
             {
-                Location = new Point(10, 360),
+                Dock = DockStyle.Fill,
                 BorderStyle = BorderStyle.FixedSingle,
-                Size = new Size(400, 30),
+                Font = new Font("Arial", 10)
             };
+
             btnSend = new Button
             {
                 Text = "Gửi",
-                Location = new Point(420, 360),
-                Size = new Size(70, 30)
+                Dock = DockStyle.Right,
+                Width = 70
             };
-            richTextBox1 = new RichTextBox
-            {
-                Location = new Point(970, 410),
-                Size = new Size(480, 110),
-                ReadOnly = true,
-                Font = new Font("Palatino Linotype", 11.25F, FontStyle.Bold),
-                BackColor = Color.FromArgb(245, 235, 221),
-                BorderStyle = BorderStyle.FixedSingle,
-                ScrollBars = RichTextBoxScrollBars.Vertical
-                //richTextBox1.BackColor = Color.FromArgb(245, 235, 221);
-                //richTextBox1.BorderStyle = BorderStyle.None;
-                //richTextBox1.Font = new Font("Palatino Linotype", 11.25F, FontStyle.Bold);
-                //richTextBox1.Location = new Point(970, 410);
-                //richTextBox1.Name = "richTextBox1";
-                //richTextBox1.ReadOnly = true;
-                //richTextBox1.ScrollBars = RichTextBoxScrollBars.None;
-                //richTextBox1.Size = new Size(326, 104);
-                //richTextBox1.TabIndex = 48;
-                //richTextBox1.Text = "";
-            };
-            this.Controls.Add(richTextBox1);
-            // Tăng chiều cao Chatbox panel nếu cần
-            this.Size = new Size(500, 500);
 
+            // Sự kiện
             btnSend.Click += BtnSend_Click;
             txtInput.KeyDown += TxtInput_KeyDown;
+
+            // Ghép UI
+            bottomPanel.Controls.Add(txtInput);
+            bottomPanel.Controls.Add(btnSend);
             this.Controls.Add(rtbDisplay);
-            this.Controls.Add(txtInput);
-            this.Controls.Add(btnSend);
+            this.Controls.Add(bottomPanel);
         }
+
         private void BtnSend_Click(object sender, EventArgs e)
         {
             SendMessage();
