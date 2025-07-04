@@ -126,11 +126,19 @@ namespace MonopolyWinForms.Room
                                                .OfType<JoinRoom>()
                                                .FirstOrDefault(frm => !frm.IsDisposed);
 
-                    if (existing == null)
+                    if (existing == null || existing.IsDisposed)
                     {
                         existing = new JoinRoom();
                     }
-                    existing.Show();         
+                    else if (existing.Visible)
+                    {
+                        existing.BringToFront(); // hoặc Activate nếu muốn focus
+                    }
+                    else
+                    {
+                        existing.Show();
+                    }
+
 
                 }
                 catch (Exception ex)

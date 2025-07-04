@@ -56,7 +56,7 @@ namespace MonopolyWinForms.Login_Signup
             mainPage.FormClosed += (s, args) =>
             {
                 Session.EndSession();
-                Application.Exit();
+                Environment.Exit(0);   // Kết thúc process ngay, không duyệt OpenForms
             };
         }
 

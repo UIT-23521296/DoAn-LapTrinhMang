@@ -29,17 +29,20 @@ namespace MonopolyWinForms.Home
 
         private void btn_play_Click(object sender, EventArgs e)
         {
-            this.Hide(); // Ẩn form hiện tại
-
-            JoinRoom joinRoomForm = new JoinRoom();
-
+            this.Hide();                       // Ẩn Main_home
+            var joinRoom = new JoinRoom();
+            joinRoom.FormClosed += (s, args) => this.Show();   
+            joinRoom.Show();                 
             // Khi JoinRoom bị đóng, hiện lại form này
-            joinRoomForm.FormClosed += (s, args) =>
-            {
-                this.Show();
-            };
+            //joinRoomForm.FormClosed += (s, args) =>
+            //{
+            //    if (!this.IsDisposed && this.IsHandleCreated)
+            //    {
+            //        this.Show();
+            //    }
+            //};
 
-            joinRoomForm.Show(); // Hiện JoinRoom
+            //joinRoomForm.Show(); // Hiện JoinRoom
         }
 
         private void btn_rule_Click(object sender, EventArgs e)

@@ -21,6 +21,10 @@ namespace MonopolyWinForms.Room
         private System.Windows.Forms.Timer refreshTimer;
         private Label lblStatus;
         private Dictionary<string, DateTime> lastRoomUpdate = new Dictionary<string, DateTime>();
+        private bool shouldReturnToHome = true;
+        private CancellationTokenSource _cts = new();
+        private bool _returnToHome = true;
+
 
         public JoinRoom()
         {
@@ -31,41 +35,43 @@ namespace MonopolyWinForms.Room
 
         private void StartRoomRefreshTimer()
         {
-            refreshTimer = new System.Windows.Forms.Timer();
-            refreshTimer.Interval = 500;
-            refreshTimer.Tick += async (s, e) =>
+            refreshTimer = new System.Windows.Forms.Timer { Interval = 500 };
+            refreshTimer.Tick += async (_, __) =>
             {
-                await LoadRoomsFromFirebase();
+                if (IsDisposed || !Visible || _cts.IsCancellationRequested) return;
+                await LoadRoomsFromFirebase(_cts.Token);
             };
             refreshTimer.Start();
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            // Dừng & xả timer
             refreshTimer?.Stop();
             refreshTimer?.Dispose();
-
+            _cts.Cancel();
             base.OnFormClosing(e);
 
-            // ==== Hiển thị lại Main_home ====
-            var home = Application.OpenForms
-                                   .OfType<MonopolyWinForms.Home.Main_home>()
-                                   .FirstOrDefault();
+            if (shouldReturnToHome)
+            {
+                var home = Application.OpenForms
+                                      .OfType<MonopolyWinForms.Home.Main_home>()
+                                      .FirstOrDefault();
 
-            if (home == null || home.IsDisposed)
-            {
-                home = new MonopolyWinForms.Home.Main_home();
-                home.StartPosition = FormStartPosition.CenterScreen;
-                home.Show();
-            }
-            else
-            {
-                home.WindowState = FormWindowState.Normal;
-                home.BringToFront();
-                home.Show();        // trong trường hợp nó đang Hidden
+                if (home == null || home.IsDisposed)
+                {
+                    home = new MonopolyWinForms.Home.Main_home();
+                    home.StartPosition = FormStartPosition.CenterScreen;
+                    home.Show();
+                }
+                else
+                {
+                    home.WindowState = FormWindowState.Normal;
+                    home.BringToFront();
+                    home.Show();
+                }
             }
         }
+
 
 
         private void SetupUI()
@@ -222,14 +228,24 @@ namespace MonopolyWinForms.Room
 
         private void BtnCreateRoom_Click(object sender, EventArgs e)
         {
-            Create_Room createRoomForm = new Create_Room();
-            createRoomForm.FormClosed += (s, args) =>
+            Hide();                     // Ẩn JoinRoom
+
+            var crtRoom = new Create_Room();
+            _returnToHome = false;
+
+            crtRoom.FormClosed += (_, __) =>
             {
-                this.Show();
+                if (!IsDisposed && !Disposing && IsHandleCreated && crtRoom.Tag?.ToString() != "Redirected")
+                {
+                    _returnToHome = true;
+                    Show(); // Chỉ hiện lại nếu không chuyển qua WaitingRoom
+                }
             };
-            createRoomForm.Show();
-            this.Hide();
+
+            crtRoom.Show();
         }
+
+
 
         private async void BtnJoinRoom_Click(object sender, EventArgs e)
         {
@@ -296,12 +312,15 @@ namespace MonopolyWinForms.Room
             }
         }
 
-        private async Task LoadRoomsFromFirebase()
+        private async Task LoadRoomsFromFirebase(CancellationToken token)
         {
+
             try
             {
                 var firebase = new FirebaseService();
                 var rooms = await firebase.GetAllRoomsAsync();
+
+                if (token.IsCancellationRequested || IsDisposed) return;
 
                 if (rooms != null)
                 {
@@ -348,6 +367,7 @@ namespace MonopolyWinForms.Room
 
         private void UpdateRoomsUI(List<KeyValuePair<string, RoomInfo>> rooms, List<string> newRooms)
         {
+            if (IsDisposed) return;
             // Ghi nhớ dòng đang được chọn (nếu có)
             string selectedRoomName = null;
             if (dgvRooms.SelectedRows.Count > 0)

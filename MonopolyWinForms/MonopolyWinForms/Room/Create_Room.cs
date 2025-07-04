@@ -11,11 +11,10 @@ namespace MonopolyWinForms.Room
 {
     public partial class Create_Room : Form
     {
-        private TextBox txtRoomName, txtHostIP;
+        private TextBox txtRoomName;
         private ComboBox cmbPlayTime, cmbMaxPlayers;
         private Button btnCreate;
 
-        private const int FixedPort = 8800; // Port TCP cố định
 
         public Create_Room()
         {
@@ -173,8 +172,9 @@ namespace MonopolyWinForms.Room
                 Session.JoinRoom(roomId, true);
 
                 var lobby = new Waiting_Room_Host();
+                this.Tag = "Redirected"; // Thông báo cho JoinRoom biết là đã chuyển hướng
                 lobby.Show();
-                this.Hide();
+                this.Close(); // Tắt Create_Room
             }
             catch (Exception ex)
             {
