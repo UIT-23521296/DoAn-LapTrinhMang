@@ -789,11 +789,15 @@ namespace MonopolyWinForms.GameLogic
                 using (var upgradeForm = new BuyHome_Land(currentPlayer, tile, monopoly, mainForm, players, currentPlayerIndex, tiles)){
                     if (upgradeForm.ShowDialog() == DialogResult.OK){
                         int totalPrice = upgradeForm.TotalPrice;
+                        int targetLevel = upgradeForm.NewLevel;
                         if (currentPlayer.Money < totalPrice){
                             MessageBox.Show("Không đủ tiền nâng cấp!", "Thông báo");
                             return;
                         }
                         currentPlayer.Money -= totalPrice;
+                        tile.Level = targetLevel;
+                        if (tile.PlayerId == null && tile.Level >= 1)
+                        tile.PlayerId = currentPlayer.ID;
                         string levelDesc = tile.Level switch
                         {
                             2 => "nhà cấp 1",

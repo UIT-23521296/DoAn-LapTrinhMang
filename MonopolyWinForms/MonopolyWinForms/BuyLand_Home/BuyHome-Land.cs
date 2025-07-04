@@ -18,6 +18,7 @@ namespace buyLand_Home
         private int currentPlayerIndex;
         private List<Tile> tiles;
         public int TotalPrice { get; private set; }
+        public int NewLevel { get; private set; }
         public BuyHome_Land(Player player, Tile tile, Monopoly monopoly, MainForm mainform, List<Player> players, int currentPlayerIndex, List<Tile> tiles)
         {
             InitializeComponent();
@@ -182,6 +183,8 @@ namespace buyLand_Home
 
             label2.Text = $"Rent rate: ${TotalPrice / 2}";
             label3.Text = $"The price: ${TotalPrice}";
+
+            button1.Enabled = player.Money >= TotalPrice;
         }
 
         private async void button1_Click(object sender, EventArgs e)
@@ -197,16 +200,7 @@ namespace buyLand_Home
             // Tính tổng tiền cần trả
             TotalPrice = CalcUpgradeCost(tile.Level, newLevel, tile);
 
-            if (newLevel > tile.Level)
-            {
-                tile.Level = newLevel;
-
-                // Nếu đang mua đất (tức từ level 0 lên level 1) thì gán luôn chủ sở hữu
-                if (tile.PlayerId == null && newLevel >= 1)
-                {
-                    tile.PlayerId = player.ID;
-                }
-            }
+            NewLevel = newLevel;
             // Bỏ phần cập nhật game state ở đây để tránh race condition
             // var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
             // await GameManager.UpdateGameState(gameState);
