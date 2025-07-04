@@ -171,17 +171,17 @@ namespace buyLand_Home
         private void UpdatePrice()
         {
             label1.Text = tile.Name;
-            int totalPrice = 0;
+            int newLevel = 0;
+            if (checkBox1.Checked) newLevel = 1;
+            if (checkBox2.Checked) newLevel = 2;
+            if (checkBox3.Checked) newLevel = 3;
+            if (checkBox4.Checked) newLevel = 4;
+            if (checkBox5.Checked) newLevel = 5;
 
-            if (tile == null) return;
-            if (checkBox1.Checked) totalPrice += tile.LandPrice;
-            if (checkBox2.Checked) totalPrice += tile.HousePrice;
-            if (checkBox3.Checked) totalPrice += tile.HousePrice;
-            if (checkBox4.Checked) totalPrice += tile.HousePrice;
-            if (checkBox5.Checked) totalPrice += tile.HotelPrice;
+            TotalPrice = CalcUpgradeCost(tile.Level, newLevel, tile);
 
-            label2.Text = $"Rent rate: ${totalPrice / 2}";
-            label3.Text = $"The price: ${totalPrice}";
+            label2.Text = $"Rent rate: ${TotalPrice / 2}";
+            label3.Text = $"The price: ${TotalPrice}";
         }
 
         private async void button1_Click(object sender, EventArgs e)
@@ -195,12 +195,7 @@ namespace buyLand_Home
             if (checkBox5.Checked) newLevel = 5;
 
             // Tính tổng tiền cần trả
-            TotalPrice = 0;
-            if (checkBox1.Checked) TotalPrice += tile.LandPrice;
-            if (checkBox2.Checked) TotalPrice += tile.HousePrice;
-            if (checkBox3.Checked) TotalPrice += tile.HousePrice;
-            if (checkBox4.Checked) TotalPrice += tile.HousePrice;
-            if (checkBox5.Checked) TotalPrice += tile.HotelPrice;
+            TotalPrice = CalcUpgradeCost(tile.Level, newLevel, tile);
 
             if (newLevel > tile.Level)
             {
@@ -232,6 +227,27 @@ namespace buyLand_Home
             pictureBox3.Image = mainform.GetHouseImage(3, player, tile, players);
             pictureBox4.Image = mainform.GetHouseImage(4, player, tile, players);
             pictureBox5.Image = mainform.GetHouseImage(5, player, tile, players);
+        }
+        private int CalcUpgradeCost(int currentLv, int targetLv, Tile t)
+        {
+            int cost = 0;
+
+            if (currentLv == 0 && targetLv >= 1)
+                cost += t.LandPrice;
+
+            if (currentLv < 2 && targetLv >= 2)
+                cost += t.HousePrice;
+
+            if (currentLv < 3 && targetLv >= 3)
+                cost += t.HousePrice;
+
+            if (currentLv < 4 && targetLv >= 4)
+                cost += t.HousePrice;
+
+            if (currentLv < 5 && targetLv == 5)
+                cost += t.HotelPrice;
+
+            return cost;
         }
     }
 }

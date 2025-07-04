@@ -110,6 +110,12 @@
     <None Update="Assets\Images\house3.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Assets\Images\icons8-monopoly-100.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Images\icons8-monopoly-100.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Assets\Images\khi_van.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
