@@ -58,6 +58,18 @@ namespace MonopolyWinForms.GameLogic
                     mainForm.UpdatePlayerPanel(players[owner - 1]);
                     mainForm.CheckPlayerBankruptcy(currentPlayer);
                     MessageBox.Show($"Bạn phải trả ${rent * 2} tiền thuê cho {players[owner - 1].Name}!", "Trả tiền thuê");
+                    try
+                    {
+                        await GameManager.SendChatMessage(
+                            GameManager.CurrentRoomId!,
+                            "Trả tiền",
+                            $"{currentPlayer.Name} phải trả ${rent * 2} tiền thuê cho {players[owner - 1].Name}!\""
+                        );
+                    }
+                    catch (Exception ex)
+                    {
+                        mainForm.AddToGameLog($"Lỗi gửi thông tin thẻ: {ex.Message}", MainForm.LogType.Error);
+                    }
                     var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
                     await GameManager.UpdateGameState(gameState);
                     return;
@@ -73,6 +85,18 @@ namespace MonopolyWinForms.GameLogic
                     mainForm.UpdatePlayerPanel(players[owner - 1]);
                     mainForm.CheckPlayerBankruptcy(currentPlayer);
                     MessageBox.Show($"Bạn phải trả ${rent / 2} tiền thuê cho {players[owner - 1].Name}!", "Trả tiền thuê");
+                    try
+                    {
+                        await GameManager.SendChatMessage(
+                            GameManager.CurrentRoomId!,
+                            "Trả tiền",
+                            $"{currentPlayer.Name} phải trả ${rent / 2} tiền thuê cho {players[owner - 1].Name}!\""
+                        );
+                    }
+                    catch (Exception ex)
+                    {
+                        mainForm.AddToGameLog($"Lỗi gửi thông tin thẻ: {ex.Message}", MainForm.LogType.Error);
+                    }
                     var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
                     await GameManager.UpdateGameState(gameState);
                     return;
@@ -84,6 +108,18 @@ namespace MonopolyWinForms.GameLogic
                     mainForm.UpdatePlayerPanel(players[owner - 1]);
                     mainForm.CheckPlayerBankruptcy(currentPlayer);
                     MessageBox.Show($"Bạn phải trả ${rent} tiền thuê cho {players[owner - 1].Name}!", "Trả tiền thuê");
+                    try
+                    {
+                        await GameManager.SendChatMessage(
+                            GameManager.CurrentRoomId!,
+                            "Trả tiền",
+                            $"{currentPlayer.Name} phải trả ${rent} tiền thuê cho {players[owner - 1].Name}!\""
+                        );
+                    }
+                    catch (Exception ex)
+                    {
+                        mainForm.AddToGameLog($"Lỗi gửi thông tin thẻ: {ex.Message}", MainForm.LogType.Error);
+                    }
                     var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
                     await GameManager.UpdateGameState(gameState);
                     return;
@@ -423,7 +459,7 @@ namespace MonopolyWinForms.GameLogic
             {
                 await GameManager.SendChatMessage(
                     GameManager.CurrentRoomId!,
-                    "Hệ thống",
+                    "Khí vận",
                     $"{player.Name} rút được thẻ Khí vận: {card}"
                 );
             }
@@ -541,7 +577,7 @@ namespace MonopolyWinForms.GameLogic
                 {
                     await GameManager.SendChatMessage(
                         GameManager.CurrentRoomId!,
-                        "Ô bắt đầu",
+                        "Ô đất",
                         $"{player.Name} đi qua ô bắt đầu, nhận $200!"
                     );
                 }
@@ -563,7 +599,7 @@ namespace MonopolyWinForms.GameLogic
             {
                 await GameManager.SendChatMessage(
                     GameManager.CurrentRoomId!,
-                    "Thuế thu nhập",
+                    "Trả tiền",
                     $"{player.Name} phải trả ${tax} tiền thuế thu nhập"
                 );
             }
@@ -583,7 +619,7 @@ namespace MonopolyWinForms.GameLogic
             {
                 await GameManager.SendChatMessage(
                     GameManager.CurrentRoomId!,
-                    "Thuế đặc biệt",
+                    "Trả tiền",
                     $"{player.Name} phải trả 15% tổng tài sản"
                 );
             }
@@ -602,7 +638,7 @@ namespace MonopolyWinForms.GameLogic
                 {
                     await GameManager.SendChatMessage(
                         GameManager.CurrentRoomId!,
-                        "Vào tù",
+                        "Hệ thống",
                         $"{player.Name} sử dụng thẻ thoát tù, không phải vào tù!"
                     );
                 }

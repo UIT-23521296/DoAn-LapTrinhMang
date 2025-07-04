@@ -360,10 +360,10 @@ namespace MonopolyWinForms
             button1.Enabled = (Session.PlayerInGameId == currentPlayer.ID);
 
             // log
-            if (Session.PlayerInGameId == currentPlayer.ID)
-                AddToGameLog("Đến lượt của bạn!", LogType.Notification);
-            else
-                AddToGameLog($"Đến lượt của {currentPlayer.Name}", LogType.System);
+            //if (Session.PlayerInGameId == currentPlayer.ID)
+            //    AddToGameLog("Đến lượt của bạn!", LogType.Notification);
+            //else
+            //    AddToGameLog($"Đến lượt của {currentPlayer.Name}", LogType.System);
         }
 
 
@@ -416,10 +416,10 @@ namespace MonopolyWinForms
 
 
             //Ghi log người khác
-            if (Session.PlayerInGameId != player.ID)
-            {
-                AddToGameLog($"{player.Name} đã trả {money}$", LogType.System);
-            }
+            //if (Session.PlayerInGameId != player.ID)
+            //{
+            //    AddToGameLog($"{player.Name} đã trả {money}$", LogType.System);
+            //}
         }
         public void AddMoney(int money, Player player)
         {
@@ -427,10 +427,10 @@ namespace MonopolyWinForms
             Money.AddMoney(money);
 
             //Ghi log cho người khác
-            if (Session.PlayerInGameId != player.ID)
-            {
-                AddToGameLog($"{player.Name} đã nhận {money}$", LogType.System);
-            }
+            //if (Session.PlayerInGameId != player.ID)
+            //{
+            //    AddToGameLog($"{player.Name} đã nhận {money}$", LogType.System);
+            //}
         }
         public async Task ShowTileActionForm(Tile tile, Player currentPlayer)
         { 
@@ -536,7 +536,7 @@ namespace MonopolyWinForms
             }
 
             // Còn lại là tin nhắn bình thường
-            chatbox?.ReceiveMessage(senderName, message);
+            chatbox?.ReceiveMessage(senderName, message, players);
         }
         private async void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {

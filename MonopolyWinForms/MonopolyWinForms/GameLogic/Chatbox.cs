@@ -141,7 +141,7 @@ namespace MonopolyWinForms.GameLogic
         {
             curPlayer = player;
         }
-        public void ReceiveMessage(string senderName, string message)
+        public void ReceiveMessage(string senderName, string message, List<Player> players)
         {
             if (senderName == Session.UserName)
             {
@@ -149,7 +149,21 @@ namespace MonopolyWinForms.GameLogic
             }
             else
             {
-                AddMessageWithColor($"{senderName}: {message}", Color.Black);
+                var sender = players.FirstOrDefault(p => p.Name == senderName);
+                if (sender != null)
+                {
+                    AddMessageWithColor($"{senderName}: {message}", Color.Blue);
+                }
+                else if (senderName == "Khí vận")
+                    AddMessageWithColor($"{senderName}: {message}", Color.Yellow);
+                else if (senderName == "Cơ hội")
+                    AddMessageWithColor($"{senderName}: {message}", Color.MediumVioletRed);
+                else if (senderName == "Ô đất")
+                    AddMessageWithColor($"{senderName}: {message}", Color.Brown);
+                else if (senderName == "Trả tiền")
+                    AddMessageWithColor($"{senderName}: {message}", Color.Red);
+                else
+                    AddMessageWithColor($"{senderName}: {message}", Color.Black);
             }
         }
     }
