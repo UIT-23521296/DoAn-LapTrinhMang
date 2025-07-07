@@ -739,7 +739,11 @@ namespace MonopolyWinForms.GameLogic
                     return;
                 }using (var landForm = new BuyHome_Land(currentPlayer, tile, monopoly, mainForm, players, currentPlayerIndex, tiles)){
                     if (landForm.ShowDialog() == DialogResult.OK){
+                        int targetLevel = landForm.NewLevel;
                         currentPlayer.Money -= tile.LandPrice;
+                        tile.Level = targetLevel;
+                        if (tile.PlayerId == null && tile.Level >= 1)
+                            tile.PlayerId = currentPlayer.ID;
                         mainForm.UpdatePlayerPanel(currentPlayer);
                         mainForm.UpdateTileDisplay(Array.IndexOf(panels, panels.First(p => p.Tag == tile)), currentPlayer);
                         try
@@ -789,11 +793,13 @@ namespace MonopolyWinForms.GameLogic
                 using (var upgradeForm = new BuyHome_Land(currentPlayer, tile, monopoly, mainForm, players, currentPlayerIndex, tiles)){
                     if (upgradeForm.ShowDialog() == DialogResult.OK){
                         int totalPrice = upgradeForm.TotalPrice;
+                        int targetLevel = upgradeForm.NewLevel;
                         if (currentPlayer.Money < totalPrice){
                             MessageBox.Show("Không đủ tiền nâng cấp!", "Thông báo");
                             return;
                         }
                         currentPlayer.Money -= totalPrice;
+                        tile.Level = targetLevel;
                         string levelDesc = tile.Level switch
                         {
                             2 => "nhà cấp 1",

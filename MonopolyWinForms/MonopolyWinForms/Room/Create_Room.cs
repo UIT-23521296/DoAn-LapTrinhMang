@@ -29,7 +29,8 @@ namespace MonopolyWinForms.Room
         private void InitializeForm()
         {
             this.Text = "Tạo phòng chơi";
-            this.Icon = new Icon(@"E:\Dai Hoc\Lap trinh mang\DoAn-LapTrinhMang\MonopolyWinForms\MonopolyWinForms\Assets\Images\icons8-monopoly-100.ico");
+            string iconPath = Path.Combine(Application.StartupPath, "Assets", "Images", "icons8-monopoly-100.ico");
+            this.Icon = new Icon(iconPath);
             this.Size = new Size(480, 600);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
