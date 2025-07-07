@@ -155,7 +155,7 @@ namespace MonopolyWinForms.GameLogic
                     AddMessageWithColor($"{senderName}: {message}", Color.Blue);
                 }
                 else if (senderName == "Khí vận")
-                    AddMessageWithColor($"{senderName}: {message}", Color.Yellow);
+                    AddMessageWithColor($"{senderName}: {message}", ColorTranslator.FromHtml("#196F3D"));
                 else if (senderName == "Cơ hội")
                     AddMessageWithColor($"{senderName}: {message}", Color.MediumVioletRed);
                 else if (senderName == "Ô đất")
