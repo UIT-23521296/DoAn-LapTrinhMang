@@ -38,9 +38,14 @@ namespace MonopolyWinForms.FormManage
             {
                 string status = p.Player.IsBankrupt || p.TotalAssets == 0 ? "Phá sản" : "Còn tài sản";
                 ListViewItem item = new ListViewItem(rank.ToString());
-                item.SubItems.Add(p.Player.ID.ToString());
+                item.SubItems.Add(p.Player.Name);
                 item.SubItems.Add(p.TotalAssets.ToString());
                 item.SubItems.Add(status);
+                if (rank == 1)
+                {
+                    item.BackColor = Color.Gold;
+                    item.Font = new Font(item.Font, FontStyle.Bold);
+                }
                 listView.Items.Add(item);
                 rank++;
             }
