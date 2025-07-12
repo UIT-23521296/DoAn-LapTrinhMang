@@ -113,7 +113,7 @@ namespace MonopolyWinForms.GameLogic
                         await GameManager.SendChatMessage(
                             GameManager.CurrentRoomId!,
                             "Trả tiền",
-                            $"{currentPlayer.Name} phải trả ${rent} tiền thuê cho {players[owner - 1].Name}!\""
+                            $"{currentPlayer.Name} phải trả ${rent} tiền thuê cho {players[owner - 1].Name}!"
                         );
                     }
                     catch (Exception ex)
@@ -532,7 +532,7 @@ namespace MonopolyWinForms.GameLogic
                                 await GameManager.SendChatMessage(
                                     GameManager.CurrentRoomId!,
                                     "Khí vận",
-                                    $"{player.Name} nhận được {addMoney} từ thẻ khí vận"
+                                    $"{player.Name} nhận được ${addMoney}$ từ thẻ khí vận"
                                 );
                             }
                             catch (Exception ex)
@@ -554,7 +554,7 @@ namespace MonopolyWinForms.GameLogic
                                 await GameManager.SendChatMessage(
                                     GameManager.CurrentRoomId!,
                                     "Khí vận",
-                                    $"{player.Name} phải trả {subMoney} từ thẻ khí vận"
+                                    $"{player.Name} phải trả ${subMoney} từ thẻ khí vận"
                                 );
                             }
                             catch (Exception ex)
