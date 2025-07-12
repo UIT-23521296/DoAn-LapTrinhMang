@@ -200,8 +200,8 @@ namespace MonopolyWinForms.GameLogic
             var path = "Khi_van.txt";
             var cards = File.ReadAllLines(path).Where(line => !string.IsNullOrWhiteSpace(line)).ToArray();
             if (cards.Length > 0){
-                //string cardLine = cards[random.Next(cards.Length)];
-                string cardLine = "Đi đến ô bắt đầu; 0; 0" ;
+                string cardLine = cards[random.Next(cards.Length)];
+                //string cardLine = "Đi đến ô bắt đầu; 0; 0" ;
                 var parts = cardLine.Split(';');
                 string card = parts[0].Trim();
                 card = card.Trim('\uFEFF');
