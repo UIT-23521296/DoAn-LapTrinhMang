@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using MonopolyWinForms.Login_Signup;
+using System.Security.Cryptography;
+using System.Windows.Forms;
 
 namespace MonopolyWinForms.GameLogic
 {
@@ -12,6 +14,7 @@ namespace MonopolyWinForms.GameLogic
     {
         #nullable disable
         private RichTextBox rtbDisplay;
+        private RichTextBox richTextBox1;
         private TextBox txtInput;
         private Button btnSend;
         public event Action<string, string> OnSendMessage;
@@ -23,35 +26,55 @@ namespace MonopolyWinForms.GameLogic
         }
         private void InitializeComponents()
         {
-            this.Size = new Size(500, 400);
+            // Chatbox chiếm hết Panel cha (panelChatbox) – bạn đã Dock = Fill từ MainForm
+            this.Dock = DockStyle.Fill;
             this.BorderStyle = BorderStyle.FixedSingle;
+            this.BackColor = Color.White;
+
+            // ----------- VÙNG HIỂN THỊ TIN NHẮN ------------
             rtbDisplay = new RichTextBox
             {
-                Location = new Point(10, 10),
-                Size = new Size(480, 320),
-                BorderStyle = BorderStyle.None,
+                Dock = DockStyle.Fill,       // tự co giãn
                 ReadOnly = true,
+                BorderStyle = BorderStyle.None,
                 BackColor = Color.White,
-                Font = new Font("Arial", 10)
+                Font = new Font("Arial", 10),
+                ScrollBars = RichTextBoxScrollBars.Vertical
             };
+
+            // ----------- VÙNG NHẬP + NÚT GỬI ---------------
+            var bottomPanel = new Panel
+            {
+                Dock = DockStyle.Bottom,
+                Height = 40,
+                Padding = new Padding(10, 5, 10, 5)
+            };
+
             txtInput = new TextBox
             {
-                Location = new Point(10, 360),
+                Dock = DockStyle.Fill,
                 BorderStyle = BorderStyle.FixedSingle,
-                Size = new Size(400, 30),
+                Font = new Font("Arial", 10)
             };
+
             btnSend = new Button
             {
                 Text = "Gửi",
-                Location = new Point(420, 360),
-                Size = new Size(70, 30)
+                Dock = DockStyle.Right,
+                Width = 70
             };
+
+            // Sự kiện
             btnSend.Click += BtnSend_Click;
             txtInput.KeyDown += TxtInput_KeyDown;
+
+            // Ghép UI
+            bottomPanel.Controls.Add(txtInput);
+            bottomPanel.Controls.Add(btnSend);
             this.Controls.Add(rtbDisplay);
-            this.Controls.Add(txtInput);
-            this.Controls.Add(btnSend);
+            this.Controls.Add(bottomPanel);
         }
+
         private void BtnSend_Click(object sender, EventArgs e)
         {
             SendMessage();
@@ -86,6 +109,18 @@ namespace MonopolyWinForms.GameLogic
             rtbDisplay.AppendText($"[{DateTime.Now:HH:mm:ss}] {message}{Environment.NewLine}");
             rtbDisplay.ScrollToCaret();
         }
+        //public void AddDiceLog(string msg)
+        //{
+        //    if (InvokeRequired)
+        //    {
+        //        Invoke(new Action(() => AddDiceLog(msg)));
+        //        return;
+        //    }
+        //    richTextBox1.SelectionStart = richTextBox1.TextLength;
+        //    richTextBox1.SelectionLength = 0;
+        //    richTextBox1.AppendText($"[{DateTime.Now:HH:mm:ss}] {msg}{Environment.NewLine}");
+        //    richTextBox1.ScrollToCaret();
+        //}
         public void AddSystemMessage(string message)
         {
             AddMessageWithColor($"[Hệ thống] {message}", Color.Gray);
@@ -106,7 +141,7 @@ namespace MonopolyWinForms.GameLogic
         {
             curPlayer = player;
         }
-        public void ReceiveMessage(string senderName, string message)
+        public void ReceiveMessage(string senderName, string message, List<Player> players)
         {
             if (senderName == Session.UserName)
             {
@@ -114,7 +149,21 @@ namespace MonopolyWinForms.GameLogic
             }
             else
             {
-                AddMessageWithColor($"{senderName}: {message}", Color.Black);
+                var sender = players.FirstOrDefault(p => p.Name == senderName);
+                if (sender != null)
+                {
+                    AddMessageWithColor($"{senderName}: {message}", Color.Blue);
+                }
+                else if (senderName == "Khí vận")
+                    AddMessageWithColor($"{senderName}: {message}", ColorTranslator.FromHtml("#196F3D"));
+                else if (senderName == "Cơ hội")
+                    AddMessageWithColor($"{senderName}: {message}", Color.MediumVioletRed);
+                else if (senderName == "Ô đất")
+                    AddMessageWithColor($"{senderName}: {message}", Color.Brown);
+                else if (senderName == "Trả tiền")
+                    AddMessageWithColor($"{senderName}: {message}", Color.Red);
+                else
+                    AddMessageWithColor($"{senderName}: {message}", Color.Black);
             }
         }
     }

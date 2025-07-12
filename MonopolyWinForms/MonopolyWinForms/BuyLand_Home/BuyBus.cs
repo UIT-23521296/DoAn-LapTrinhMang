@@ -24,6 +24,7 @@ namespace MonopolyWinForms.BuyLand_Home
         public BuyBus(int playerID, Tile tile, Monopoly monopoly, MainForm mainform, List<Tile> tiles, List<Player> players, int currentPlayerIndex)
         {
             InitializeComponent();
+            AddRentLabels();
             this.StartPosition = FormStartPosition.CenterScreen;
             this.playerID = playerID;
             this.tile = tile;
@@ -49,9 +50,9 @@ namespace MonopolyWinForms.BuyLand_Home
                 UpdateRentDisplay();
                 mainform.UpdateBusStationRent(playerID);
 
-                //Cập nhật game state
-                var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
-                await GameManager.UpdateGameState(gameState);
+                //Bỏ cập nhật game state ở đây để tránh race condition
+                // var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
+                // await GameManager.UpdateGameState(gameState);
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
@@ -63,8 +64,8 @@ namespace MonopolyWinForms.BuyLand_Home
             int rent = 50 + 50 * playerBuses;
             label2.Text = $"Rent rate: ${rent}";
             label3.Text = $"The price: ${Price}";
-            var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
-            await GameManager.UpdateGameState(gameState);
+            //var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
+            //await GameManager.UpdateGameState(gameState);
         }
     }
 }

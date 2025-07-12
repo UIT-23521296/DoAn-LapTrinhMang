@@ -21,6 +21,10 @@ namespace MonopolyWinForms.Room
         private System.Windows.Forms.Timer refreshTimer;
         private Label lblStatus;
         private Dictionary<string, DateTime> lastRoomUpdate = new Dictionary<string, DateTime>();
+        private bool shouldReturnToHome = true;
+        private CancellationTokenSource _cts = new();
+        private bool _returnToHome = true;
+
 
         public JoinRoom()
         {
@@ -31,11 +35,11 @@ namespace MonopolyWinForms.Room
 
         private void StartRoomRefreshTimer()
         {
-            refreshTimer = new System.Windows.Forms.Timer();
-            refreshTimer.Interval = 500;
-            refreshTimer.Tick += async (s, e) =>
+            refreshTimer = new System.Windows.Forms.Timer { Interval = 500 };
+            refreshTimer.Tick += async (_, __) =>
             {
-                await LoadRoomsFromFirebase();
+                if (IsDisposed || !Visible || _cts.IsCancellationRequested) return;
+                await LoadRoomsFromFirebase(_cts.Token);
             };
             refreshTimer.Start();
         }
@@ -44,8 +48,31 @@ namespace MonopolyWinForms.Room
         {
             refreshTimer?.Stop();
             refreshTimer?.Dispose();
+            _cts.Cancel();
             base.OnFormClosing(e);
+
+            if (shouldReturnToHome)
+            {
+                var home = Application.OpenForms
+                                      .OfType<MonopolyWinForms.Home.Main_home>()
+                                      .FirstOrDefault();
+
+                if (home == null || home.IsDisposed)
+                {
+                    home = new MonopolyWinForms.Home.Main_home();
+                    home.StartPosition = FormStartPosition.CenterScreen;
+                    home.Show();
+                }
+                else
+                {
+                    home.WindowState = FormWindowState.Normal;
+                    home.BringToFront();
+                    home.Show();
+                }
+            }
         }
+
+
 
         private void SetupUI()
         {
@@ -132,13 +159,15 @@ namespace MonopolyWinForms.Room
             dgvRooms.Columns.Add("RoomName", "Tên phòng");
             dgvRooms.Columns.Add("HostName", "Chủ phòng");
             dgvRooms.Columns.Add("PlayerCount", "Số người");
-            dgvRooms.Columns.Add("CreatedAt", "Thời gian tạo");
+            //dgvRooms.Columns.Add("CreatedAt", "Thời gian tạo");
+            dgvRooms.Columns.Add("PlayTime", "Thời gian chơi");
 
             // Căn giữa và đặt width cố định cho cột
             dgvRooms.Columns["RoomName"].Width = 300;
             dgvRooms.Columns["HostName"].Width = 300;
             dgvRooms.Columns["PlayerCount"].Width = 200;
-            dgvRooms.Columns["CreatedAt"].Width = 200;
+            //dgvRooms.Columns["CreatedAt"].Width = 200;
+            dgvRooms.Columns["PlayTime"].Width = 200;
 
             foreach (DataGridViewColumn column in dgvRooms.Columns)
             {
@@ -201,10 +230,24 @@ namespace MonopolyWinForms.Room
 
         private void BtnCreateRoom_Click(object sender, EventArgs e)
         {
-            Create_Room createRoomForm = new Create_Room();
-            createRoomForm.Show();
-            this.Hide();
+            Hide();                     // Ẩn JoinRoom
+
+            var crtRoom = new Create_Room();
+            _returnToHome = false;
+
+            crtRoom.FormClosed += (_, __) =>
+            {
+                if (!IsDisposed && !Disposing && IsHandleCreated && crtRoom.Tag?.ToString() != "Redirected")
+                {
+                    _returnToHome = true;
+                    Show(); // Chỉ hiện lại nếu không chuyển qua WaitingRoom
+                }
+            };
+
+            crtRoom.Show();
         }
+
+
 
         private async void BtnJoinRoom_Click(object sender, EventArgs e)
         {
@@ -271,12 +314,17 @@ namespace MonopolyWinForms.Room
             }
         }
 
-        private async Task LoadRoomsFromFirebase()
+        private async Task LoadRoomsFromFirebase(CancellationToken token)
         {
+
             try
             {
                 var firebase = new FirebaseService();
                 var rooms = await firebase.GetAllRoomsAsync();
+
+                if (token.IsCancellationRequested || IsDisposed) return;
+
+                dgvRooms.Rows.Clear();
 
                 if (rooms != null)
                 {
@@ -323,6 +371,7 @@ namespace MonopolyWinForms.Room
 
         private void UpdateRoomsUI(List<KeyValuePair<string, RoomInfo>> rooms, List<string> newRooms)
         {
+            if (IsDisposed) return;
             // Ghi nhớ dòng đang được chọn (nếu có)
             string selectedRoomName = null;
             if (dgvRooms.SelectedRows.Count > 0)
@@ -334,11 +383,14 @@ namespace MonopolyWinForms.Room
 
             foreach (var room in rooms)
             {
+                string hostName = room.Value.PlayerDisplayNames?.FirstOrDefault() ?? "";
+                string playTimeStr = FormatPlayTime(room.Value.PlayTime); // NEW
                 int rowIndex = dgvRooms.Rows.Add(
                     room.Value.RoomName,
-                    room.Value.HostIP,
+                    hostName,
                     $"{room.Value.CurrentPlayers}/{room.Value.MaxPlayers}",
-                    room.Value.CreatedAtDateTime.ToLocalTime().ToString("HH:mm:ss dd/MM/yyyy")
+                    playTimeStr
+                    //room.Value.CreatedAtDateTime.ToLocalTime().ToString("HH:mm:ss dd/MM/yyyy")
                 );
 
                 // Đánh dấu phòng mới
@@ -362,5 +414,12 @@ namespace MonopolyWinForms.Room
             }
         }
 
+        private string FormatPlayTime(int playTime)
+        {
+            if (playTime < 60)
+                return $"{playTime} phút";
+            else
+                return $"{playTime / 60} giờ {playTime % 60} phút";
+        }
     }
 }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             panel1 = new Panel();
             panel2 = new Panel();
             panel3 = new Panel();
@@ -74,6 +75,17 @@
             panel44 = new Panel();
             button1 = new Button();
             panelTimer = new Panel();
+            pictureBox1 = new PictureBox();
+            groupBox1 = new GroupBox();
+            richTextBox1 = new RichTextBox();
+            panel45 = new Panel();
+            pnlCurrentTurn = new Panel();
+            lblTurnName = new Label();
+            lblTurnStatic = new Label();
+            panelChatbox = new Panel();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            panel45.SuspendLayout();
+            pnlCurrentTurn.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -141,6 +153,8 @@
             // 
             // panel8
             // 
+            panel8.BackgroundImage = Properties.Resources.co_hoi_doc;
+            panel8.BackgroundImageLayout = ImageLayout.Stretch;
             panel8.BorderStyle = BorderStyle.FixedSingle;
             panel8.Location = new Point(595, 10);
             panel8.Margin = new Padding(2);
@@ -276,6 +290,8 @@
             // 
             // panel23
             // 
+            panel23.BackgroundImage = Properties.Resources.co_hoi_doc;
+            panel23.BackgroundImageLayout = ImageLayout.Stretch;
             panel23.BorderStyle = BorderStyle.FixedSingle;
             panel23.Location = new Point(672, 826);
             panel23.Margin = new Padding(2);
@@ -402,6 +418,8 @@
             // 
             // panel37
             // 
+            panel37.BackgroundImage = Properties.Resources.co_hoi_ngang;
+            panel37.BackgroundImageLayout = ImageLayout.Stretch;
             panel37.BorderStyle = BorderStyle.FixedSingle;
             panel37.Location = new Point(10, 365);
             panel37.Margin = new Padding(2);
@@ -438,7 +456,7 @@
             // 
             // panel41
             // 
-            panel41.Location = new Point(984, 10);
+            panel41.Location = new Point(1339, 50);
             panel41.Margin = new Padding(2);
             panel41.Name = "panel41";
             panel41.Size = new Size(144, 80);
@@ -446,7 +464,7 @@
             // 
             // panel42
             // 
-            panel42.Location = new Point(984, 130);
+            panel42.Location = new Point(1339, 170);
             panel42.Margin = new Padding(2);
             panel42.Name = "panel42";
             panel42.Size = new Size(144, 80);
@@ -454,7 +472,7 @@
             // 
             // panel43
             // 
-            panel43.Location = new Point(984, 250);
+            panel43.Location = new Point(1339, 290);
             panel43.Margin = new Padding(2);
             panel43.Name = "panel43";
             panel43.Size = new Size(144, 80);
@@ -462,7 +480,7 @@
             // 
             // panel44
             // 
-            panel44.Location = new Point(984, 370);
+            panel44.Location = new Point(1339, 410);
             panel44.Margin = new Padding(2);
             panel44.Name = "panel44";
             panel44.Size = new Size(144, 80);
@@ -470,31 +488,132 @@
             // 
             // button1
             // 
-            button1.Location = new Point(429, 388);
+            button1.BackColor = Color.FromArgb(245, 235, 221);
+            button1.FlatAppearance.BorderColor = Color.Black;
+            button1.FlatAppearance.BorderSize = 2;
+            button1.FlatStyle = FlatStyle.Flat;
+            button1.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
+            button1.ForeColor = Color.Black;
+            button1.Location = new Point(965, 213);
             button1.Margin = new Padding(2);
             button1.Name = "button1";
-            button1.Size = new Size(106, 68);
+            button1.Size = new Size(226, 80);
             button1.TabIndex = 44;
-            button1.Text = "Lắc xúc xắc";
-            button1.UseVisualStyleBackColor = true;
+            button1.Text = "🎲 Lắc xúc xắc";
+            button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
             // 
             // panelTimer
             // 
             panelTimer.BorderStyle = BorderStyle.FixedSingle;
-            panelTimer.Location = new Point(365, 235);
+            panelTimer.Location = new Point(965, 77);
             panelTimer.Margin = new Padding(2);
             panelTimer.Name = "panelTimer";
             panelTimer.Size = new Size(226, 80);
             panelTimer.TabIndex = 45;
             // 
+            // pictureBox1
+            // 
+            pictureBox1.Image = Properties.Resources.login_img;
+            pictureBox1.Location = new Point(134, 134);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(687, 687);
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox1.TabIndex = 46;
+            pictureBox1.TabStop = false;
+            // 
+            // groupBox1
+            // 
+            groupBox1.BackColor = Color.FromArgb(251, 248, 244);
+            groupBox1.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            groupBox1.ForeColor = Color.Black;
+            groupBox1.Location = new Point(1317, -3);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(347, 517);
+            groupBox1.TabIndex = 47;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "📦 Tài sản";
+            // 
+            // richTextBox1
+            // 
+            richTextBox1.BorderStyle = BorderStyle.None;
+            richTextBox1.Dock = DockStyle.Fill;
+            richTextBox1.Enabled = false;
+            richTextBox1.Font = new Font("Palatino Linotype", 11.25F, FontStyle.Bold);
+            richTextBox1.Location = new Point(2, 2);
+            richTextBox1.Name = "richTextBox1";
+            richTextBox1.ReadOnly = true;
+            richTextBox1.ScrollBars = RichTextBoxScrollBars.None;
+            richTextBox1.Size = new Size(319, 119);
+            richTextBox1.TabIndex = 0;
+            richTextBox1.TabStop = false;
+            richTextBox1.Text = "";
+            // 
+            // panel45
+            // 
+            panel45.BackColor = Color.Black;
+            panel45.BorderStyle = BorderStyle.FixedSingle;
+            panel45.Controls.Add(richTextBox1);
+            panel45.Location = new Point(965, 342);
+            panel45.Name = "panel45";
+            panel45.Padding = new Padding(2);
+            panel45.Size = new Size(325, 125);
+            panel45.TabIndex = 49;
+            // 
+            // pnlCurrentTurn
+            // 
+            pnlCurrentTurn.BackColor = Color.FromArgb(238, 247, 250);
+            pnlCurrentTurn.BorderStyle = BorderStyle.FixedSingle;
+            pnlCurrentTurn.Controls.Add(lblTurnName);
+            pnlCurrentTurn.Controls.Add(lblTurnStatic);
+            pnlCurrentTurn.Location = new Point(965, 11);
+            pnlCurrentTurn.Name = "pnlCurrentTurn";
+            pnlCurrentTurn.Size = new Size(330, 35);
+            pnlCurrentTurn.TabIndex = 50;
+            // 
+            // lblTurnName
+            // 
+            lblTurnName.AutoSize = true;
+            lblTurnName.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
+            lblTurnName.ForeColor = Color.DarkGreen;
+            lblTurnName.Location = new Point(112, 0);
+            lblTurnName.Name = "lblTurnName";
+            lblTurnName.Size = new Size(31, 30);
+            lblTurnName.TabIndex = 52;
+            lblTurnName.Text = "...";
+            // 
+            // lblTurnStatic
+            // 
+            lblTurnStatic.AutoSize = true;
+            lblTurnStatic.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
+            lblTurnStatic.ForeColor = Color.Black;
+            lblTurnStatic.Location = new Point(-1, 0);
+            lblTurnStatic.Name = "lblTurnStatic";
+            lblTurnStatic.Size = new Size(118, 30);
+            lblTurnStatic.TabIndex = 51;
+            lblTurnStatic.Text = "Lượt chơi:";
+            // 
+            // panelChatbox
+            // 
+            panelChatbox.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            panelChatbox.BorderStyle = BorderStyle.FixedSingle;
+            panelChatbox.Location = new Point(973, 537);
+            panelChatbox.Name = "panelChatbox";
+            panelChatbox.Size = new Size(510, 409);
+            panelChatbox.TabIndex = 51;
+            // 
             // MainForm
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1582, 853);
-            Controls.Add(panelTimer);
+            AutoScaleDimensions = new SizeF(120F, 120F);
+            AutoScaleMode = AutoScaleMode.Dpi;
+            BackColor = Color.Cornsilk;
+            ClientSize = new Size(1676, 953);
+            Controls.Add(panelChatbox);
+            Controls.Add(pnlCurrentTurn);
+            Controls.Add(panel45);
             Controls.Add(button1);
+            Controls.Add(pictureBox1);
+            Controls.Add(panelTimer);
             Controls.Add(panel44);
             Controls.Add(panel43);
             Controls.Add(panel42);
@@ -539,11 +658,21 @@
             Controls.Add(panel3);
             Controls.Add(panel2);
             Controls.Add(panel1);
+            Controls.Add(groupBox1);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(2);
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "MainForm";
-            Text = "Form1";
-            WindowState = FormWindowState.Maximized;
+            SizeGripStyle = SizeGripStyle.Hide;
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Cờ Tỷ Phú";
             Load += MainForm_Load;
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            panel45.ResumeLayout(false);
+            pnlCurrentTurn.ResumeLayout(false);
+            pnlCurrentTurn.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -595,5 +724,13 @@
         private Panel panel44;
         private Button button1;
         private Panel panelTimer;
+        private PictureBox pictureBox1;
+        private GroupBox groupBox1;
+        private RichTextBox richTextBox1;
+        private Panel panel45;
+        private Panel pnlCurrentTurn;
+        private Label lblTurnStatic;
+        private Label lblTurnName;
+        private Panel panelChatbox;
     }
 }

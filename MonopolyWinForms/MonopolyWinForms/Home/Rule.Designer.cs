@@ -1,6 +1,6 @@
-﻿namespace MonopolyWinForms.Room
+﻿namespace MonopolyWinForms.Home
 {
-    partial class JoinRoom
+    partial class Rule
     {
         /// <summary>
         /// Required designer variable.
@@ -28,18 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(JoinRoom));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Rule));
             SuspendLayout();
             // 
-            // JoinRoom
+            // Rule
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
+            ClientSize = new Size(978, 444);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Name = "JoinRoom";
+            Name = "Rule";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Sảnh chờ";
+            Text = "Luật chơi";
             ResumeLayout(false);
         }
 

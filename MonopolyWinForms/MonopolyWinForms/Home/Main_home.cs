@@ -19,7 +19,6 @@ namespace MonopolyWinForms.Home
             this.BackColor = ColorTranslator.FromHtml("#FBF8F4");
             btn_play.BackColor = ColorTranslator.FromHtml("#FED626");
             btn_rule.BackColor = ColorTranslator.FromHtml("#33B68F");
-            btn_setting.BackColor = ColorTranslator.FromHtml("#33B68F");
             btn_quit.BackColor = ColorTranslator.FromHtml("#DC2025");
         }
 
@@ -30,17 +29,28 @@ namespace MonopolyWinForms.Home
 
         private void btn_play_Click(object sender, EventArgs e)
         {
-            this.Hide(); // Ẩn form hiện tại
-
-            JoinRoom joinRoomForm = new JoinRoom();
-
+            this.Hide();                       // Ẩn Main_home
+            var joinRoom = new JoinRoom();
+            joinRoom.FormClosed += (s, args) => this.Show();   
+            joinRoom.Show();                 
             // Khi JoinRoom bị đóng, hiện lại form này
-            joinRoomForm.FormClosed += (s, args) =>
-            {
-                this.Show();
-            };
+            //joinRoomForm.FormClosed += (s, args) =>
+            //{
+            //    if (!this.IsDisposed && this.IsHandleCreated)
+            //    {
+            //        this.Show();
+            //    }
+            //};
 
-            joinRoomForm.Show(); // Hiện JoinRoom
+            //joinRoomForm.Show(); // Hiện JoinRoom
+        }
+
+        private void btn_rule_Click(object sender, EventArgs e)
+        {
+            using (var ruleForm = new Rule())
+            {
+                ruleForm.ShowDialog();
+            }
         }
     }
 }

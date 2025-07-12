@@ -1,4 +1,5 @@
-﻿namespace MonopolyWinForms.Login_Signup
+﻿using System.Drawing.Drawing2D;
+namespace MonopolyWinForms.Login_Signup
 {
     partial class Main_login_signup
     {
@@ -28,75 +29,100 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main_login_signup));
             btn_login = new Button();
             btn_signup = new Button();
             btn_quit = new Button();
             login_img = new PictureBox();
+            titleLabel = new Label();
             ((System.ComponentModel.ISupportInitialize)login_img).BeginInit();
             SuspendLayout();
             // 
             // btn_login
             // 
-            btn_login.BackColor = Color.FromArgb(255, 224, 192);
-            btn_login.Font = new Font("Segoe UI", 15F);
-            btn_login.Location = new Point(908, 164);
-            btn_login.Margin = new Padding(5);
+            btn_login.BackColor = Color.Gold;
+            btn_login.FlatAppearance.BorderSize = 0;
+            btn_login.FlatStyle = FlatStyle.Flat;
+            btn_login.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            btn_login.ForeColor = Color.Black;
+            btn_login.Location = new Point(920, 150);
             btn_login.Name = "btn_login";
-            btn_login.Size = new Size(380, 103);
-            btn_login.TabIndex = 0;
-            btn_login.Text = "ĐĂNG NHẬP";
+            btn_login.Size = new Size(360, 80);
+            btn_login.TabIndex = 1;
+            btn_login.Text = "🔐 ĐĂNG NHẬP";
             btn_login.UseVisualStyleBackColor = false;
             btn_login.Click += btn_login_Click;
             // 
             // btn_signup
             // 
-            btn_signup.Font = new Font("Segoe UI", 15F);
-            btn_signup.Location = new Point(908, 341);
-            btn_signup.Margin = new Padding(5);
+            btn_signup.BackColor = Color.MediumSeaGreen;
+            btn_signup.FlatAppearance.BorderSize = 0;
+            btn_signup.FlatStyle = FlatStyle.Flat;
+            btn_signup.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            btn_signup.ForeColor = Color.White;
+            btn_signup.Location = new Point(920, 296);
             btn_signup.Name = "btn_signup";
-            btn_signup.Size = new Size(380, 103);
-            btn_signup.TabIndex = 1;
-            btn_signup.Text = "ĐĂNG KÝ";
-            btn_signup.UseVisualStyleBackColor = true;
+            btn_signup.Size = new Size(360, 80);
+            btn_signup.TabIndex = 2;
+            btn_signup.Text = "📝 ĐĂNG KÝ";
+            btn_signup.UseVisualStyleBackColor = false;
             btn_signup.Click += btn_signup_Click;
             // 
             // btn_quit
             // 
-            btn_quit.Location = new Point(908, 522);
-            btn_quit.Margin = new Padding(5);
+            btn_quit.BackColor = Color.IndianRed;
+            btn_quit.FlatAppearance.BorderSize = 0;
+            btn_quit.FlatStyle = FlatStyle.Flat;
+            btn_quit.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            btn_quit.ForeColor = Color.White;
+            btn_quit.Location = new Point(920, 451);
             btn_quit.Name = "btn_quit";
-            btn_quit.Size = new Size(380, 103);
-            btn_quit.TabIndex = 2;
-            btn_quit.Text = "THOÁT GAME";
-            btn_quit.UseVisualStyleBackColor = true;
+            btn_quit.Size = new Size(360, 80);
+            btn_quit.TabIndex = 3;
+            btn_quit.Text = "❌ THOÁT GAME";
+            btn_quit.UseVisualStyleBackColor = false;
             btn_quit.Click += btn_quit_Click;
             // 
             // login_img
             // 
             login_img.Image = Properties.Resources.login_img;
-            login_img.Location = new Point(75, 54);
-            login_img.Margin = new Padding(5);
+            login_img.Location = new Point(99, 40);
             login_img.Name = "login_img";
-            login_img.Size = new Size(800, 677);
+            login_img.Size = new Size(659, 512);
             login_img.SizeMode = PictureBoxSizeMode.StretchImage;
             login_img.TabIndex = 4;
             login_img.TabStop = false;
             // 
+            // titleLabel
+            // 
+            titleLabel.Font = new Font("Arial", 32F, FontStyle.Bold);
+            titleLabel.ForeColor = Color.FromArgb(200, 0, 0);
+            titleLabel.Location = new Point(900, 40);
+            titleLabel.Name = "titleLabel";
+            titleLabel.Size = new Size(400, 80);
+            titleLabel.TabIndex = 0;
+            titleLabel.Text = "CỜ TỶ PHÚ";
+            titleLabel.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // Main_login_signup
             // 
-            AutoScaleDimensions = new SizeF(14F, 35F);
+            AutoScaleDimensions = new SizeF(11F, 28F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.Cornsilk;
-            ClientSize = new Size(1400, 788);
-            Controls.Add(login_img);
-            Controls.Add(btn_quit);
-            Controls.Add(btn_signup);
+            BackColor = Color.FromArgb(255, 250, 240);
+            ClientSize = new Size(1400, 574);
+            Controls.Add(titleLabel);
             Controls.Add(btn_login);
-            Font = new Font("Segoe UI", 15F);
-            Margin = new Padding(5);
+            Controls.Add(btn_signup);
+            Controls.Add(btn_quit);
+            Controls.Add(login_img);
+            Font = new Font("Segoe UI", 12F);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "Main_login_signup";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Main_login_signup";
+            Text = "Cờ tỷ phú";
             ((System.ComponentModel.ISupportInitialize)login_img).EndInit();
             ResumeLayout(false);
         }
@@ -107,5 +133,6 @@
         private Button btn_signup;
         private Button btn_quit;
         private PictureBox login_img;
+        private Label titleLabel;
     }
 }

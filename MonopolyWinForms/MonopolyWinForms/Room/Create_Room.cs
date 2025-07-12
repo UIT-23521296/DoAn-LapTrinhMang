@@ -5,16 +5,16 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MonopolyWinForms.Login_Signup;
+using MonopolyWinForms.Properties;
 
 namespace MonopolyWinForms.Room
 {
     public partial class Create_Room : Form
     {
-        private TextBox txtRoomName, txtHostIP;
+        private TextBox txtRoomName;
         private ComboBox cmbPlayTime, cmbMaxPlayers;
         private Button btnCreate;
 
-        private const int FixedPort = 8800; // Port TCP cố định
 
         public Create_Room()
         {
@@ -25,107 +25,111 @@ namespace MonopolyWinForms.Room
             // Gán user ID khi mở form (ví dụ lấy username Windows)
             SessionManager.CurrentUserId = Environment.UserName;
         }
-
+      
         private void InitializeForm()
         {
             this.Text = "Tạo phòng chơi";
+            string iconPath = Path.Combine(Application.StartupPath, "Assets", "Images", "icons8-monopoly-100.ico");
+            this.Icon = new Icon(iconPath);
             this.Size = new Size(480, 600);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
         }
-
         private void InitializeUI()
         {
-            int top = 30, spacing = 80;
+            this.BackColor = Color.White;
 
-            AddLabel("Tên phòng:", top);
-            txtRoomName = AddTextBox(top);
-            top += spacing;
-
-            AddLabel("IP Chủ phòng:", top);
-            txtHostIP = AddTextBox(top);
-            txtHostIP.ReadOnly = true;
-            txtHostIP.Text = GetLocalIPAddress();
-            top += spacing;
-
-            AddLabel("Cổng (port):", top);
-            var txtPort = AddTextBox(top);
-            txtPort.ReadOnly = true;
-            txtPort.Text = FixedPort.ToString();
-            top += spacing;
-
-            AddLabel("Số người tối đa:", top);
-            cmbMaxPlayers = new ComboBox
+            var layout = new TableLayoutPanel
             {
-                Location = new Point(200, top),
-                Size = new Size(180, 30),
-                DropDownStyle = ComboBoxStyle.DropDownList,
-                Font = new Font("Segoe UI", 12)
+                Dock = DockStyle.Fill,
+                RowCount = 5,
+                ColumnCount = 2,
+                Padding = new Padding(40, 60, 40, 40),
+                BackColor = Color.White,
             };
-            cmbMaxPlayers.Items.AddRange(new object[] { "2", "3", "4" });
-            cmbMaxPlayers.SelectedIndex = 0;
-            this.Controls.Add(cmbMaxPlayers);
-            top += spacing;
 
-            AddLabel("Thời gian chơi (phút):", top);
-            cmbPlayTime = new ComboBox
-            {
-                Location = new Point(200, top),
-                Size = new Size(180, 30),
-                DropDownStyle = ComboBoxStyle.DropDownList,
-                Font = new Font("Segoe UI", 12)
-            };
-            cmbPlayTime.Items.AddRange(new object[] { "30", "45", "60" });
-            cmbPlayTime.SelectedIndex = 0;
-            this.Controls.Add(cmbPlayTime);
-            top += spacing;
+            layout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 150));
+            layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 50));
+            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 50));
+            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 50));
+            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 30));
+            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 60));
 
+            this.Controls.Add(layout);
+
+            // Tên phòng
+            layout.Controls.Add(CreateLabel("Tên phòng:"), 0, 0);
+            txtRoomName = CreateTextbox();
+            layout.Controls.Add(txtRoomName, 1, 0);
+
+            // Số người tối đa
+            layout.Controls.Add(CreateLabel("Số người tối đa:"), 0, 1);
+            cmbMaxPlayers = CreateComboBox(new object[] { "2", "3", "4" });
+            layout.Controls.Add(cmbMaxPlayers, 1, 1);
+
+            // Thời gian chơi
+            layout.Controls.Add(CreateLabel("Thời gian chơi (phút):"), 0, 2);
+            cmbPlayTime = CreateComboBox(new object[] { "10", "30", "45", "60" });
+            layout.Controls.Add(cmbPlayTime, 1, 2);
+
+            // Nút tạo phòng
             btnCreate = new Button
             {
                 Text = "Tạo phòng",
-                Location = new Point(130, top + 10),
-                Size = new Size(150, 45),
-                Font = new Font("Segoe UI", 14)
+                Font = new Font("Segoe UI", 12, FontStyle.Bold),
+                Width = 180,
+                Height = 45,
+                BackColor = Color.FromArgb(52, 152, 219),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Anchor = AnchorStyles.None
             };
+            btnCreate.FlatAppearance.BorderSize = 0;
             btnCreate.Click += async (s, e) => await BtnCreate_Click();
-            this.Controls.Add(btnCreate);
+
+            // Chèn nút vào layout, căn giữa
+            layout.SetColumnSpan(btnCreate, 2);
+            layout.Controls.Add(btnCreate, 0, 4);
         }
 
-        private void AddLabel(string text, int top)
+        private Label CreateLabel(string text)
         {
-            var label = new Label
+            return new Label
             {
                 Text = text,
-                Location = new Point(30, top),
-                Size = new Size(160, 30),
-                Font = new Font("Segoe UI", 12)
+                Font = new Font("Segoe UI", 11),
+                Anchor = AnchorStyles.Left,
+                AutoSize = true
             };
-            this.Controls.Add(label);
         }
 
-        private TextBox AddTextBox(int top)
+        private TextBox CreateTextbox()
         {
-            var textBox = new TextBox
+            return new TextBox
             {
-                Location = new Point(200, top),
-                Size = new Size(180, 30),
-                Font = new Font("Segoe UI", 12)
+                Font = new Font("Segoe UI", 11),
+                Anchor = AnchorStyles.Left | AnchorStyles.Right,
+                Height = 30,
+                Margin = new Padding(0, 5, 0, 5),
+                Dock = DockStyle.Fill
             };
-            this.Controls.Add(textBox);
-            return textBox;
         }
 
-        private string GetLocalIPAddress()
+        private ComboBox CreateComboBox(object[] items)
         {
-            var host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (var ip in host.AddressList)
+            var combo = new ComboBox
             {
-                if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
-                    return ip.ToString();
-            }
-            return "127.0.0.1";
+                DropDownStyle = ComboBoxStyle.DropDownList,
+                Font = new Font("Segoe UI", 11),
+                Dock = DockStyle.Fill
+            };
+            combo.Items.AddRange(items);
+            combo.SelectedIndex = 0;
+            return combo;
         }
+
 
         private async Task BtnCreate_Click()
         {
@@ -151,17 +155,16 @@ namespace MonopolyWinForms.Room
                 {
                     RoomId = roomId,
                     RoomName = roomName,
-                    HostId = Session.UserId,  // Sử dụng UserId từ Session
-                    HostIP = GetLocalIPAddress(),
-                    Port = FixedPort,
+                    HostId = Session.UserId,
                     MaxPlayers = int.Parse(cmbMaxPlayers.SelectedItem.ToString()),
                     PlayTime = int.Parse(cmbPlayTime.SelectedItem.ToString()),
                     ReadyPlayers = new List<string> { Session.UserName },
-                    PlayerDisplayNames = new List<string> { Session.UserName },  // Sử dụng UserName từ Session
+                    PlayerDisplayNames = new List<string> { Session.UserName },
                     PlayerIds = new List<string> { Session.UserId },
                     IsStarted = false,
                     CreatedAt = DateTime.UtcNow.ToString("o")
                 };
+
 
                 var firebase = new FirebaseService();
                 await firebase.CreateRoomAsync(roomId, roomInfo);
@@ -170,8 +173,9 @@ namespace MonopolyWinForms.Room
                 Session.JoinRoom(roomId, true);
 
                 var lobby = new Waiting_Room_Host();
+                this.Tag = "Redirected"; // Thông báo cho JoinRoom biết là đã chuyển hướng
                 lobby.Show();
-                this.Hide();
+                this.Close(); // Tắt Create_Room
             }
             catch (Exception ex)
             {

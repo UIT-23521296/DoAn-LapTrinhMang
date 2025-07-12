@@ -99,5 +99,14 @@ namespace MonopolyWinForms.GameLogic
             await GameManager.UpdateGameState(gameState);
             return value/2;
         }
+        public int SellLandAndHousesLocal()
+        {
+            int value = LandPrice;
+            if (Level >= 2 && Level <= 4) value += HousePrice * Level;
+            else if (Level == 5) value += HotelPrice;
+            Level = 0;
+            PlayerId = null;
+            return value / 2;
+        }
     }
 }

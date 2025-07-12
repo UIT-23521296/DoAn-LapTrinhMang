@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MonopolyWinForms.Services;
 
 namespace MonopolyWinForms.GameLogic
 {
@@ -137,19 +138,24 @@ namespace MonopolyWinForms.GameLogic
                     Height = 40
                 };
 
-                btnSell.Click += (s, e) =>
+                btnSell.Click += async (s, e) =>
                 {
                     if (listBox.SelectedItem == null) return;
 
                     dynamic selected = listBox.SelectedItem;
                     Tile tile = selected.Tile;
-                    int sellValue = selected.Value;
+                    //int sellValue = selected.Value;
 
-                    tile.SellLandAndHouses(currentPlayerIndex, players, tiles);
-                    player.Money += sellValue;
+                    // Gọi hàm async đúng cách và lấy giá trị trả về
+                    int refund = await tile.SellLandAndHouses(currentPlayerIndex, players, tiles);
+                    player.Money += refund;
 
                     mainForm.UpdateTileDisplay(tiles.IndexOf(tile), player);
                     mainForm.UpdatePlayerPanel(player);
+
+                    // Cập nhật trạng thái game lên server ngay sau khi bán tài sản
+                    var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
+                    await GameManager.UpdateGameState(gameState);      // ⬅️ await, KHÔNG GetResult
 
                     if (player.Money >= 0)
                     {
@@ -173,12 +179,12 @@ namespace MonopolyWinForms.GameLogic
 
                         foreach (var t in newList)
                         {
-                            int value = CalculateSellValue(t);
+                            int v = CalculateSellValue(t);
                             listBox.Items.Add(new
                             {
                                 Tile = t,
-                                DisplayText = $"{t.Name} (Cấp {t.Level}) - Bán được ${value}",
-                                Value = value
+                                DisplayText = $"{t.Name} (Cấp {t.Level}) - Bán được ${v}",
+                                Value = v
                             });
                         }
                     }

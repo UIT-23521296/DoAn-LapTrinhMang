@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MonopolyWinForms.GameLogic;
 using System.IO;
 using MonopolyWinForms.Login_Signup;
 
@@ -27,7 +28,7 @@ namespace MonopolyWinForms.Room
             firebase = new FirebaseService();
 
             refreshTimer = new System.Windows.Forms.Timer();
-            refreshTimer.Interval = 3000;
+            refreshTimer.Interval = 100; // Giảm xuống 100ms để đồng bộ gần như tức thì
             refreshTimer.Tick += RefreshTimer_Tick;
             refreshTimer.Start();
 
@@ -49,14 +50,25 @@ namespace MonopolyWinForms.Room
 
             if (room.IsStarted)
             {
-                refreshTimer.Stop();
+                // Báo hiệu client đã sẵn sàng
+                if (!room.ReadyPlayers.Contains(Session.UserName))
+                {
+                    room.ReadyPlayers.Add(Session.UserName);
+                    await firebase.CreateRoomAsync(roomId, room);
+                }
 
-                //Khởi tạo game cho client
-                GameManager.StartGame(Session.CurrentRoomId, room.PlayerDisplayNames, room.PlayTime);
-                Form mainFrom = new MainForm();
-                mainFrom.Show();
-                this.Hide();
-                return;
+                // Đợi tất cả người chơi sẵn sàng rồi mới mở game
+                if (room.ReadyPlayers.Count >= room.PlayerDisplayNames.Count)
+                {
+                    refreshTimer.Stop();
+
+                    //Khởi tạo game cho client
+                    GameManager.StartGame(Session.CurrentRoomId, room.PlayerDisplayNames, room.PlayTime);
+                    Form mainFrom = new MainForm();
+                    mainFrom.Show();
+                    this.Hide();
+                    return;
+                }
             }
 
             if (room.PlayerDisplayNames.Count <= 1)
@@ -123,12 +135,17 @@ namespace MonopolyWinForms.Room
 
                 // Đóng form và quay về màn hình danh sách phòng
                 this.Hide();
-                
-                // Luôn tạo một form JoinRoom mới khi thoát
-                var joinRoomForm = new JoinRoom();
-                joinRoomForm.Show();
-                
-                this.Close();
+
+                var existing = Application.OpenForms.OfType<JoinRoom>().FirstOrDefault();
+                if (existing == null)
+                {
+                    var joinRoom = new JoinRoom();
+                    joinRoom.Show(); // Không dùng BeginInvoke
+                }
+                else
+                {
+                    existing.Show();
+                }
             }
             catch (Exception ex)
             {
@@ -150,7 +167,7 @@ namespace MonopolyWinForms.Room
                 {
                     isReady = !isReady;
                     btn_Ready.Text = isReady ? "Hủy sẵn sàng" : "Sẵn sàng";
-                    btn_Ready.BackColor = isReady ? Color.Green : Color.SkyBlue;
+                    btn_Ready.BackColor = isReady ? Color.Green : Color.FromArgb(255, 213, 128);
 
                     // Cập nhật trạng thái sẵn sàng lên Firebase
                     if (isReady)
@@ -173,41 +190,30 @@ namespace MonopolyWinForms.Room
             }
         }
 
+        private bool _playerLeftHandled = false;
+
         private void HandlePlayerLeft(string playerName)
         {
+            if (GlobalFlags.PlayerLeftHandled) return;
+            GlobalFlags.PlayerLeftHandled = true;
+
             if (InvokeRequired)
             {
-                Invoke(new Action(() => HandlePlayerLeft(playerName)));
+                Invoke(() => HandlePlayerLeft(playerName));
                 return;
             }
 
-            // Kiểm tra xem form đã đóng chưa
-            if (this.IsDisposed || !this.IsHandleCreated)
-                return;
+            GameManager.OnPlayerLeft -= HandlePlayerLeft;
+            MessageBox.Show($"{playerName} đã thoát khỏi trò chơi. Trò chơi kết thúc!",
+                            "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            // Hiển thị thông báo
-            MessageBox.Show(
-                $"{playerName} đã thoát phòng. Phòng sẽ đóng.",
-                "Thông báo",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-            );
-
-            // Dừng timer refresh
-            if (refreshTimer != null)
-            {
-                refreshTimer.Stop();
-                refreshTimer.Dispose();
-            }
-
-            // Đóng form và quay về màn hình danh sách phòng
+            // Rời phòng – KHÔNG restart
+            Session.LeaveRoom();
             this.Hide();
-            
-            // Luôn tạo một form JoinRoom mới khi có người thoát
-            var joinRoomForm = new JoinRoom();
-            joinRoomForm.Show();
-            
-            this.Close();
+
+            var jr = Application.OpenForms.OfType<JoinRoom>().FirstOrDefault();
+            if (jr == null) new JoinRoom().Show();
+            else jr.Activate();
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)

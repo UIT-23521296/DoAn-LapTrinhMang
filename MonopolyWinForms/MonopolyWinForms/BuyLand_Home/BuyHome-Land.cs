@@ -4,6 +4,7 @@ using MonopolyWinForms.GameLogic;
 using System;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
+using MonopolyWinForms.Services;
 
 namespace buyLand_Home
 {
@@ -14,7 +15,11 @@ namespace buyLand_Home
         private List<Player> players;
         private MainForm mainform;
         private Monopoly monopoly;
-        public BuyHome_Land(Player player, Tile tile, Monopoly monopoly, MainForm mainform, List<Player> players)
+        private int currentPlayerIndex;
+        private List<Tile> tiles;
+        public int TotalPrice { get; private set; }
+        public int NewLevel { get; private set; }
+        public BuyHome_Land(Player player, Tile tile, Monopoly monopoly, MainForm mainform, List<Player> players, int currentPlayerIndex, List<Tile> tiles)
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
@@ -23,6 +28,8 @@ namespace buyLand_Home
             this.monopoly = monopoly;
             this.mainform = mainform;
             this.players = players;
+            this.currentPlayerIndex = currentPlayerIndex;
+            this.tiles = tiles;
         }
         private void button2_Click(object sender, EventArgs e)
         {
@@ -52,33 +59,67 @@ namespace buyLand_Home
             // Nếu chưa có chủ và level = 0 → có thể mua đất
             if (tile.PlayerId == null && tile.Level == 0)
             {
-                checkBox1.Enabled = true;
-                checkBox1.Checked = true;
+                checkBox1.Enabled = player.Money >= tile.LandPrice;
+                checkBox1.Checked = checkBox1.Enabled;
             }
             // Nếu người chơi là chủ sở hữu
             if (tile.PlayerId == player.ID)
             {
+                int money = player.Money;
+                if (tile.Level >= 1) checkBox1.Checked = true;
+                if (tile.Level >= 2) checkBox2.Checked = true;
+                if (tile.Level >= 3) checkBox3.Checked = true;
+                if (tile.Level >= 4) checkBox4.Checked = true;
+                // Cấp 2
                 if (tile.Level == 1)
                 {
-                    checkBox2.Enabled = true;
-                    checkBox3.Enabled = true;
-                    checkBox4.Enabled = true;
-                    checkBox2.Checked = true;
-                    checkBox3.Checked = true;
-                    checkBox4.Checked = true;
+                    if (money >= tile.HousePrice)
+                    {
+                        checkBox2.Enabled = true;
+                        checkBox2.Checked = true;
+                        money -= tile.HousePrice;
+
+                        if (money >= tile.HousePrice)
+                        {
+                            checkBox3.Enabled = true;
+                            checkBox3.Checked = true;
+                            money -= tile.HousePrice;
+
+                            if (money >= tile.HousePrice)
+                            {
+                                checkBox4.Enabled = true;
+                                checkBox4.Checked = true;
+                                money -= tile.HousePrice;
+                            }
+                        }
+                    }
                 }
                 else if (tile.Level == 2)
                 {
-                    checkBox3.Enabled = true;
-                    checkBox4.Enabled = true;
-                    checkBox3.Checked = true;
-                    checkBox4.Checked = true;
+                    if (money >= tile.HousePrice)
+                    {
+                        checkBox3.Enabled = true;
+                        checkBox3.Checked = true;
+                        money -= tile.HousePrice;
+
+                        if (money >= tile.HousePrice)
+                        {
+                            checkBox4.Enabled = true;
+                            checkBox4.Checked = true;
+                            money -= tile.HousePrice;
+                        }
+                    }
                 }
                 else if (tile.Level == 3)
                 {
-                    checkBox4.Enabled = true;
+                    if (money >= tile.HousePrice)
+                    {
+                        checkBox4.Enabled = true;
+                        checkBox4.Checked = true;
+                        money -= tile.HousePrice;
+                    }
                 }
-                else if (tile.Level == 4)
+                if (tile.Level == 4 && checkBox2.Checked && checkBox3.Checked && checkBox4.Checked && money >= tile.HotelPrice)
                 {
                     checkBox5.Enabled = true;
                     checkBox5.Checked = true;
@@ -131,20 +172,22 @@ namespace buyLand_Home
         private void UpdatePrice()
         {
             label1.Text = tile.Name;
-            int totalPrice = 0;
+            int newLevel = 0;
+            if (checkBox1.Checked) newLevel = 1;
+            if (checkBox2.Checked) newLevel = 2;
+            if (checkBox3.Checked) newLevel = 3;
+            if (checkBox4.Checked) newLevel = 4;
+            if (checkBox5.Checked) newLevel = 5;
 
-            if (tile == null) return;
-            if (checkBox1.Checked) totalPrice += tile.LandPrice;
-            if (checkBox2.Checked) totalPrice += tile.HousePrice;
-            if (checkBox3.Checked) totalPrice += tile.HousePrice;
-            if (checkBox4.Checked) totalPrice += tile.HousePrice;
-            if (checkBox5.Checked) totalPrice += tile.HotelPrice;
+            TotalPrice = CalcUpgradeCost(tile.Level, newLevel, tile);
 
-            label2.Text = $"Rent rate: ${totalPrice / 2}";
-            label3.Text = $"The price: ${totalPrice}";
+            label2.Text = $"Rent rate: ${TotalPrice / 2}";
+            label3.Text = $"The price: ${TotalPrice}";
+
+            button1.Enabled = player.Money >= TotalPrice;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e)
         {
             int newLevel = 0;
 
@@ -154,16 +197,13 @@ namespace buyLand_Home
             if (checkBox4.Checked) newLevel = 4;
             if (checkBox5.Checked) newLevel = 5;
 
-            if (newLevel > tile.Level)
-            {
-                tile.Level = newLevel;
+            // Tính tổng tiền cần trả
+            TotalPrice = CalcUpgradeCost(tile.Level, newLevel, tile);
 
-                // Nếu đang mua đất (tức từ level 0 lên level 1) thì gán luôn chủ sở hữu
-                if (tile.PlayerId == null && newLevel >= 1)
-                {
-                    tile.PlayerId = player.ID;
-                }
-            }
+            NewLevel = newLevel;
+            // Bỏ phần cập nhật game state ở đây để tránh race condition
+            // var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
+            // await GameManager.UpdateGameState(gameState);
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
@@ -181,6 +221,27 @@ namespace buyLand_Home
             pictureBox3.Image = mainform.GetHouseImage(3, player, tile, players);
             pictureBox4.Image = mainform.GetHouseImage(4, player, tile, players);
             pictureBox5.Image = mainform.GetHouseImage(5, player, tile, players);
+        }
+        private int CalcUpgradeCost(int currentLv, int targetLv, Tile t)
+        {
+            int cost = 0;
+
+            if (currentLv == 0 && targetLv >= 1)
+                cost += t.LandPrice;
+
+            if (currentLv < 2 && targetLv >= 2)
+                cost += t.HousePrice;
+
+            if (currentLv < 3 && targetLv >= 3)
+                cost += t.HousePrice;
+
+            if (currentLv < 4 && targetLv >= 4)
+                cost += t.HousePrice;
+
+            if (currentLv < 5 && targetLv == 5)
+                cost += t.HotelPrice;
+
+            return cost;
         }
     }
 }

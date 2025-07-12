@@ -24,11 +24,10 @@ namespace MonopolyWinForms.Login_Signup
         {
             InitializeComponent();
             tb_password.UseSystemPasswordChar = true;
-            this.BackColor = ColorTranslator.FromHtml("#D9D9D9");
-            btn_login.BackColor = ColorTranslator.FromHtml("#FED626");  // Đổi màu nền của nút login
-            btn_signup.BackColor = ColorTranslator.FromHtml("#33B68F");  // Đổi màu nền của nút login
-            tb_login.BackColor = ColorTranslator.FromHtml("#ACACAC");
-            tb_password.BackColor = ColorTranslator.FromHtml("#ACACAC");
+            //btn_login.BackColor = ColorTranslator.FromHtml("#FED626");  // Đổi màu nền của nút login
+            //btn_signup.BackColor = ColorTranslator.FromHtml("#33B68F");  // Đổi màu nền của nút login
+            //tb_login.BackColor = ColorTranslator.FromHtml("#ACACAC");
+            //tb_password.BackColor = ColorTranslator.FromHtml("#ACACAC");
         }
 
         private void tb_password_TextChanged(object sender, EventArgs e)
@@ -50,13 +49,14 @@ namespace MonopolyWinForms.Login_Signup
             }
 
             // Mở form chính
+            this.Close();
             mainPage.Show();
 
             // Khi form chính đóng, thoát app
             mainPage.FormClosed += (s, args) =>
             {
                 Session.EndSession();
-                Application.Exit();
+                Environment.Exit(0);   // Kết thúc process ngay, không duyệt OpenForms
             };
         }
 

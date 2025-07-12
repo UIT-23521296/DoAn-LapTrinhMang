@@ -22,12 +22,12 @@ namespace MonopolyWinForms.GameLogic
         }
         public void SubtractMoney(int amount)
         {
-            if (player.Money < amount)
+            player.Money -= amount;
+            mainForm.UpdatePlayerPanel(player);
+            if (player.Money < 0)
             {
                 mainForm.CheckPlayerBankruptcy(player);
             }
-            else player.Money -= amount;
-            mainForm.UpdatePlayerPanel(player);
         }
     }
 }

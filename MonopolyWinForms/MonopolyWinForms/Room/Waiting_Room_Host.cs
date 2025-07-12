@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MonopolyWinForms.GameLogic;
 using MonopolyWinForms.Login_Signup;
 
 namespace MonopolyWinForms.Room
@@ -99,6 +100,10 @@ namespace MonopolyWinForms.Room
                     var room = await _firebase.GetRoomAsync(Session.CurrentRoomId);
                     if (room != null)
                     {
+                        room.PlayerDisplayNames.Remove(Session.UserName);
+                        room.PlayerIds.Remove(Session.UserId);
+                        room.ReadyPlayers.Remove(Session.UserName);
+
                         // Nếu còn người chơi khác trong phòng
                         if (room.PlayerDisplayNames.Count > 1)
                         {
@@ -119,10 +124,26 @@ namespace MonopolyWinForms.Room
                     }
                     Session.LeaveRoom();
 
-                    // Kiểm tra xem đã có form JoinRoom nào đang mở chưa
-                    this.Close();
-                    var joinRoom = new JoinRoom();
-                    joinRoom.Show();
+                    this.Hide();
+
+                    var existing = Application.OpenForms
+                                               .OfType<JoinRoom>()
+                                               .FirstOrDefault(frm => !frm.IsDisposed);
+
+                    if (existing == null || existing.IsDisposed)
+                    {
+                        existing = new JoinRoom();
+                    }
+                    else if (existing.Visible)
+                    {
+                        existing.BringToFront(); // hoặc Activate nếu muốn focus
+                    }
+                    else
+                    {
+                        existing.Show();
+                    }
+
+
                 }
                 catch (Exception ex)
                 {
@@ -160,11 +181,24 @@ namespace MonopolyWinForms.Room
                     room.IsStarted = true;
                     await _firebase.CreateRoomAsync(Session.CurrentRoomId, room);
 
+                    // Đợi tất cả client xác nhận đã sẵn sàng
+                    int maxWaitTime = 10000; // 10 giây tối đa
+                    int waitTime = 0;
+                    while (waitTime < maxWaitTime)
+                    {
+                        var currentRoom = await _firebase.GetRoomAsync(Session.CurrentRoomId);
+                        if (currentRoom != null && currentRoom.ReadyPlayers.Count >= currentRoom.PlayerDisplayNames.Count)
+                        {
+                            break; // Tất cả client đã sẵn sàng
+                        }
+                        await Task.Delay(100); // Kiểm tra mỗi 100ms
+                        waitTime += 100;
+                    }
+
                     // Mở form game
-                    // TODO: Mở form game mới
                     GameManager.StartGame(Session.CurrentRoomId, room.PlayerDisplayNames, room.PlayTime);
                     File.AppendAllText("log.txt", $"Host called started with roomId: {Session.CurrentRoomId}\n");
-                    Form mainForm = new MainForm(); // nếu bạn muốn truyền gameManager sang
+                    Form mainForm = new MainForm();
                     mainForm.Show();
                     this.Hide();
 
@@ -176,51 +210,40 @@ namespace MonopolyWinForms.Room
             }
         }
 
+        private bool _playerLeftHandled = false;
+
         private void HandlePlayerLeft(string playerName)
         {
+            if (GlobalFlags.PlayerLeftHandled) return;
+            GlobalFlags.PlayerLeftHandled = true;
+
             if (InvokeRequired)
             {
-                Invoke(new Action(() => HandlePlayerLeft(playerName)));
+                Invoke(() => HandlePlayerLeft(playerName));
                 return;
             }
 
-            // Kiểm tra xem form đã đóng chưa
-            if (this.IsDisposed || !this.IsHandleCreated)
-                return;
+            GameManager.OnPlayerLeft -= HandlePlayerLeft;
+            MessageBox.Show($"{playerName} đã thoát khỏi trò chơi. Trò chơi kết thúc!",
+                            "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            // Hiển thị thông báo
-            MessageBox.Show(
-                $"{playerName} đã thoát phòng. Phòng sẽ đóng.",
-                "Thông báo",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-            );
-
-            // Dừng timer và polling
-            _cts?.Cancel();
-
-            // Đóng form và quay về màn hình danh sách phòng
+            // Rời phòng – KHÔNG restart
+            Session.LeaveRoom();
             this.Hide();
-            
-            // Kiểm tra xem đã có form JoinRoom nào đang mở chưa
-            var existingJoinRoom = Application.OpenForms.OfType<JoinRoom>().FirstOrDefault();
-            if (existingJoinRoom == null)
-            {
-                var joinRoomForm = new JoinRoom();
-                joinRoomForm.Show();
-            }
-            else
-            {
-                existingJoinRoom.Activate();
-            }
-            
-            this.Close();
+
+            var jr = Application.OpenForms.OfType<JoinRoom>().FirstOrDefault();
+            if (jr == null) new JoinRoom().Show();
+            else jr.Activate();
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
-            base.OnFormClosed(e);
+            _cts?.Cancel();
+            _cts?.Dispose();
+
             GameManager.OnPlayerLeft -= HandlePlayerLeft;
+            base.OnFormClosed(e);
         }
+
     }
 }

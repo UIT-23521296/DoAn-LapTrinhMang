@@ -4,8 +4,10 @@ using MonopolyWinForms.GameLogic;
 using MonopolyWinForms.Services;
 using MonopolyWinForms.Login_Signup;
 using MonopolyWinForms.Room;
+using MonopolyWinForms.Home;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 namespace MonopolyWinForms
 {
     public partial class MainForm : Form
@@ -24,9 +26,15 @@ namespace MonopolyWinForms
         private RentCalculator rentCalculator;
         private TileActionHandler? Action;
         public List<Tile> tiles;
-        private UpdateTileDisplay UpdateTile;
+        public UpdateTileDisplay UpdateTile;
         private UpdatePlayerPanel UpdatePlayer;
+        private static bool _globalPlayerLeftHandled = false;
+        private static JoinRoom? _joinRoomInstance = null;
+        //private Panel pnlCurrentTurn;
+        //private Label lblTurnStatic;   // "Lượt chơi:"
+        //private Label lblTurnName;     // Tên người chơi
 
+        public static bool GameEnded { get; private set; } = false;
         public Random random = new Random();
         public Dictionary<int, Panel> playerMarkers = new Dictionary<int, Panel>();
         public readonly Dictionary<string, Color> monopolyColors = new()
@@ -40,40 +48,25 @@ namespace MonopolyWinForms
            ["7"] = Color.Purple,
            ["8"] = Color.Gray
         };
+        private Dictionary<int, bool> isMoving = new Dictionary<int, bool>();
         //Chatbox
         private void InitializeChatBox(){
             chatbox = new Chatbox(players[currentPlayerIndex]);
-            chatbox.Location = new Point(1230, 670);
+            //chatbox.Location = new Point(970, 548);
+            chatbox.Dock = DockStyle.Fill;
+            panelChatbox.Controls.Add(chatbox);
             chatbox.OnSendMessage += HandleChatMessage;
-            this.Controls.Add(chatbox);
-        }
-
-        private void InitializeTurnLabel()
-        {
-            lblCurrentTurn = new Label
-            {
-                Name = "lblCurrentTurn",
-                AutoSize = true,
-                Font = new Font("Arial", 14, FontStyle.Bold),
-                Location = new Point(1230, 100), 
-                Text = "Lượt chơi: "
-            };
-            this.Controls.Add(lblCurrentTurn);
         }
         private async void HandleChatMessage(string senderName, string message)
         {
             try
             {
                 // Tạo đối tượng chat message
-                var chatMessage = new
-                {
-                    SenderName = senderName,
-                    Message = message,
-                    Timestamp = DateTime.UtcNow
-                };
-
-                // Gửi tin nhắn lên Firebase
-                await GameManager.SendChatMessage(GameManager.CurrentRoomId, chatMessage);
+                await GameManager.SendChatMessage(
+                    GameManager.CurrentRoomId!,
+                    senderName,
+                    message
+                );
             }
             catch (Exception ex)
             {
@@ -85,34 +78,34 @@ namespace MonopolyWinForms
             try
             {
                 MessageBox.Show("⏰ Hết thời gian! Trò chơi kết thúc!", "Thông báo");
-                
+
                 // Hiển thị kết quả game
                 var resultForm = new GameResultForm(players, tiles);
                 resultForm.ShowDialog();
 
-                // Gửi thông báo kết thúc game cho tất cả người chơi
-                await GameManager.SendChatMessage(GameManager.CurrentRoomId, new
-                {
-                    SenderName = "Hệ thống",
-                    Message = "Trò chơi đã kết thúc!",
-                    Timestamp = DateTime.UtcNow
-                });
+                await GameManager.SendChatMessage(
+                    GameManager.CurrentRoomId!,
+                    "Hệ thống",
+                    "Trò chơi đã kết thúc!"
+                );
 
                 // Dọn dẹp dữ liệu game
                 await GameManager.CleanupGameData(GameManager.CurrentRoomId);
-                
-                // Đóng form
-                Application.Exit();
+
+                this.Hide();
+                var mainHome = new Main_home();
+                mainHome.StartPosition = FormStartPosition.CenterScreen;
+                mainHome.Show();
             }
             catch (Exception ex)
             {
                 File.AppendAllText("log.txt", $"Error in GameOver: {ex.Message}\n");
-                Application.Exit();
             }
         }
+
         public MainForm()
         {
-            InitializeComponent(); 
+            InitializeComponent();
             GameManager.OnGameStateUpdated += HandleGameStateUpdate;
             GameManager.OnChatMessageReceived += HandleChatMessageReceived;
             this.StartPosition = FormStartPosition.CenterScreen;
@@ -204,18 +197,37 @@ namespace MonopolyWinForms
                     // Cập nhật vị trí người chơi nếu có thay đổi
                     if (localPlayer.TileIndex != remotePlayer.TileIndex)
                     {
-                        // Tính số bước cần di chuyển
-                        int steps = (remotePlayer.TileIndex - localPlayer.TileIndex + 40) % 40;
-                        if (steps > 0)
+                        // Nếu đang chạy hiệu ứng thì bỏ qua cập nhật vị trí
+                        if (isMoving.ContainsKey(localPlayer.ID) && isMoving[localPlayer.ID]) continue;
+
+                        if (remotePlayer.LastMoveType == MoveType.Teleport)
                         {
-                            // Di chuyển từng bước cho tất cả người chơi
-                            _ = MovePlayerStepByStep(localPlayer, steps, 40).ContinueWith(_ => {
-                                // Chỉ cập nhật TileIndex sau khi hoàn thành animation
-                                localPlayer.TileIndex = remotePlayer.TileIndex;
-                                UpdatePlayerMarkerPosition(localPlayer, remotePlayer.TileIndex);
-                            });
-                            
+                            UpdatePlayerMarkerPosition(localPlayer, remotePlayer.TileIndex);
+                            localPlayer.TileIndex = remotePlayer.TileIndex;
                         }
+                        else
+                        {
+                            int steps = (remotePlayer.TileIndex - localPlayer.TileIndex + 40) % 40;
+                            if (steps > 0)
+                            {
+                                isMoving[localPlayer.ID] = true;
+                                _ = MovePlayerStepByStep(localPlayer, steps, 40).ContinueWith(_ => {
+                                    localPlayer.TileIndex = remotePlayer.TileIndex;
+                                    UpdatePlayerMarkerPosition(localPlayer, remotePlayer.TileIndex);
+                                    isMoving[localPlayer.ID] = false;
+                                });
+                            }
+                        }
+                    }
+                }
+                if (GameEnded) return;
+
+                foreach (var localPlayer in players)
+                {
+                    if (monopoly.CheckWin(localPlayer.ID))
+                    {
+                        await DeclareWinner(localPlayer);
+                        return;
                     }
                 }
 
@@ -247,6 +259,9 @@ namespace MonopolyWinForms
                         UpdateTile.UpdateTileDisplayUI(i, players[currentPlayerIndex]);
                     }
                 }
+
+                // Cập nhật giá thuê bến xe và công ty cho tất cả người chơi
+                UpdateTile.UpdateAllRents();
             }
             catch (Exception ex)
             {
@@ -257,7 +272,8 @@ namespace MonopolyWinForms
 
         private async void MainForm_Load(object sender, EventArgs e)
         {
-            InitializeTurnLabel();
+            //InitializeTurnLabel();
+            this.BackColor = ColorTranslator.FromHtml("#FBF8F4");
             countdown = new CountdownClock(panelTimer, GameOver);
             int indexPanel = 0;
             int indexPlayer = 1;
@@ -309,40 +325,48 @@ namespace MonopolyWinForms
             await handler.RollDiceAndMoveAsync();
         }
         // VÙNG GỌI HÀM
-        public void NextTurn(){
+        public async Task NextTurn(){
             currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
             UpdateTurnDisplay();
-            chatbox!.UpdatePlayer(players[currentPlayerIndex]);
-            if(Action != null) Action.UpdateCurrentPlayerIndex(currentPlayerIndex);
+            if (chatbox != null)
+            {
+                chatbox.UpdatePlayer(players[currentPlayerIndex]);
+            }
+            if (Action != null) Action.UpdateCurrentPlayerIndex(currentPlayerIndex);
             //button1.Enabled = true;
 
             var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
-            GameManager.UpdateGameState(gameState);
+            try
+            {
+                await GameManager.UpdateGameState(gameState);
+            }
+            catch (Exception ex)
+            {
+                // ghi log & (nếu muốn) retry nhẹ
+                AddToGameLog($"Lỗi cập nhật lượt: {ex.Message}", LogType.Error);
+                // Có thể bật lại nút lắc cho chính mình để thử lại
+                if (Session.PlayerInGameId == players[currentPlayerIndex].ID)
+                    button1.Enabled = true;
+            }
         }
 
         private void UpdateTurnDisplay()
         {
-            if (lblCurrentTurn != null)
-            {
-                Player currentPlayer = players[currentPlayerIndex];
-                lblCurrentTurn.Text = $"Lượt chơi: {currentPlayer.Name}";
-                
-                // Có thể thêm hiệu ứng hoặc màu sắc để làm nổi bật
-                lblCurrentTurn.ForeColor = GetPlayerColor(currentPlayerIndex);
+            Player currentPlayer = players[currentPlayerIndex];
 
-                button1.Enabled = (Session.PlayerInGameId == currentPlayer.ID);
+            // cập nhật tên & màu
+            lblTurnName.Text = " " + currentPlayer.Name;  // thêm cách ở đầu
+            lblTurnName.ForeColor = GetPlayerColor(currentPlayerIndex);
 
-                //Thông báo lượt chơi
-                if (Session.PlayerInGameId == currentPlayer.ID)
-                {
-                    AddToGameLog($"Đến lượt của bạn!", LogType.Notification);
-                }
-                else
-                {
-                    AddToGameLog($"Đến lượt của {currentPlayer.Name}", LogType.System);
-                }
-            }
+            button1.Enabled = (Session.PlayerInGameId == currentPlayer.ID);
+
+            // log
+            //if (Session.PlayerInGameId == currentPlayer.ID)
+            //    AddToGameLog("Đến lượt của bạn!", LogType.Notification);
+            //else
+            //    AddToGameLog($"Đến lượt của {currentPlayer.Name}", LogType.System);
         }
+
 
         private Color GetPlayerColor(int playerIndex)
         {
@@ -393,10 +417,10 @@ namespace MonopolyWinForms
 
 
             //Ghi log người khác
-            if (Session.PlayerInGameId != player.ID)
-            {
-                AddToGameLog($"{player.Name} đã trả {money}$", LogType.System);
-            }
+            //if (Session.PlayerInGameId != player.ID)
+            //{
+            //    AddToGameLog($"{player.Name} đã trả {money}$", LogType.System);
+            //}
         }
         public void AddMoney(int money, Player player)
         {
@@ -404,24 +428,24 @@ namespace MonopolyWinForms
             Money.AddMoney(money);
 
             //Ghi log cho người khác
-            if (Session.PlayerInGameId != player.ID)
-            {
-                AddToGameLog($"{player.Name} đã nhận {money}$", LogType.System);
-            }
+            //if (Session.PlayerInGameId != player.ID)
+            //{
+            //    AddToGameLog($"{player.Name} đã nhận {money}$", LogType.System);
+            //}
         }
-        public void ShowTileActionForm(Tile tile, Player currentPlayer)
+        public async Task ShowTileActionForm(Tile tile, Player currentPlayer)
         { 
             if (Action != null)
             {
                 if (Session.PlayerInGameId == currentPlayer.ID)
                 {
-                    Action.ShowTileActionForm(tile, currentPlayer);
+                    await Action.ShowTileActionForm(tile, currentPlayer);
                 }
-                else
-                {
-                    string actionMessage = GetTileActionMessage(tile, currentPlayer);
-                    AddToGameLog(actionMessage, LogType.System);
-                }
+                //else
+                //{
+                //    string actionMessage = GetTileActionMessage(tile, currentPlayer);
+                //    AddToGameLog(actionMessage, LogType.System);
+                //}
             }
         }
         public void UpdatePlayerMarkerPosition(Player player, int newIndex){ Initialize.UpdatePlayerMarkerPosition(player,newIndex); }
@@ -432,7 +456,7 @@ namespace MonopolyWinForms
         public Image GetHouseImage(int level, Player player, Tile tile, List<Player> players){return UpdateTile.GetHouseImage(level, player, players, tile);
         }
 
-        public void AddToGameLog(string message, LogType type = LogType.System)
+        public async void AddToGameLog(string message, LogType type = LogType.System)
         {
             if (InvokeRequired)
             {
@@ -440,22 +464,45 @@ namespace MonopolyWinForms
                 return;
             }
 
-            switch (type)
+            //switch (type)
+            //{
+            //    case LogType.System:
+            //        chatbox?.AddSystemMessage(message);
+            //        break;
+            //    case LogType.Notification:
+            //        chatbox?.AddNotificationMessage(message);
+            //        break;
+            //    case LogType.Warning:
+            //        chatbox?.AddWarningMessage(message);
+            //        break;
+            //    case LogType.Error:
+            //        chatbox?.AddErrorMessage(message);
+            //        break;
+            //}
+
+            // Đẩy log lên Firebase (nếu là SYSTEM và đang trong game)
+            if (type == LogType.System && GameManager.IsGameStarted && !string.IsNullOrEmpty(GameManager.CurrentRoomId))
             {
-                case LogType.System:
-                    chatbox?.AddSystemMessage(message);
-                    break;
-                case LogType.Notification:
-                    chatbox?.AddNotificationMessage(message);
-                    break;
-                case LogType.Warning:
-                    chatbox?.AddWarningMessage(message);
-                    break;
-                case LogType.Error:
-                    chatbox?.AddErrorMessage(message);
-                    break;
+                await GameManager.SendChatMessage(GameManager.CurrentRoomId, "Hệ thống", message);
             }
         }
+
+        public void AddDiceLog(string msg)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => AddDiceLog(msg)));
+                return;
+            }
+
+            richTextBox1.Clear();
+
+            richTextBox1.SelectionStart = richTextBox1.TextLength;
+            richTextBox1.SelectionLength = 0;
+            richTextBox1.AppendText($"[{DateTime.Now:HH:mm:ss}] {msg}{Environment.NewLine}");
+            richTextBox1.ScrollToCaret();
+        }
+
 
         // Enum để phân loại log
         public enum LogType
@@ -475,164 +522,78 @@ namespace MonopolyWinForms
                 return;
             }
 
-            chatbox?.ReceiveMessage(senderName, message);
-        }
-
-        //Xử lý ghi log cho người chơi khác liên quan đến ô đất
-        private string GetTileActionMessage(Tile tile, Player player)
-        {
-            // Kiểm tra loại ô đất dựa vào Monopoly
-            switch (tile.Monopoly)
+            // Nếu nhận được thông báo người chơi thoát
+            if (senderName == "SYSTEM" && message.StartsWith("LEFT:"))
             {
-                case "0": // Ô đặc biệt
-                    switch (tile.Name)
-                    {
-                        case "Thuế thu nhập":
-                        case "Thuế đặc biệt":
-                            return $"{player.Name} phải đóng thuế {tile.LandPrice}$";
-                        case "Nhà tù":
-                            return $"{player.Name} đang ở trong tù";
-                        case "Ô bắt đầu":
-                            return $"{player.Name} đi qua ô Start và nhận 200$";
-                        case "Khí vận":
-                        case "Cơ hội":
-                            return "";
-                        case "Đi thẳng vào tù":
-                            return $"{player.Name} bị vào tù";
-                        default:
-                            return $"{player.Name} đã đến {tile.Name}";
-                    }
-                case "9": // Bến xe
-                    if (tile.PlayerId.HasValue && tile.PlayerId.Value > 0)
-                    {
-                        var owner = players.FirstOrDefault(p => p.ID == tile.PlayerId.Value);
-                        if (owner != null)
-                        {
-                            return $"{player.Name} phải trả tiền thuê {tile.RentPrice}$ cho {owner.Name} tại bến xe {tile.Name}";
-                        }
-                    }
-                    return $"{player.Name} đã đến bến xe {tile.Name}";
-                case "10": // Công ty
-                    if (tile.PlayerId.HasValue && tile.PlayerId.Value > 0)
-                    {
-                        var owner = players.FirstOrDefault(p => p.ID == tile.PlayerId.Value);
-                        if (owner != null)
-                        {
-                            return $"{player.Name} phải trả tiền thuê {tile.RentPrice}$ cho {owner.Name} tại công ty {tile.Name}";
-                        }
-                    }
-                    return $"{player.Name} đã đến công ty {tile.Name}";
-                default: // Ô đất thường
-                    if (tile.PlayerId.HasValue)
-                    {
-                        if (tile.PlayerId.Value == player.ID)
-                        {
-                            return $"{player.Name} đã sở hữu {tile.Name}";
-                        }
-                        else if (tile.PlayerId.Value > 0)
-                        {
-                            var owner = players.FirstOrDefault(p => p.ID == tile.PlayerId.Value);
-                            if (owner != null)
-                            {
-                                string buildingInfo = tile.Level > 0 
-                                    ? $" (có {tile.Level} {(tile.Level == 5 ? "khách sạn" : "nhà")})" 
-                                    : "";
-                                return $"{player.Name} phải trả tiền thuê {tile.RentPrice}$ cho {owner.Name} tại {tile.Name}{buildingInfo}";
-                            }
-                        }
-                    }
-                    else if (tile.LandPrice > 0)
-                    {
-                        return $"{player.Name} có thể mua {tile.Name} với giá {tile.LandPrice}$";
-                    }
-                    return $"{player.Name} đã đến {tile.Name}";
+                string leaverName = message.Substring(5);
+                HandlePlayerLeft(leaverName);
+                return;
             }
-        }
 
+            if (senderName == "Xúc sắc")
+            {
+                AddDiceLog(message);
+                return;
+            }
+
+            // Còn lại là tin nhắn bình thường
+            chatbox?.ReceiveMessage(senderName, message, players);
+        }
         private async void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            try
+            if (!GameManager.IsGameStarted) return;
+
+            var ask = MessageBox.Show(
+                "Bạn có chắc muốn thoát game? Điều này sẽ kết thúc game cho tất cả người chơi.",
+                "Xác nhận thoát",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+
+            if (ask == DialogResult.No)
             {
-                // Nếu game đang diễn ra
-                if (GameManager.IsGameStarted)
-                {
-                    // Hiển thị xác nhận
-                    var result = MessageBox.Show(
-                        "Bạn có chắc muốn thoát game? Điều này sẽ kết thúc game cho tất cả người chơi.",
-                        "Xác nhận thoát",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Warning
-                    );
-
-                    if (result == DialogResult.No)
-                    {
-                        e.Cancel = true;
-                        return;
-                    }
-
-                    // Thông báo cho tất cả người chơi và đợi một chút để đảm bảo thông báo được gửi
-                    await GameManager.NotifyPlayerLeft(GameManager.CurrentRoomId, Session.UserName);
-                    await Task.Delay(500); // Đợi 500ms để đảm bảo thông báo được gửi
-
-                    // Đóng form và quay về màn hình danh sách phòng
-                    this.Hide();
-            
-                    // Không tạo form JoinRoom ở đây, để HandlePlayerLeft xử lý
-                    // Điều này sẽ tránh việc tạo nhiều form JoinRoom
-                    this.Close();
-                }
+                e.Cancel = true;
+                return;
             }
-            catch (Exception ex)
-            {
-                File.AppendAllText("log.txt", $"Error in MainForm_FormClosing: {ex.Message}\n");
-            }
+
+            countdown?.Stop();
+            GameManager.OnPlayerLeft -= HandlePlayerLeft;
+
+            await GameManager.NotifyPlayerLeft(GameManager.CurrentRoomId, Session.UserName);
+            Session.LeaveRoom();
+
+            this.Hide();
+            var mainHome = new Main_home();
+            mainHome.StartPosition = FormStartPosition.CenterScreen;
+            mainHome.Show();
+
+            e.Cancel = true;
         }
+
+        private bool _playerLeftHandled = false;
 
         private void HandlePlayerLeft(string playerName)
         {
+            if (GlobalFlags.PlayerLeftHandled) return;
+            GlobalFlags.PlayerLeftHandled = true;
+
             if (InvokeRequired)
             {
-                Invoke(new Action(() => HandlePlayerLeft(playerName)));
+                Invoke(() => HandlePlayerLeft(playerName));
                 return;
             }
 
-            // Kiểm tra xem form đã đóng chưa
-            if (this.IsDisposed || !this.IsHandleCreated)
-                return;
+            countdown?.Stop();
+            GameManager.OnPlayerLeft -= HandlePlayerLeft;
 
-            // Hiển thị thông báo
-            MessageBox.Show(
-                $"{playerName} đã thoát game. Trò chơi kết thúc!",
-                "Thông báo",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-            );
+            MessageBox.Show($"{playerName} đã thoát khỏi trò chơi. Trò chơi kết thúc!", "Thông báo");
 
-            // Dừng tất cả timer và event
-            if (countdown != null)
-            {
-                countdown.Stop();
-            }
-
-            // Đóng form và quay về màn hình danh sách phòng
             this.Hide();
-            
-            // Kiểm tra xem đã có form JoinRoom nào đang mở chưa
-            var existingJoinRoom = Application.OpenForms.OfType<JoinRoom>().FirstOrDefault();
-            if (existingJoinRoom == null)
-            {
-                // Nếu chưa có form nào, tạo form mới
-                var joinRoomForm = new JoinRoom();
-                joinRoomForm.Show();
-            }
-            else
-            {
-                // Nếu đã có form, kích hoạt form đó
-                existingJoinRoom.Activate();
-            }
-            
-            this.Close();
+
+            var mainHome = new Main_home();
+            mainHome.StartPosition = FormStartPosition.CenterScreen;
+            mainHome.Show();
         }
+
 
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
@@ -649,6 +610,32 @@ namespace MonopolyWinForms
                 
             // Reset session
             Session.LeaveRoom();
+        }
+        public async Task DeclareWinner(Player winner)
+        {
+            if (GameEnded) return;          // tránh gọi lặp
+            GameEnded = true;
+
+            countdown?.Stop();
+            button1.Enabled = false;
+
+            MessageBox.Show($"{winner.Name} đã chiến thắng trò chơi!", "Chiến thắng");
+
+            await GameManager.SendChatMessage(
+                GameManager.CurrentRoomId!,
+                "Hệ thống",
+                $"{winner.Name} đã chiến thắng trò chơi!"
+            );
+
+            await GameManager.CleanupGameData(GameManager.CurrentRoomId);
+
+            var resultForm = new GameResultForm(players, tiles);
+            resultForm.ShowDialog();
+
+            this.Hide();
+            var mainHome = new Main_home();
+            mainHome.StartPosition = FormStartPosition.CenterScreen;
+            mainHome.Show();
         }
     }
 }
