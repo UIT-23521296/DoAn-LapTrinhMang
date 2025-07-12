@@ -4,6 +4,7 @@ using MonopolyWinForms.GameLogic;
 using MonopolyWinForms.Services;
 using MonopolyWinForms.Login_Signup;
 using MonopolyWinForms.Room;
+using MonopolyWinForms.Home;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -92,9 +93,9 @@ namespace MonopolyWinForms
                 await GameManager.CleanupGameData(GameManager.CurrentRoomId);
 
                 this.Hide();
-                var jr = Application.OpenForms.OfType<JoinRoom>().FirstOrDefault();
-                if (jr == null) new JoinRoom().Show();
-                else jr.Activate();
+                var mainHome = new Main_home();
+                mainHome.StartPosition = FormStartPosition.CenterScreen;
+                mainHome.Show();
             }
             catch (Exception ex)
             {
@@ -561,18 +562,9 @@ namespace MonopolyWinForms
             Session.LeaveRoom();
 
             this.Hide();
-            if (_joinRoomInstance == null || _joinRoomInstance.IsDisposed)
-            {
-                _joinRoomInstance = new JoinRoom();
-                _joinRoomInstance.StartPosition = FormStartPosition.CenterScreen;
-                _joinRoomInstance.Show();
-            }
-            else
-            {
-                _joinRoomInstance.WindowState = FormWindowState.Normal;
-                _joinRoomInstance.BringToFront();
-                _joinRoomInstance.Activate();
-            }
+            var mainHome = new Main_home();
+            mainHome.StartPosition = FormStartPosition.CenterScreen;
+            mainHome.Show();
 
             e.Cancel = true;
         }
@@ -597,18 +589,9 @@ namespace MonopolyWinForms
 
             this.Hide();
 
-            if (_joinRoomInstance == null || _joinRoomInstance.IsDisposed)
-            {
-                _joinRoomInstance = new JoinRoom();
-                _joinRoomInstance.StartPosition = FormStartPosition.CenterScreen;
-                _joinRoomInstance.Show();
-            }
-            else
-            {
-                _joinRoomInstance.WindowState = FormWindowState.Normal;
-                _joinRoomInstance.BringToFront();
-                _joinRoomInstance.Activate();
-            }
+            var mainHome = new Main_home();
+            mainHome.StartPosition = FormStartPosition.CenterScreen;
+            mainHome.Show();
         }
 
 
@@ -650,7 +633,9 @@ namespace MonopolyWinForms
             resultForm.ShowDialog();
 
             this.Hide();
-            (new JoinRoom()).Show();
+            var mainHome = new Main_home();
+            mainHome.StartPosition = FormStartPosition.CenterScreen;
+            mainHome.Show();
         }
     }
 }

@@ -1,6 +1,6 @@
 Đi thẳng vào tù; 0; 0
 Tự do ra tù; 0; 0
-Đi đến ô bắt đầu 0; 0
+Đi đến ô bắt đầu; 0; 0
 Chúc mừng sinh nhật; 25; 0
 Được bầu làm giám đốc; 0; 50
 Đưa con đi học; 0; 150

@@ -200,7 +200,8 @@ namespace MonopolyWinForms.GameLogic
             var path = "Khi_van.txt";
             var cards = File.ReadAllLines(path).Where(line => !string.IsNullOrWhiteSpace(line)).ToArray();
             if (cards.Length > 0){
-                string cardLine = cards[random.Next(cards.Length)];
+                //string cardLine = cards[random.Next(cards.Length)];
+                string cardLine = "Đi đến ô bắt đầu; 0; 0" ;
                 var parts = cardLine.Split(';');
                 string card = parts[0].Trim();
                 card = card.Trim('\uFEFF');
@@ -467,7 +468,8 @@ namespace MonopolyWinForms.GameLogic
             {
                 mainForm.AddToGameLog($"Lỗi gửi thông tin thẻ: {ex.Message}", MainForm.LogType.Error);
             }
-
+            bool movePlayer = false;
+            int moveToIndex = -1;
             switch (card)
             {
                 case "Đi thẳng vào tù":
@@ -501,8 +503,9 @@ namespace MonopolyWinForms.GameLogic
                     }
                     break;
                 case "Đi đến ô bắt đầu":
-                    player.LastMoveType = MoveType.Teleport;                    
-                    mainForm.UpdatePlayerMarkerPosition(player, 0);
+                    moveToIndex = 0;
+                    movePlayer = true;
+                    player.LastMoveType = MoveType.Teleport;                   
                     try 
                     {
                         await GameManager.SendChatMessage(
@@ -515,9 +518,7 @@ namespace MonopolyWinForms.GameLogic
                     {
                         mainForm.AddToGameLog($"Lỗi gửi thông tin thẻ: {ex.Message}", MainForm.LogType.Error);
                     }
-                    var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
-                    await GameManager.UpdateGameState(gameState);
-                    return;
+                    break;
                 default:
                     if (addMoney > 0)
                     {
@@ -565,6 +566,24 @@ namespace MonopolyWinForms.GameLogic
                     break;
             }
             mainForm.UpdatePlayerPanel(player);
+            if (movePlayer && moveToIndex >= 0)
+            {
+                int currentIndex = player.TileIndex;
+                int totalTiles = tiles.Count;
+                int steps = (moveToIndex - currentIndex + totalTiles) % totalTiles;
+                bool passStart = (currentIndex + steps) > totalTiles || (currentIndex > moveToIndex);
+                player.TileIndex = moveToIndex;
+                mainForm.UpdatePlayerMarkerPosition(player, moveToIndex);
+                if (passStart && moveToIndex != 0)
+                {
+                    mainForm.HandleStart(players[currentPlayerIndex]);
+                }
+                
+                // Cập nhật game state sau khi di chuyển
+                //var gameState = new GameState(GameManager.CurrentRoomId, currentPlayerIndex, players, tiles);
+                //await GameManager.UpdateGameState(gameState);
+                return; // Kết thúc xử lý thẻ
+            }
         }
         public async Task HandleStart(Player player)
         {
