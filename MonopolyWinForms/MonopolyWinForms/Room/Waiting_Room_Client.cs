@@ -28,7 +28,7 @@ namespace MonopolyWinForms.Room
             firebase = new FirebaseService();
 
             refreshTimer = new System.Windows.Forms.Timer();
-            refreshTimer.Interval = 3000;
+            refreshTimer.Interval = 100; // Giảm xuống 100ms để đồng bộ gần như tức thì
             refreshTimer.Tick += RefreshTimer_Tick;
             refreshTimer.Start();
 
@@ -50,14 +50,25 @@ namespace MonopolyWinForms.Room
 
             if (room.IsStarted)
             {
-                refreshTimer.Stop();
+                // Báo hiệu client đã sẵn sàng
+                if (!room.ReadyPlayers.Contains(Session.UserName))
+                {
+                    room.ReadyPlayers.Add(Session.UserName);
+                    await firebase.CreateRoomAsync(roomId, room);
+                }
 
-                //Khởi tạo game cho client
-                GameManager.StartGame(Session.CurrentRoomId, room.PlayerDisplayNames, room.PlayTime);
-                Form mainFrom = new MainForm();
-                mainFrom.Show();
-                this.Hide();
-                return;
+                // Đợi tất cả người chơi sẵn sàng rồi mới mở game
+                if (room.ReadyPlayers.Count >= room.PlayerDisplayNames.Count)
+                {
+                    refreshTimer.Stop();
+
+                    //Khởi tạo game cho client
+                    GameManager.StartGame(Session.CurrentRoomId, room.PlayerDisplayNames, room.PlayTime);
+                    Form mainFrom = new MainForm();
+                    mainFrom.Show();
+                    this.Hide();
+                    return;
+                }
             }
 
             if (room.PlayerDisplayNames.Count <= 1)

@@ -181,11 +181,24 @@ namespace MonopolyWinForms.Room
                     room.IsStarted = true;
                     await _firebase.CreateRoomAsync(Session.CurrentRoomId, room);
 
+                    // Đợi tất cả client xác nhận đã sẵn sàng
+                    int maxWaitTime = 10000; // 10 giây tối đa
+                    int waitTime = 0;
+                    while (waitTime < maxWaitTime)
+                    {
+                        var currentRoom = await _firebase.GetRoomAsync(Session.CurrentRoomId);
+                        if (currentRoom != null && currentRoom.ReadyPlayers.Count >= currentRoom.PlayerDisplayNames.Count)
+                        {
+                            break; // Tất cả client đã sẵn sàng
+                        }
+                        await Task.Delay(100); // Kiểm tra mỗi 100ms
+                        waitTime += 100;
+                    }
+
                     // Mở form game
-                    // TODO: Mở form game mới
                     GameManager.StartGame(Session.CurrentRoomId, room.PlayerDisplayNames, room.PlayTime);
                     File.AppendAllText("log.txt", $"Host called started with roomId: {Session.CurrentRoomId}\n");
-                    Form mainForm = new MainForm(); // nếu bạn muốn truyền gameManager sang
+                    Form mainForm = new MainForm();
                     mainForm.Show();
                     this.Hide();
 
