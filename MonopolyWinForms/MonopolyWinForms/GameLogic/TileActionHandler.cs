@@ -63,7 +63,7 @@ namespace MonopolyWinForms.GameLogic
                         await GameManager.SendChatMessage(
                             GameManager.CurrentRoomId!,
                             "Trả tiền",
-                            $"{currentPlayer.Name} phải trả ${rent * 2} tiền thuê cho {players[owner - 1].Name}!\""
+                            $"{currentPlayer.Name} phải trả ${rent * 2} tiền thuê cho {players[owner - 1].Name}!"
                         );
                     }
                     catch (Exception ex)

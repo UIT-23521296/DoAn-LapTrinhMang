@@ -38,6 +38,7 @@
             ClientSize = new Size(800, 450);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Create_Room";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Tạo phòng";
             ResumeLayout(false);
         }

@@ -38,6 +38,7 @@
             ClientSize = new Size(800, 450);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "JoinRoom";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Sảnh chờ";
             ResumeLayout(false);
         }

@@ -71,7 +71,7 @@ namespace MonopolyWinForms.Room
 
             // Thời gian chơi
             layout.Controls.Add(CreateLabel("Thời gian chơi (phút):"), 0, 2);
-            cmbPlayTime = CreateComboBox(new object[] { "30", "45", "60" });
+            cmbPlayTime = CreateComboBox(new object[] { "10", "30", "45", "60" });
             layout.Controls.Add(cmbPlayTime, 1, 2);
 
             // Nút tạo phòng

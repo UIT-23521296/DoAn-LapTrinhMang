@@ -159,13 +159,15 @@ namespace MonopolyWinForms.Room
             dgvRooms.Columns.Add("RoomName", "Tên phòng");
             dgvRooms.Columns.Add("HostName", "Chủ phòng");
             dgvRooms.Columns.Add("PlayerCount", "Số người");
-            dgvRooms.Columns.Add("CreatedAt", "Thời gian tạo");
+            //dgvRooms.Columns.Add("CreatedAt", "Thời gian tạo");
+            dgvRooms.Columns.Add("PlayTime", "Thời gian chơi");
 
             // Căn giữa và đặt width cố định cho cột
             dgvRooms.Columns["RoomName"].Width = 300;
             dgvRooms.Columns["HostName"].Width = 300;
             dgvRooms.Columns["PlayerCount"].Width = 200;
-            dgvRooms.Columns["CreatedAt"].Width = 200;
+            //dgvRooms.Columns["CreatedAt"].Width = 200;
+            dgvRooms.Columns["PlayTime"].Width = 200;
 
             foreach (DataGridViewColumn column in dgvRooms.Columns)
             {
@@ -322,6 +324,8 @@ namespace MonopolyWinForms.Room
 
                 if (token.IsCancellationRequested || IsDisposed) return;
 
+                dgvRooms.Rows.Clear();
+
                 if (rooms != null)
                 {
                     var currentRooms = new Dictionary<string, DateTime>();
@@ -380,11 +384,13 @@ namespace MonopolyWinForms.Room
             foreach (var room in rooms)
             {
                 string hostName = room.Value.PlayerDisplayNames?.FirstOrDefault() ?? "";
+                string playTimeStr = FormatPlayTime(room.Value.PlayTime); // NEW
                 int rowIndex = dgvRooms.Rows.Add(
                     room.Value.RoomName,
                     hostName,
                     $"{room.Value.CurrentPlayers}/{room.Value.MaxPlayers}",
-                    room.Value.CreatedAtDateTime.ToLocalTime().ToString("HH:mm:ss dd/MM/yyyy")
+                    playTimeStr
+                    //room.Value.CreatedAtDateTime.ToLocalTime().ToString("HH:mm:ss dd/MM/yyyy")
                 );
 
                 // Đánh dấu phòng mới
@@ -408,5 +414,12 @@ namespace MonopolyWinForms.Room
             }
         }
 
+        private string FormatPlayTime(int playTime)
+        {
+            if (playTime < 60)
+                return $"{playTime} phút";
+            else
+                return $"{playTime / 60} giờ {playTime % 60} phút";
+        }
     }
 }

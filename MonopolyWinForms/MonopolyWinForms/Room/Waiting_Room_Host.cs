@@ -100,6 +100,10 @@ namespace MonopolyWinForms.Room
                     var room = await _firebase.GetRoomAsync(Session.CurrentRoomId);
                     if (room != null)
                     {
+                        room.PlayerDisplayNames.Remove(Session.UserName);
+                        room.PlayerIds.Remove(Session.UserId);
+                        room.ReadyPlayers.Remove(Session.UserName);
+
                         // Nếu còn người chơi khác trong phòng
                         if (room.PlayerDisplayNames.Count > 1)
                         {
